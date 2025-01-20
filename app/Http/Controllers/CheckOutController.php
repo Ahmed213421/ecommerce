@@ -78,6 +78,10 @@ foreach ($cart as $item) {
 
         if (Auth::check()) {
             // return $request->payment;
+            $totalPrice = collect(Cart::with('product')->get())->sum(function ($item) {
+                return $item->product->price_after_discount * $item->quantity;
+            });
+
             if($request->payment == 'visa'){
 
                 $order = new Order();
@@ -89,6 +93,7 @@ foreach ($cart as $item) {
                 $order->user_id = Auth::user()->id;
                 $order->payment = 'visa';
                 $order->status = 'delivered';
+                $order->totalprice = $totalPrice;
                 $order->save();
 
                 $cartproducts = Cart::where('user_id',Auth::user()->id)->get();
@@ -102,9 +107,7 @@ foreach ($cart as $item) {
                     $newOrderDetail->save();
                 }
 
-                // $totalPrice = collect(Cart::with('product')->get())->sum(function ($item) {
-                //     return $item->product->price_after_discount * $item->quantity;
-                // });
+
 
 
 
@@ -143,7 +146,7 @@ foreach ($cart as $item) {
                     // dd($payment);
             }
 
-            if($request->paymemnt == 'cash'){
+            if($request->payment == 'cash'){
                 $order = new Order();
                 $order->name = $request->name;
                 $order->email = $request->email;
@@ -153,6 +156,7 @@ foreach ($cart as $item) {
                 $order->user_id = Auth::user()->id;
                 $order->payment = 'cash';
                 $order->status = 'pending';
+                $order->totalprice = $totalPrice;
                 $order->save();
 
                 $cartproducts = Cart::where('user_id',Auth::user()->id)->get();

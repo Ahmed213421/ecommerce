@@ -27,11 +27,11 @@
         </button>
         <div class="row my-4">
             <!-- Small table -->
-            <div class="col-md-12">
+            <div class="col-sm-6 col-md-12 overflow-auto">
                 <div class="card shadow">
                     <div class="card-body">
                         <!-- table -->
-                        <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer w-100">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
                                     <div class="dataTables_length" id="dataTable-1_length"><label>Show <select

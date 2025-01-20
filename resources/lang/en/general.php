@@ -31,7 +31,9 @@ return array (
   'arabic' => 'Arabic',
   'optional' => '(optional)',
   'settings' => 'Account Settings',
-  'password' => 'new password',
+  'password' => 'password',
   'confirm_password' => 'confirm password',
   'update_profile' => 'Update Profile',
+  'new' => 'new',
+  'change' => 'change',
 );

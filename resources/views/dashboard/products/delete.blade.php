@@ -12,7 +12,7 @@
                 <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-
+                    <input type="hidden" value="1" name="page">
                     <div class="form-group">
                         <label for="name">{{ trans('dashboard.del.item') }}</label>
                         <input type="text" class="form-control" id="name" disabled value="{{ $product->name}}">

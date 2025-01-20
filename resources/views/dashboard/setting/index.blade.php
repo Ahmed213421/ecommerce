@@ -27,7 +27,7 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-12 col-md-12">
+                            <div class="col-sm-12 col-md-12 overflow-auto">
                                 <table class="table datatables dataTable no-footer" id="dataTable-2" role="grid"
                                     aria-describedby="dataTable-1_info" style="width: 100%">
                                     <thead>

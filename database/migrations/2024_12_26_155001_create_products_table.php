@@ -18,12 +18,13 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('price');
             $table->string('stripe_price_id')->nullable();
-            $table->decimal('discount_percentage', 5, 2)->default(0);
-            $table->integer('price_after_discount', 10, 2)->storedAs('price - (price * discount_percentage / 100)'); // Discounted price
+            $table->decimal('discount_percentage')->default(0);
+            $table->integer('price_after_discount')->storedAs('price - (price * discount_percentage / 100)'); // Discounted price
             $table->integer('quantity')->default(1);
             $table->foreignId('subcategory_id')->constrained();
             $table->text('imagepath')->nullable();
             $table->integer('views')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

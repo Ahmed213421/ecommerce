@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function index()
     {
         return view('dashboard.products.index',[
-            'products' => Product::all(),
+            'products' => Product::latest()->get(),
         ]);
     }
 
@@ -129,18 +129,30 @@ class ProductController extends Controller
             ->withInput();
         }
 
-        $product = Product::find($id);
-        $img = $product->imagepath;
+
+        $product = Product::findOrFail($id);
 
         if ($request->hasFile('image')) {
-            if ($product->imagepath &&  file_exists(public_path($product->imagepath))) {
-                unlink(public_path($product->imagepath));
-            }
-            $img = 'dashboard/'.$request->image->storeAs('products', time().'_'.$request->image->getClientOriginalName(),'images');
+
+        if ($product->imagepath && file_exists(public_path($product->imagepath))) {
+            unlink(public_path($product->imagepath));
         }
-        $product = Product::find($id)->update([
-            'name' => ['en' => $request->name_en , 'ar' => $request->name_ar],
-            'description' => ['en' => $request->description_en , 'ar' => $request->description_ar],
+
+
+        $img = 'dashboard/' . $request->image->storeAs('products',time() . '_' . $request->image->getClientOriginalName(),'images');
+        } else {
+            $img = $product->imagepath;
+        }
+
+        $product->update([
+            'name' => [
+                'en' => $request->name_en,
+                'ar' => $request->name_ar,
+            ],
+            'description' => [
+                'en' => $request->description_en,
+                'ar' => $request->description_ar,
+            ],
             'imagepath' => $img,
             'price' => $request->price,
             'subcategory_id' => $request->subcategory_id,
@@ -150,21 +162,21 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('images')) {
-            foreach($request->file('images') as $imgFile){
 
-                if (file_exists(public_path($imgFile->imagepath))) {
-                    unlink(public_path($imgFile->imagepath));
+            foreach ($product->images as $existingImage) {
+                if (file_exists(public_path($existingImage->imagepath))) {
+                    unlink(public_path($existingImage->imagepath));
                 }
+                $existingImage->delete();
+            }
 
-                $imgFile->delete();
+            foreach ($request->file('images') as $imgFile) {
+                $imgPath = 'dashboard/' . $imgFile->storeAs('products',time() . '_' . $imgFile->getClientOriginalName(),'images');
 
-                foreach($request->file('images') as $imgs){
-                    $imgs = 'dashboard/'.$imgFile->storeAs('products', time().'_'.$imgFile->getClientOriginalName(),'images');
-                    $product->images()->create(['imagepath' => $imgs]);
-                }
-
+                $product->images()->create(['imagepath' => $imgPath]);
             }
         }
+
 
         toastr()->success(__('toaster.prod_update'));
 
@@ -174,23 +186,43 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id,Request $request)
     {
-        $product = Product::find($id);
 
-        if ($product) {
+        if($request->page == 1){
+            $product = Product::findOrFail($id);
+            if ($product) {
 
-            foreach ($product->images as $image) {
+                foreach ($product->images as $image) {
 
-                if (file_exists(public_path($image->imagepath))) {
-                    unlink(public_path($image->imagepath));
+                    if (file_exists(public_path($image->imagepath))) {
+                        unlink(public_path($image->imagepath));
+                    }
+                    $image->delete();
                 }
-                $image->delete();
             }
+
+            Product::destroy($id);
+            toastr()->success(__('toaster.del'));
+            return back();
+        }
+        if ($request->page == 2) {
+            $productIds = json_decode($request->input('delete_all_id'), true);
+            $products = Product::whereIn('id', $productIds)->get();
+
+            foreach ($products as $product) {
+                if ($product->imagepath) {
+                    if (file_exists(public_path($product->imagepath))) {
+                        unlink(public_path($product->imagepath));
+                    }
+                }
+                $product->delete();
+            }
+            toastr()->success(__('dashboard.del.item'));
+            return back();
+
         }
 
-        Product::destroy($id);
-        toastr()->success(__('toaster.del'));
-        return back();
+
     }
 }

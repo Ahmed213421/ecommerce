@@ -23,6 +23,7 @@ Route::group(
         Route::resource('review',Admin\ReviewController::class);
         Route::post('changeStatus/{id}',Admin\ChangeStatusContnroller::class)->name('stauts.change');
         Route::resource('setting', Admin\SettingController::class);
+        Route::resource('profile/settings', Admin\ProfileSettingController::class);
 
 
 });

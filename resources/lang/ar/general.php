@@ -35,5 +35,7 @@ return array (
   'settings' => 'الاعدادات',
   'password' => 'كلمه المرور',
   'confirm_password' => 'تأكيد كلمه المرور',
-  'update_profile' => 'تحظيث البيانات',
+  'update_profile' => 'تحديث البيانات',
+  'new' => 'جديده',
+  'change' => 'تغيير',
 );

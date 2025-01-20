@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AccountSettingController extends Controller
+class ProfileSettingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('shop.setting.index');
+        return view('dashboard.auth.profileSetting');
     }
 
     /**
@@ -68,7 +69,9 @@ class AccountSettingController extends Controller
             ->withInput();
         }
 
-        $user = User::find(auth()->user()->id);
+        
+
+        $user = Admin::find(Auth::guard('admin')->user()->id);
         $user->name = $request->name;
         $user->email = $request->email;
 
@@ -78,13 +81,13 @@ class AccountSettingController extends Controller
                 if (file_exists(public_path($user->image->imagepath))) {
                     unlink(public_path($user->image->imagepath));
                 }
-                $path = 'dashboard/'.$request->photo->storeAs('user_profile', time().'_'.$request->photo->getClientOriginalName(),'images');
+                $path = 'dashboard/'.$request->photo->storeAs('admin_profile', time().'_'.$request->photo->getClientOriginalName(),'images');
 
                 $user->image->update(['imagepath' => $path]);
 
             }
             else{
-                $path = 'dashboard/'.$request->photo->storeAs('user_profile', time().'_'.$request->photo->getClientOriginalName(),'images');
+                $path = 'dashboard/'.$request->photo->storeAs('admin_profile', time().'_'.$request->photo->getClientOriginalName(),'images');
 
                 $user->image()->create(['imagepath' => $path]);
             }
@@ -99,16 +102,15 @@ class AccountSettingController extends Controller
             $user->save();
 
 
-            Auth::logout();
+            Auth::guard('admin')->logout();
 
 
-            return redirect()->route('customer.logout');
+            return redirect()->route('admin.logout');
         }
 
         $user->save();
 
         return back();
-
     }
 
     /**

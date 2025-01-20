@@ -24,11 +24,11 @@
 
         <div class="row my-4">
             <!-- Small table -->
-            <div class="col-md-12">
-                <div class="card shadow">
-                    <div class="card-body">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="col-sm-6 col-md-12 overflow-auto">
                         <!-- table -->
-                        <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer w-100">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
                                     <div class="dataTables_length" id="dataTable-1_length"><label>Show <select
@@ -76,16 +76,19 @@
                                                     <td>{{ $review->message }}</td>
                                                     <td class="text-center">
 
-                                                        <form action="{{ route('admin.stauts.change', $review->id) }}" method="POST">
+                                                        <form action="{{ route('admin.stauts.change', $review->id) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('POST')
                                                             <input type="hidden" name="status" value="review">
                                                             <button type="submit" class="btn btn-link p-0">
                                                                 <span class="badge badge-secondary">
                                                                     @if ($review->status == 1)
-                                                                    <span class="badge badge-light p-2 mt-1">{{ trans('general.active') }}</span>
+                                                                        <span
+                                                                            class="badge badge-light p-2 mt-1">{{ trans('general.active') }}</span>
                                                                     @else
-                                                                    <span class="badge badge-dark p-2 mt-1">{{ trans('general.unactive') }}</span>
+                                                                        <span
+                                                                            class="badge badge-dark p-2 mt-1">{{ trans('general.unactive') }}</span>
                                                                     @endif
                                                                 </span>
                                                             </button>
@@ -155,7 +158,6 @@
 
         </div>
     </div>
-
 @endsection
 
 @section('js')

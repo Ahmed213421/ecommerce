@@ -130,14 +130,14 @@ class SettingController extends Controller
         $logo = $setting->logo;
 
         if ($request->hasFile('iconpage')) {
-            if ($icon &&  file_exists(public_path('images/' . basename($icon)))) {
-                unlink(public_path('images/'.$icon));
+            if ($icon &&  file_exists(public_path($icon))) {
+                unlink(public_path($icon));
             }
             $icon = 'dashboard/'.$request->iconpage->storeAs('settings', time().'_'.$request->iconpage->getClientOriginalName(),'images');
         }
         if ($request->hasFile('logo')) {
-            if ($logo &&  file_exists(public_path('images/' . basename($logo)))) {
-                unlink(public_path('images/'.$logo));
+            if ($logo &&  file_exists(public_path($logo))) {
+                unlink(public_path($logo));
             }
             $logo = 'dashboard/'.$request->logo->storeAs('settings', time().'_'.$request->logo->getClientOriginalName(),'images');
         }

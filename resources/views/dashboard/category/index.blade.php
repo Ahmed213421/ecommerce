@@ -21,7 +21,7 @@
 
         <div class="row my-4">
             <!-- Small table -->
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-6">
                 <div class="card shadow">
                     <div class="card-body">
                         <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
@@ -45,11 +45,11 @@
                                 aria-labelledby="pills-home-tab">
                                 <!-- table -->
                                 <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    {{-- <div class="row">
+                                    </div> --}}
                                     <div class="row">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-12">
-                                            <table class="table datatables dataTable no-footer" id="dataTable-1"
+                                        <div class="col-sm-6 col-md-12 overflow-auto">
+                                            <table class="table datatables dataTable no-footer w-100" id="dataTable-1"
                                                 role="grid" aria-describedby="dataTable-1_info">
                                                 <thead>
                                                     <tr role="row">
@@ -112,7 +112,7 @@
                             <div class="tab-pane fade" id="pills-profile" role="tabpanel"
                                 aria-labelledby="pills-profile-tab">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-12">
+                                    <div class="col-sm-12 col-md-12  overflow-auto">
                                         <table class="table datatables dataTable no-footer" id="dataTable-2" role="grid"
                                             aria-describedby="dataTable-1_info" style="width: 100%">
                                             <thead>
@@ -174,7 +174,7 @@
 
                 </div>
 
-               
+
             </div>
 
             <!-- Modal -->
