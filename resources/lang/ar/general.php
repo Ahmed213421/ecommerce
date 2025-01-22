@@ -38,4 +38,6 @@ return array (
   'update_profile' => 'تحديث البيانات',
   'new' => 'جديده',
   'change' => 'تغيير',
+  'profile' => 'الحساب الشخصي',
+  'forgetpass' => '؟هل نسيت كلمه السر',
 );

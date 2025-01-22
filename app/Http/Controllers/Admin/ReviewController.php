@@ -14,7 +14,7 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $data['reviews'] = Review::all();
+        $data['reviews'] = Review::latest()->get();
         return view('dashboard.review.index',$data);
     }
 

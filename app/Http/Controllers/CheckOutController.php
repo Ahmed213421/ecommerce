@@ -30,13 +30,6 @@ class CheckOutController extends Controller
         return view('shop.cart.checkout',$data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -81,6 +74,9 @@ foreach ($cart as $item) {
             $totalPrice = collect(Cart::with('product')->get())->sum(function ($item) {
                 return $item->product->price_after_discount * $item->quantity;
             });
+            $subTotal = collect(Cart::with('product')->get())->sum(function ($item) {
+                return $item->product->price * $item->quantity;
+            });
 
             if($request->payment == 'visa'){
 
@@ -93,7 +89,8 @@ foreach ($cart as $item) {
                 $order->user_id = Auth::user()->id;
                 $order->payment = 'visa';
                 $order->status = 'delivered';
-                $order->totalprice = $totalPrice;
+                $order->totalprice = $totalPrice + 0.20;
+                $order->subtotal = $subTotal + 0.20;
                 $order->save();
 
                 $cartproducts = Cart::where('user_id',Auth::user()->id)->get();
@@ -124,7 +121,7 @@ foreach ($cart as $item) {
                                 'product_data' => [
                                     'name' => $element->product->name,
                                 ],
-                                'unit_amount' => $element->product->price_after_discount ,
+                                'unit_amount' => $element->product->price_after_discount + 0.20,
                             ],
                             'quantity' => $element->quantity,
                             'adjustable_quantity' => [
@@ -134,15 +131,15 @@ foreach ($cart as $item) {
                             ],
                         ];
                     })->toArray();
-                    return $payment = Auth::user()->checkout(null,[
-                        'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
-                        // 'currency' => 'EGP',
-                        'line_items' => $products,
-                    ]);
-                    // dd($payment);
-                    // return $payment = Auth::user()->checkoutCharge($totalPrice,'products',$cart->quantity,[
-                    //         'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
-                    //     ]);
+                    // return $payment = Auth::user()->checkout(null,[
+                    //     'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
+                    //     // 'currency' => 'EGP',
+                    //     'line_items' => $products,
+                    // ]);
+                    // dd($totalPrice + 0.20);
+                    return $payment = Auth::user()->checkoutCharge(ceil($totalPrice + 0.20),'products',$cart->quantity,[
+                            'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
+                        ]);
                     // dd($payment);
             }
 
@@ -156,7 +153,8 @@ foreach ($cart as $item) {
                 $order->user_id = Auth::user()->id;
                 $order->payment = 'cash';
                 $order->status = 'pending';
-                $order->totalprice = $totalPrice;
+                $order->totalprice = $totalPrice + 0.20;
+                $order->subtotal = $subTotal + 0.20;
                 $order->save();
 
                 $cartproducts = Cart::where('user_id',Auth::user()->id)->get();
@@ -176,35 +174,6 @@ foreach ($cart as $item) {
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

@@ -60,10 +60,15 @@
                                 </ul>
                             </li>
                             @guest
+                            <li><a href="{{ route('customer.login') }}">{{ trans('general.login') }}</a>
+                                <ul class="sub-menu">
 
-                                <li><a href="{{ route('customer.register') }}">{{ trans('general.register') }}</a></li>
-                                <li><a href="{{ route('customer.login') }}">{{ trans('general.login') }}</a></li>
+                                    <li><a href="{{ route('customer.register') }}">{{ trans('general.register') }}</a></li>
+
+                                </ul>
+                            </li>
                             @endguest
+
                             @auth
                                 <li class="dropdown">
                                     <a href="#">

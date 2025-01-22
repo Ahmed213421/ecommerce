@@ -2,6 +2,7 @@
 <script src="{{asset('admin/js/popper.min.js')}}"></script>
 <script src="{{asset('admin/js/moment.min.js')}}"></script>
 <script src="{{asset('admin/js/bootstrap.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{asset('admin/js/simplebar.min.js')}}"></script>
 <script src='{{asset('admin/js/daterangepicker.js')}}'></script>
 <script src='{{asset('admin/js/jquery.stickOnScroll.js')}}'></script>
@@ -22,16 +23,6 @@
     gtag('js', new Date());
     gtag('config', 'UA-56159088-1');
 </script>
-<script>
-    $('#dataTable-1').DataTable(
-    {
-      autoWidth: true,
-      "lengthMenu": [
-        [16, 32, 64, -1],
-        [16, 32, 64, "All"]
-      ]
-    });
-  </script>
 
 @yield('js')
 </body>

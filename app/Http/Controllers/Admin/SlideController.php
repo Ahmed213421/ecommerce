@@ -14,7 +14,7 @@ class SlideController extends Controller
      */
     public function index()
     {
-        $data['sliders'] = Slider::all();
+        $data['sliders'] = Slider::latest()->get();
         return view('dashboard.slider.index',$data);
     }
 

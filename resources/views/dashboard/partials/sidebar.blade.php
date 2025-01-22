@@ -46,7 +46,7 @@
       <ul class="navbar-nav flex-fill w-100 mb-2">
           <li class="nav-item dropdown {{Route::is('admin.category.*') ? 'active' : ''}}">
             <a href="#ui-elements1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{Route::is('admin.category.*') ? 'activelink' : ''}}">
-              <i class="fe fe-box fe-16"></i>
+                <i class="fa-solid fa-layer-group"></i>
               <span class="ml-3 item-text">{{ trans('category.categories') }}</span>
             </a>
             <ul class="collapse list-unstyled pl-4 w-100 {{Route::is('admin.category.*') ? 'show' : ''}}" id="ui-elements1">
@@ -58,7 +58,7 @@
           </li>
         <li class="nav-item dropdown {{Route::is('admin.products.*') ? 'active' : ''}}">
           <a href="#ui-elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{Route::is('admin.products.*') ? 'activelink' : ''}}">
-            <i class="fe fe-box fe-16"></i>
+            <i class="fa-solid fa-box"></i>
             <span class="ml-3 item-text">{{ trans('dashboard.products') }}</span>
           </a>
           <ul class="collapse list-unstyled pl-4 w-100 {{Route::is('admin.products.*') ? 'show' : ''}}" id="ui-elements">
@@ -141,20 +141,20 @@
       </p>
       <ul class="navbar-nav flex-fill w-100 mb-2">
         <li class="nav-item w-100">
-          <a class="nav-link" href="{{route('admin.setting.index')}}">
-            <i class="fe fe-calendar fe-16"></i>
+          <a class="nav-link {{Route::is('admin.setting.index') ? 'activelink' : ''}}" href="{{route('admin.setting.index')}}">
+            <i class="fa-solid fa-gear"></i>
             <span class="ml-3 item-text">{{ trans('dashboard.settings') }}</span>
           </a>
         </li>
         <li class="nav-item w-100">
-          <a class="nav-link" href="{{route('admin.slider.index')}}">
-            <i class="fe fe-calendar fe-16"></i>
+          <a class="nav-link {{Route::is('admin.slider.index') ? 'activelink' : ''}}" href="{{route('admin.slider.index')}}">
+            <i class="fa-solid fa-sliders"></i>
             <span class="ml-3 item-text">{{ trans('dashboard.slider') }}</span>
           </a>
         </li>
         <li class="nav-item w-100">
-          <a class="nav-link" href="{{route('admin.review.index')}}">
-            <i class="fe fe-calendar fe-16"></i>
+          <a class="nav-link {{Route::is('admin.review.index') ? 'activelink' : ''}}" href="{{route('admin.review.index')}}">
+            <i class="fa-regular fa-star"></i>
             <span class="ml-3 item-text">{{ trans('general.review') }}</span>
           </a>
         </li>
@@ -169,16 +169,13 @@
             <a class="nav-link pl-3" href="./contacts-new.html"><span class="ml-1">New Contact</span></a>
           </ul>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown {{Route::is('admin.settings.*') ? 'active' : ''}}">
           <a href="#profile" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
             <i class="fe fe-user fe-16"></i>
-            <span class="ml-3 item-text">Profile</span>
+            <span class="ml-3 item-text">{{ trans('general.profile') }}</span>
           </a>
-          <ul class="collapse list-unstyled pl-4 w-100" id="profile">
-            <a class="nav-link pl-3" href="./profile.html"><span class="ml-1">Overview</span></a>
-            <a class="nav-link pl-3" href="./profile-settings.html"><span class="ml-1">Settings</span></a>
-            <a class="nav-link pl-3" href="./profile-security.html"><span class="ml-1">Security</span></a>
-            <a class="nav-link pl-3" href="./profile-notification.html"><span class="ml-1">Notifications</span></a>
+          <ul class="collapse list-unstyled pl-4 w-100 {{Route::is('admin.profile.index') ? 'show' : ''}}" id="profile">
+            <a class="nav-link pl-3 {{Route::is('admin.profile.index') ? 'activelink' : ''}}" href="{{route('admin.profile.index')}}"><span class="ml-1">{{ trans('general.update_profile') }}</span></a>
           </ul>
         </li>
         <li class="nav-item dropdown">

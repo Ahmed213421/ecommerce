@@ -36,4 +36,6 @@ return array (
   'update_profile' => 'Update Profile',
   'new' => 'new',
   'change' => 'change',
+  'profile' => 'Profile',
+  'forgetpass' => 'Forgot Your Password?',
 );

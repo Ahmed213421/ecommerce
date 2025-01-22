@@ -160,25 +160,25 @@
                                                                                         </button>
                                                                                     </form>
                                                                                 <td class="product-image">
-                                                                                    <img src="{{ asset($item->product->imagepath) }}"
+                                                                                    <img src="{{ asset($item->product?->imagepath) }}"
                                                                                         alt="" width="200px">
 
                                                                                 </td>
                                                                                 <!-- Check if item has product relationship for logged-in users -->
                                                                                 <td class="product-name">
                                                                                     <a
-                                                                                        href="{{ route('customer.product.show', $item->product->slug    ) }}">{{ $item->product->name }}</a>
+                                                                                        href="{{ route('customer.product.show', $item->product?->slug ?? ''    ) }}">{{ $item->product?->name }}</a>
                                                                                 </td>
 
                                                                                 <!-- Check if item has product relationship for logged-in users -->
                                                                                 <td class="product-price">
-                                                                                    ${{ $item->product->price_after_discount }}
+                                                                                    ${{ $item->product?->price_after_discount }}
                                                                                 </td>
                                                                                 <td class="product-quantity">
                                                                                     {{ $item->quantity }}</td>
 
                                                                                     <td class="product-total">
-                                                                                        {{ number_format($item->product->price_after_discount * $item->quantity, 2) }}$
+                                                                                        {{ number_format($item->product?->price_after_discount * $item->quantity, 2) }}$
                                                                                     </td>
                                                                                 </tr>
                                                                                 @endforeach
@@ -198,18 +198,23 @@
                                                                     <tbody>
                                                                         <tr class="total-data">
                                                                             <td><strong>Subtotal: </strong></td>
-                                                                            <td>$500</td>
+                                                                            <td>${{ number_format(
+                                                                                $cartItems->sum(function ($item) {
+                                                                                    return $item->product->price_after_discount * $item->quantity;
+                                                                                }),
+                                                                                2,
+                                                                            ) }}</td>
                                                                         </tr>
                                                                         <tr class="total-data">
                                                                             <td><strong>Shipping: </strong></td>
-                                                                            <td>$45</td>
+                                                                            <td>$0.20</td>
                                                                         </tr>
                                                                         <tr class="total-data">
                                                                             <td><strong>{{ trans('general.total') }}:
                                                                                 </strong></td>
                                                                             <td>${{ number_format(
                                                                                 $cartItems->sum(function ($item) {
-                                                                                    return $item->product->price_after_discount * $item->quantity;
+                                                                                    return ceil($item->product->price_after_discount * $item->quantity + 0.20);
                                                                                 }),
                                                                                 2,
                                                                             ) }}
@@ -276,7 +281,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a id="submitButton" class="boxed-btn">{{ trans('general.order') }}</a>
+                        <a id="submitButton" target="_blank" class="boxed-btn">{{ trans('general.order') }}</a>
                     </div>
                 </div>
             </div>

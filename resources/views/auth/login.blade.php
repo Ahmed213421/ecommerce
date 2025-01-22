@@ -21,7 +21,7 @@
                                         @csrf
 
                                         <div class="form-group mb-3">
-                                            <label for="email">{{ __('Email Address') }}</label>
+                                            <label for="email">{{ __('general.email') }}</label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                             @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -29,7 +29,7 @@
                                         </div>
 
                                         <div class="form-group mb-3">
-                                            <label for="password">{{ __('Password') }}</label>
+                                            <label for="password">{{ __('general.password') }}</label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                             @error('password')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -47,13 +47,13 @@
 
                                         <div class="form-group mb-0">
                                             <button type="submit" class="btn btn-primary w-100">
-                                                {{ __('Login') }}
+                                                {{ __('general.login') }}
                                             </button>
                                         </div>
                                     </form>
 
                                     <div class="mt-3 text-center">
-                                        <a href="{{ route('customer.password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                                        <a href="{{ route('customer.password.request') }}">{{ __('general.forgetpass') }}</a>
                                     </div>
                                 </div>
                             </div>

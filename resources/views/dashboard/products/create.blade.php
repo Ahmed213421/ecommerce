@@ -4,7 +4,8 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{asset('admin/css/dropzone.css')}}">
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('breadcumb')
@@ -108,5 +109,6 @@
             }
         });
     });
+
 </script>
 @endsection

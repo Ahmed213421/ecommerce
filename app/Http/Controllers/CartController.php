@@ -24,21 +24,28 @@ class CartController extends Controller
         $cartItems = Cart::where('user_id', Auth::user()->id)->with('product')->get();
 
 
-        $total = $cartItems->sum(function ($item) {
+        $subtotal = $cartItems->sum(function ($item) {
             return $item->product->price_after_discount * $item->quantity;
+        });
+        $total = $cartItems->sum(function ($item) {
+            return ceil(($item->product->price_after_discount * $item->quantity) + 0.20);
         });
     } else {
 
         $cartItems = session('cart', []);
 
         $total = collect($cartItems)->sum(function ($item) {
-            return $item['price'] * $item['quantity'];
+            return $item['price_after_discount'] * $item['quantity'];
+        });
+
+        $subtotal = collect($cartItems)->sum(function ($item) {
+            return ceil($item['price_after_discount'] * $item['quantity'] + 0.20);
         });
     }
 
     // session()->flush();
 
-    return view('shop.cart.index', compact('cartItems', 'total'));
+    return view('shop.cart.index', compact('cartItems', 'total','subtotal'));
     }
 
     /**

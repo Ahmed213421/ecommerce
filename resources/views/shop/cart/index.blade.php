@@ -39,7 +39,6 @@
                             </thead>
                             <tbody>
                                 @if (count($cartItems) > 0)
-
                                 @foreach ($cartItems as $item)
                                 <tr class="table-body-row">
                                     <td class="product-remove">
@@ -58,7 +57,7 @@
                                             </td>
                                             <!-- Check if item has product relationship for logged-in users -->
                                             <td class="product-name">
-                                                <a href="{{route('customer.product.show',$item->product->slug)}}">{{$item->product->name}}</a>
+                                                <a href="{{route('customer.product.show',$item->product->slug ?? '')}}">{{$item->product->name}}</a>
                                             </td>
 
                                         <!-- Check if item has product relationship for logged-in users -->
@@ -128,11 +127,11 @@
                             <tbody>
                                 <tr class="total-data">
                                     <td><strong>Subtotal: </strong></td>
-                                    <td>$500</td>
+                                    <td>{{number_format($subtotal,2)}}</td>
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>Shipping: </strong></td>
-                                    <td>$45</td>
+                                    <td>$0.20</td>
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>{{ trans('general.total') }}: </strong></td>

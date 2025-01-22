@@ -32,23 +32,7 @@
                     <div class="card-body">
                         <!-- table -->
                         <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer w-100">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="dataTables_length" id="dataTable-1_length"><label>Show <select
-                                                name="dataTable-1_length" aria-controls="dataTable-1"
-                                                class="custom-select custom-select-sm form-control form-control-sm">
-                                                <option value="16">16</option>
-                                                <option value="32">32</option>
-                                                <option value="64">64</option>
-                                                <option value="-1">All</option>
-                                            </select> entries</label></div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div id="dataTable-1_filter" class="dataTables_filter"><label>Search:<input
-                                                type="search" class="form-control form-control-sm" placeholder=""
-                                                aria-controls="dataTable-1"></label></div>
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <table class="table datatables dataTable no-footer" id="dataTable-1" role="grid"
@@ -96,36 +80,6 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <div class="dataTables_info" id="dataTable-1_info" role="status" aria-live="polite">
-                                        Showing 1 to 16 of 63 entries</div>
-                                </div>
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable-1_paginate">
-                                        <ul class="pagination">
-                                            <li class="paginate_button page-item previous disabled"
-                                                id="dataTable-1_previous"><a href="#" aria-controls="dataTable-1"
-                                                    data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-                                            <li class="paginate_button page-item active"><a href="#"
-                                                    aria-controls="dataTable-1" data-dt-idx="1" tabindex="0"
-                                                    class="page-link">1</a></li>
-                                            <li class="paginate_button page-item "><a href="#"
-                                                    aria-controls="dataTable-1" data-dt-idx="2" tabindex="0"
-                                                    class="page-link">2</a></li>
-                                            <li class="paginate_button page-item "><a href="#"
-                                                    aria-controls="dataTable-1" data-dt-idx="3" tabindex="0"
-                                                    class="page-link">3</a></li>
-                                            <li class="paginate_button page-item "><a href="#"
-                                                    aria-controls="dataTable-1" data-dt-idx="4" tabindex="0"
-                                                    class="page-link">4</a></li>
-                                            <li class="paginate_button page-item next" id="dataTable-1_next"><a
-                                                    href="#" aria-controls="dataTable-1" data-dt-idx="5"
-                                                    tabindex="0" class="page-link">Next</a></li>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -184,4 +138,15 @@
 @endsection
 
 @section('js')
+<script>
+    $('#dataTable-1').DataTable(
+    {
+      autoWidth: true,
+      "lengthMenu": [
+        [16, 32, 64, -1],
+        [16, 32, 64, "All"]
+      ]
+    });
+</script>
+
 @endsection

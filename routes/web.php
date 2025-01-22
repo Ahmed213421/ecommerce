@@ -13,7 +13,9 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutCancelController;
 use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\CheckoutSuccessController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
@@ -59,7 +61,7 @@ Route::group(
         Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store'])->name('customer.register');
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('store.register');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
@@ -78,7 +80,7 @@ Route::group(
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
 
-    Route::resource('settings' , AccountSettingController::class)->middleware('auth');
+    Route::resource('settings' , AccountSettingController::class)->only('index','update','destroy')->middleware('auth');
 
 
 
@@ -87,31 +89,26 @@ Route::group(
             return view('welcome',['categories' => $categories]);
         })->name('home');
 
-        Route::get('/checkout-success/{status}', function ($status) {
-
-            $orderId = Session::get('orderid');
-            Order::find($orderId)->update(['status' => 'delivered']);
-            // App\Models\Cart::where('user_id',auth()->user()->id)->delete();
-            Session::forget('orderid');
-            return view('welcome');
-        })->name('checkout-success');
+        Route::get('/checkout-success/{status}' , CheckoutSuccessController::class)->name('checkout-success');
+        Route::get('/checkout-cancel/{status}' , CheckoutCancelController::class)->name('checkout-cancel');
 
 
-        Route::resource('product',ProductController::class)->parameters([
+
+        Route::resource('product',ProductController::class)->only('index','show')->parameters([
             'product' => 'slug'
         ]);;
-        Route::resource('/category', CategoryController::class)->parameters([
+        Route::resource('/category', CategoryController::class)->only('index','show')->parameters([
             'category' => 'slug'
         ]);;
         Route::get('shop',ShopController::class)->name('shop');
-        Route::resource('subcategory',SubCategoryController::class)->parameters([
+        Route::resource('subcategory',SubCategoryController::class)->only('index','show')->parameters([
             'subcategory' => 'slug'
         ]);;
-        Route::resource('review',ReviewController::class);
+        Route::resource('review',ReviewController::class)->only('index','store');
         Route::post('search',SearchController::class)->name('search');
         Route::post('addproduct/',[CartController::class , 'addToCart'])->name('cart.product.add');
         Route::resource('cart',CartController::class);
-        Route::resource('check-out',CheckOutController::class)->middleware('auth');
+        Route::resource('check-out',CheckOutController::class)->only('index','store')->middleware('auth');
         Route::resource('wishlist',WishList::class)->middleware('auth');
 
         Route::view('orders', 'shop.orders.show');

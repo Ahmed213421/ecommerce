@@ -18,8 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        $subcategories = Subcategory::all();
+        $categories = Category::latest()->get();
+        $subcategories = Subcategory::latest()->get();
         return view('dashboard.category.index',compact('categories','subcategories'));
     }
 
