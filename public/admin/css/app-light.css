@@ -7685,6 +7685,8 @@ select {
     margin-left: -0.75rem; }
 
 .avatar-sm img {
+    height: 32px;
+
   width: 32px; }
 
 .avatar-md img {

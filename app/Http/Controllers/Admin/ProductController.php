@@ -44,10 +44,10 @@ class ProductController extends Controller
             'name_ar' => 'required',
             'price' => 'required|numeric|min:0',
             'discount' => 'numeric|min:0|max:100',
+            'quantity' => 'numeric|min:0|max:100',
             'subcategory_id' => 'required|exists:subcategories,id',
             'image' => 'image',
             'images.*' => 'image|nullable',
-            'stripe_price_id' => 'required',
         ]);
         if ($validator->fails()) {
             // Redirect back to the form with the error messages
@@ -73,6 +73,7 @@ class ProductController extends Controller
             'discount_percentage' => $request->discount,
             'slug' => Str::slug($request->name_en),
             'stripe_price_id' => $request->stripe_price_id,
+            'quantity' => $request->quantity,
         ]);
 
 
@@ -105,6 +106,7 @@ class ProductController extends Controller
     {
         $data['product'] = Product::find($id);
         $data['subcategories'] = Subcategory::all();
+        $data['categories'] = Category::all();
         return view('dashboard.products.edit',$data);
     }
 
@@ -121,6 +123,7 @@ class ProductController extends Controller
             'subcategory_id' => 'required|exists:subcategories,id',
             'image' => 'image',
             'images.*' => 'image|nullable',
+            'quantity' => 'numeric|min:0|max:100',
         ]);
         if ($validator->fails()) {
             // Redirect back to the form with the error messages
@@ -159,6 +162,7 @@ class ProductController extends Controller
             'discount_percentage' => $request->discount,
             'slug' => Str::slug($request->name_en),
             'stripe_price_id' => $request->stripe_price_id,
+            'quantity' => $request->quantity,
         ]);
 
         if ($request->hasFile('images')) {

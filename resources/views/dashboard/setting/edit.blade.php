@@ -4,6 +4,7 @@
 @endsection
 
 @section('css')
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 @endsection
 
 @section('titlepage')
@@ -53,17 +54,62 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.street') }}</label>
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.whoweare') }} {{ trans('dashboard.ineng') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="street" value="{{ $setting->street }}">
+                                            <textarea class="form-control" id="editor" style="height: 300px" name="whoweare_en">
+
+                                                @if (old('whoweare_en'))
+                                                {{old('whoweare_en')}}
+                                            @else
+                                            <div class="abt-text">
+                                                {{ $setting->getTranslation('whoweare', 'en') }}
+                                            @endif
+                                        </textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.country') }}</label>
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.whoweare') }} {{ trans('dashboard.inarabic') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="country" value="{{ $setting->country }}">
+                                            <textarea class="form-control" id="editor-2" style="height: 300px" name="whoweare_ar">
+
+                                                @if (old('whoweare_ar'))
+                                                {{old('whoweare_ar')}}
+                                            @else
+                                            <div class="abt-text">
+                                                {{$setting->getTranslation('whoweare','ar')}}
+                                            @endif
+                                        </textarea>
                                         </div>
                                     </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.description') }} {{ trans('dashboard.ineng') }}</label>
+                                        <div class="col-sm-10">
+                                            <textarea type="text" class="form-control" name="description_en">
+                                                {{ old('description_en','Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.') }}
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.description') }} {{ trans('dashboard.inarabic') }}</label>
+                                        <div class="col-sm-10">
+                                            <textarea type="text" class="form-control" name="description_ar" >
+                                                {{ old('description_ar','لوريم إيبسوم هو ببساطة نص شكلي يستخدم في صناعة الطباعة والتنضيد. كان لوريم إيبسوم النص القياسي للصناعة منذ القرن الخامس عشر.') }}
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.workinghours') }} {{ trans('dashboard.ineng') }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="hours_working_en" value="{{$setting->getTranslation('hours_working','en')}}">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.workinghours') }} {{ trans('dashboard.inarabic') }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="hours_working_ar" value="{{$setting->getTranslation('hours_working','ar')}}">
+                                        </div>
+                                    </div>
+
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.map') }}</label>
                                         <div class="col-sm-10">
@@ -71,9 +117,15 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.address') }}</label>
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.address') }} {{ trans('dashboard.ineng') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="address" value="{{ $setting->address }}">
+                                            <input type="text" class="form-control" name="address_en" value="{{$setting->getTranslation('address','en')}}">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.address') }} {{ trans('dashboard.inarabic') }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="address_ar" value="{{$setting->getTranslation('address','ar')}}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -128,4 +180,18 @@
     @endsection
 
     @section('js')
+
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#editor').summernote({
+            tabsize: 2,
+            height: 200
+        });
+        $('#editor-2').summernote({
+            tabsize: 2,
+            height: 200
+        });
+    });
+</script>
     @endsection

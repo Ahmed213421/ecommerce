@@ -13,6 +13,7 @@
 @endsection
 
 @section('breadcumbactive')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{route('admin.products.index')}}">{{ trans('dashboard.all_products') }}</a></li>
     <li class="breadcrumb-item active" aria-current="page"><a href="{{route('admin.products.create')}}">{{ trans('dashboard.create_product') }}</a></li>
 @endsection
 
@@ -35,31 +36,33 @@
                 <label for="simpleinput">{{ trans('dashboard.desc') }} {{ trans('dashboard.ineng') }}</label>
                 <input type="text" id="simpleinput" class="form-control" name="description_en" value="{{old('description_en')}}">
             </div>
-            <div class="form-group mb-3">
-                <label for="simpleinput">stripe product id {{ trans('general.optional') }}</label>
-                <input type="text" id="simpleinput" class="form-control" name="stripe_price_id" value="{{old('stripe_price_id')}}">
-            </div>
+            
             <div class="form-group mb-3">
                 <label for="simpleinput">{{ trans('dashboard.desc') }} {{ trans('dashboard.inarabic') }}</label>
                 <input type="text" id="simpleinput" class="form-control" name="description_ar" value="{{old('description_ar')}}">
             </div>
             <div class="form-group mb-3">
                 <label for="price">{{ trans('dashboard.price') }}</label>
-                <input type="number" id="price" class="form-control" name="price" placeholder="Enter price" min="0" value="{{old('price')}}" required oninput="this.value = Math.max(0, this.value)">
+                <input type="number" id="price" class="form-control" name="price"  min="0" value="{{old('price')}}" required oninput="this.value = Math.max(0, this.value)">
+            </div>
+            <div class="form-group mb-3">
+                <label for="quantity">{{ trans('dashboard.quantity') }}</label>
+                <input type="number" id="quantity" class="form-control" name="quantity"  min="0" value="{{old('quantity')}}" required oninput="this.value = Math.max(0, this.value)">
             </div>
             <div class="form-group mb-3">
                 <label for="discount">{{ trans('dashboard.discount') }}</label>
                 <input type="number" id="discount" class="form-control" name="discount"min="0" value="{{old('discount')}}" required oninput="this.value = Math.max(0, this.value)">
             </div>
-            <div class="form-group mb-3">
-                <label for="image">{{ trans('dashboard.photo') }}</label>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*">
-            </div>
+
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
+              </div>
 
             <div class="form-group mb-3">
                 <label for="custom-select">{{ trans('dashboard.sel.category') }}</label>
                 <select class="custom-select" id="categoryselect" name="category">
-                    <option selected="" disabled>Open this select menu</option>
+                    <option selected disabled value="">{{ trans('dashboard.sel.category') }}</option>
                     @foreach ($categories as $category)
                     <option value="{{$category->id}}">{{$category->name}}</option>
 
@@ -67,16 +70,17 @@
                 </select>
             </div>
             <div class="form-group mb-3">
-                <label for="custom-select">{{ trans('dashboard.sel.category') }}</label>
+                <label for="custom-select">{{ trans('dashboard.sel.subcategory') }}</label>
                 <select class="custom-select" id="subSelect" name="subcategory_id">
 
                 </select>
             </div>
 
-            <div class="form-group mb-3">
-                <label for="custom-select"></label>
-                <input type="file" name="images[]" multiple>
-            </div>
+
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFi" name="images[]" multiple accept="image/*">
+                <label class="custom-file-label" for="customFile">{{ trans('dashboard.photos') }}</label>
+              </div>
 
             <button type="submit" class="btn btn-primary">{{ trans('general.submit') }}</button>
 
@@ -93,7 +97,7 @@
             var categoryId = $(this).val();
 
             // Reset student dropdown
-            $('#subSelect').empty().append('<option value="">Select a subcategory</option>').prop('disabled', true);
+            $('#subSelect').empty().append('<option value="">{{trans('dashboard.sel.subcategory')}}</option>').prop('disabled', true);
 
             if (categoryId) {
                 $.ajax({

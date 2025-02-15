@@ -1,8 +1,8 @@
 <?php
 
 return array (
-  'categories' => 'categories',
-  'category' => 'category',
+  'categories' => 'Categories',
+  'category' => 'Category',
   'create_sub' => 'create sub category',
-  'sub' => 'sub categories',
+  'sub' => 'Sub Categories',
 );

@@ -1,6 +1,41 @@
 @extends('shop.partials.master')
 
 @section('css')
+    <style>
+        .slider-container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .slider-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .slider-title {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        .slider-description {
+            font-size: 1rem;
+            color: #666;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -8,24 +43,28 @@
         <!-- home page slider -->
         <div class="homepage-slider">
             <!-- single home slider -->
-            <div class="single-homepage-slider homepage-bg-1">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
-                            <div class="hero-text">
-                                <div class="hero-text-tablecell">
-                                    <p class="subtitle">Fresh & Organic</p>
-                                    <h1>Delicious Seasonal Fruits</h1>
-                                    <div class="hero-btns">
-                                        <a href="shop.html" class="boxed-btn">Fruit Collection</a>
-                                        <a href="contact.html" class="bordered-btn">Contact Us</a>
+
+
+            @foreach (App\Models\Slider::get() as $slide)
+                <div class="single-homepage-slider" style="background-image: url({{ asset($slide->imagepath) }})">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                <div class="hero-text">
+                                    <div class="hero-text-tablecell">
+                                        <p class="subtitle">{{ $slide->main_title }}</p>
+                                        <h1>{{ $slide->branch_title }}</h1>
+                                        <div class="hero-btns">
+                                            <a href="#mostviewed" class="boxed-btn">Fruit Collection</a>
+                                            <a href="{{ route('admin.users.index') }}" class="bordered-btn">Contact Us</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
             <!-- single home slider -->
             <div class="single-homepage-slider homepage-bg-2">
                 <div class="container">
@@ -36,27 +75,8 @@
                                     <p class="subtitle">Fresh Everyday</p>
                                     <h1>100% Organic Collection</h1>
                                     <div class="hero-btns">
-                                        <a href="shop.html" class="boxed-btn">Visit Shop</a>
-                                        <a href="contact.html" class="bordered-btn">Contact Us</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- single home slider -->
-            <div class="single-homepage-slider homepage-bg-3">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-10 offset-lg-1 text-right">
-                            <div class="hero-text">
-                                <div class="hero-text-tablecell">
-                                    <p class="subtitle">Mega Sale Going On!</p>
-                                    <h1>Get December Discount</h1>
-                                    <div class="hero-btns">
-                                        <a href="shop.html" class="boxed-btn">Visit Shop</a>
-                                        <a href="contact.html" class="bordered-btn">Contact Us</a>
+                                        <a href="#mostviewed" class="boxed-btn">Visit Shop</a>
+                                        <a href="{{ route('customer.us.index') }}" class="bordered-btn">Contact Us</a>
                                     </div>
                                 </div>
                             </div>
@@ -66,6 +86,21 @@
             </div>
         </div>
         <!-- end home page slider -->
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    @if (request('status') == 'success')
+        <div class="alert alert-success">
+            success
+        </div>
+
     @endif
     {{--
 	<!-- features list section -->
@@ -113,7 +148,7 @@
 	<!-- end features list section --> --}}
 
     <!-- product section -->
-    <div class="product-section mt-150 mb-150">
+    <div class="product-section mt-150" id="mostviewed">
         <div class="container">
             <div class="row">
                 <div class="offset-lg-2 {{ app()->getLocale() == 'ar' ? 'col-lg-12' : 'col-lg-8' }}  text-center">
@@ -132,27 +167,31 @@
                                 <a href="{{ route('customer.product.show', $product->slug) }}"><img
                                         src="{{ asset($product->imagepath) }}" alt=""></a>
                             </div>
-                            <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a></h3>
-                            <p class="product-price"><span>{{ trans('shop.per_kg') }}<br> </span> {{ $product->price }}$
+                            <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a>
+                            </h3>
+                            <p class="product-price"><span>{{ trans('shop.per_kg') }}<br>
+                                </span><del>{{ $product->price }}</del> {{ $product->price_after_discount }}$
                             </p>
-                            <p class="product-  price"><span>{{ trans('general.qty') }}</span>
-                                <br> {{ $product->quantity }}
-                            </p>
-                            <div class="favorite-icon">
-                                <i id="heart-{{ $product->id }}"
-                                    class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
-                                    onclick="toggleFavorite({{ $product->id }})"
-                                    style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
-                                </i>
-                            </div>
-                            <a href="javascript:void(0);" class="cart-btn"
+                            @auth
+
+                                <div class="favorite-icon">
+                                    <i id="heart-{{ $product->id }}"
+                                        class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
+                                        onclick="toggleFavorite({{ $product->id }})"
+                                        style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
+                                    </i>
+                                </div>
+                            @endauth
+                            <a href="{{ route('customer.cart.index') }}" class="cart-btn"
                                 onclick="event.preventDefault();
                                         document.getElementById('add-product-to-cart-{{ $product->id }}').submit();">
+
                                 <form id="add-product-to-cart-{{ $product->id }}"
                                     action="{{ route('customer.cart.product.add') }}" method="POST"
                                     style="display: none;">
                                     @csrf
                                     <input type="hidden" value="{{ $product->id }}" name="productid">
+                                    <input type="hidden" value="1" name="quantity">
                                 </form>
                                 <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
                             </a>
@@ -215,36 +254,19 @@
     </section>
     <!-- end cart banner section -->
 
-    @if (app()->getLocale() !== 'ar')
-        <!-- testimonail-section -->
-        <div class="testimonail-section mt-150 mb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 offset-lg-1 text-center">
-                        <div class="testimonial-sliders">
-                            @foreach (App\Models\Review::all() as $review)
-                                <div class="single-testimonial-slider">
-                                    <div class="client-avater">
-                                        <img src="{{ asset($review->image) }}" alt="">
-                                    </div>
-                                    <div class="client-meta">
-                                        <h3>{{ $review->name }} <span>{{ $review->subject }}</span></h3>
-                                        <p class="testimonial-body">
-                                            " {{ $review->message }} "
-                                        </p>
-                                        <div class="last-icon">
-                                            <i class="fas fa-quote-right"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+    <div class="slider-container my-5">
+        <div class="slider">
+            @foreach (App\Models\Review::where('status', 1)->get() as $review)
+                <div class="slide">
+                    {{-- <img src="{{$}}" alt="Image 1" class="slider-image"> --}}
+                    <h3 class="slider-title">{{ $review->name }}</h3>
+                    <p class="slider-description">{{ $review->message }}.</p>
                 </div>
-            </div>
+            @endforeach
+            <!-- Add more slides as needed -->
         </div>
-        <!-- end testimonail-section -->
-    @endif
+    </div>
+
 
     <!-- advertisement section -->
     <div class="abt-section mb-150">
@@ -257,19 +279,14 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <div class="abt-text">
-                        <p class="top-sub">Since Year 1999</p>
-                        <h2>We are <span class="orange-text">Fruitkha</span></h2>
-                        <p>Etiam vulputate ut augue vel sodales. In sollicitudin neque et massa porttitor vestibulum ac vel
-                            nisi. Vestibulum placerat eget dolor sit amet posuere. In ut dolor aliquet, aliquet sapien sed,
-                            interdum velit. Nam eu molestie lorem.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente facilis illo repellat
-                            veritatis minus, et labore minima mollitia qui ducimus.</p>
-                        <a href="about.html" class="boxed-btn mt-4">know more</a>
-                    </div>
+                    @foreach (App\Models\Setting::all() as $item)
+                        {!! $item->whoweare !!}
+                    @endforeach
+                    <a href="about.html" class="boxed-btn mt-4">know more</a>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- end advertisement section -->
 
@@ -290,72 +307,39 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="section-title">
-                        <h3><span class="orange-text">Our</span> News</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet
-                            beatae optio.</p>
+                        <h3><span class="orange-text">{{ trans('dashboard.news') }}
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-news">
-                        <a href="single-news.html">
-                            <div class="latest-news-bg news-bg-1"></div>
-                        </a>
-                        <div class="news-text-box">
-                            <h3><a href="single-news.html">You will vainly look for fruit on it in autumn.</a></h3>
-                            <p class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> Admin</span>
-                                <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
-                            </p>
-                            <p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.
-                                Praesent vitae mattis nunc, egestas viverra eros.</p>
-                            <a href="single-news.html" class="read-more-btn">read more <i
-                                    class="fas fa-angle-right"></i></a>
+                @foreach (App\Models\Post::latest()->take(3)->get() as $post)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-latest-news">
+                            <a href="{{ route('customer.news.show', $post->slug) }}" class="news-image">
+                                <img src="{{ asset($post->imagepath) }}" alt="News Image">
+                            </a>
+                            <div class="news-text-box">
+                                <h3><a href="single-news.html">{{ $post->title }}.</a></h3>
+                                <p class="blog-meta">
+                                    <span class="author"><i class="fas fa-user"></i> {{ $post->admin->name }}</span>
+                                    <span class="date"><i class="fas fa-calendar"></i>
+                                        {{ $post->created_at->format('d F, Y') }}</span>
+                                </p>
+                                <p class="excerpt">{!! Str::limit(strip_tags($post->description), 200) !!}
+                                    .</p>
+                                <a href="{{ route('customer.news.show', $post->slug) }}"
+                                    class="read-more-btn">{{ trans('general.readmore') }} <i
+                                        class="fas fa-angle-right"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-news">
-                        <a href="single-news.html">
-                            <div class="latest-news-bg news-bg-2"></div>
-                        </a>
-                        <div class="news-text-box">
-                            <h3><a href="single-news.html">A man's worth has its season, like tomato.</a></h3>
-                            <p class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> Admin</span>
-                                <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
-                            </p>
-                            <p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.
-                                Praesent vitae mattis nunc, egestas viverra eros.</p>
-                            <a href="single-news.html" class="read-more-btn">read more <i
-                                    class="fas fa-angle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
-                    <div class="single-latest-news">
-                        <a href="single-news.html">
-                            <div class="latest-news-bg news-bg-3"></div>
-                        </a>
-                        <div class="news-text-box">
-                            <h3><a href="single-news.html">Good thoughts bear good fresh juicy fruit.</a></h3>
-                            <p class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> Admin</span>
-                                <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
-                            </p>
-                            <p class="excerpt">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.
-                                Praesent vitae mattis nunc, egestas viverra eros.</p>
-                            <a href="single-news.html" class="read-more-btn">read more <i
-                                    class="fas fa-angle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <a href="news.html" class="boxed-btn">More News</a>
+                    <a href="{{ route('customer.news.index') }}" class="boxed-btn">{{ trans('shop.more') }}
+                        {{ trans('dashboard.news') }}</a>
                 </div>
             </div>
         </div>
@@ -415,5 +399,23 @@
                 },
             });
         }
+
+        let currentIndex = 0;
+
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function changeSlide() {
+            if (currentIndex >= totalSlides) {
+                currentIndex = 0;
+            }
+
+            const slider = document.querySelector('.slider');
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            currentIndex++;
+        }
+
+        setInterval(changeSlide, 4000); // Change slide every 3 seconds
     </script>
 @endsection

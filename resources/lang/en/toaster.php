@@ -8,4 +8,5 @@ return array (
   'product_create' => 'product added successfully',
   'update' => 'updated successfully',
   'cart' => 'added to cart',
+  'contact' => 'your message has been send wait for response',
 );

@@ -37,7 +37,7 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate($guard=null): void
+    public function authenticate($guard = null): void
     {
         $this->ensureIsNotRateLimited();
 
@@ -46,6 +46,17 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
+            ]);
+        }
+
+        $user = Auth::guard($guard)->user();
+
+        // Check user status for 'users' guard only
+        if ($guard === 'users' && $user->status !== 'active') {
+            Auth::guard($guard)->logout();
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.inactive'),
             ]);
         }
 
@@ -80,6 +91,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }

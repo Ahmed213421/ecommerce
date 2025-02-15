@@ -15,7 +15,6 @@
                 <div class="offset-lg-2 {{ app()->getLocale() == 'ar' ? 'col-lg-12' : 'col-lg-8'}} text-center">
                     <div class="section-title">
                         <h3><span class="orange-text">{{ trans('category.category') }}</span> {{ $category->name }}</h3>
-                        <p>{{$subcategory->description ?? trans('general.description') }}</p>
                         </div>
                     </div>
                 </div>
@@ -45,20 +44,16 @@
                                         </div>
                                         <h3><a href="{{route('customer.product.show',$item->slug)}}">{{ $item->name }}</a></h3>
                                         <p class="product-  price"><span>{{ trans('shop.per_kg') }}</span>
-                                            <br> {{ $item->price }}$
+                                            <br> {{$product->price}}</del> {{ $product->price_after_discount }}$
                                         </p>
-                                        <p class="product-  price"><span>{{ trans('general.qty') }}</span>
-                                            <br> {{ $item->quantity }}
-                                        </p>
+                                        @auth
 
                                         <div class="favorite-icon">
-                                            <i
-                                                id="heart-{{ $item->id }}"
-                                                class="fa fa-heart {{ $item->isFavoritedByUser ? 'active' : '' }}"
-                                                onclick="toggleFavorite({{ $item->id }})"
-                                                style="cursor: pointer; color: {{ $item->isFavoritedByUser ? 'red' : 'gray' }};">
-                                            </i>
+                                            <i id="heart-{{ $product->id }}" class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
+                                               onclick="toggleFavorite({{ $product->id }})" style="cursor: pointer;"></i>
                                         </div>
+                                    </div>
+                                    @endauth
 
                                     <a href="{{ route('customer.cart.index') }}" class="cart-btn"
                                         onclick="event.preventDefault();
@@ -69,6 +64,7 @@
                                             style="display: none;">
                                             @csrf
                                             <input type="hidden" value="{{ $item->id }}" name="productid">
+                                            <input type="hidden" value="1" name="quantity">
                                         </form>
                                         <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
                                     </a>
@@ -93,4 +89,31 @@
             </div>
         </div> --}}
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    function toggleFavorite(productId) {
+        const heart = $(`#heart-${productId}`);
+
+        $.ajax({
+            url: `{{ route('customer.favorites.toggle', ':id') }}`.replace(':id', productId),
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function(response) {
+                if (!response.success) {
+                    heart.toggleClass('active');
+                    // alert('Operation failed on the server.');
+                }
+            },
+            error: function(xhr) {
+                heart.toggleClass('active');
+                console.error('Error:', xhr.responseText);
+                alert('An error occurred! Please try again later.');
+            },
+        });
+    }
+</script>
 @endsection

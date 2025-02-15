@@ -32,26 +32,77 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="defaultModalLabel">Notifications</h5>
+                    <h5 class="modal-title" id="defaultModalLabel">{{ trans('notifiication.notifications') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="list-group list-group-flush my-n3">
-                        <div class="list-group-item bg-transparent">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <span class="fe fe-box fe-24"></span>
-                                </div>
-                                <div class="col">
-                                    <small><strong>Package has uploaded successfull</strong></small>
-                                    <div class="my-0 text-muted small">Package is zipped and uploaded</div>
-                                    <small class="badge badge-pill badge-light text-muted">1m ago</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item bg-transparent">
+                <div class="modal-body bg-white">
+                    <div class="list-group list-group-flush all-notifications">
+                        {{-- @php
+                            dd(Auth::guard('admin')->user()->notifications);
+                        @endphp --}}
+                        @foreach (Auth::guard('admin')->user()->notifications->take(5) as $item)
+                            @php
+                                $notificationId = $item->id;
+                            @endphp
+
+
+                            @if ($item->type == 'App\Notifications\NewCustomerReviewNotification')
+                                <a href="{{ route('admin.review.index') }}" class="list-group notification-link my-2 bg-transparent" data-id="{{$notificationId}}">
+                                    <div
+                                        class="list-group-item {{ $item->read_at == null ? 'bg-light' : 'bg-transparent' }}">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="fe fe-box fe-24"></span>
+                                            </div>
+                                            <div class="col">
+                                                <small><strong>{{ trans('notifiication.review') }}</strong></small>
+                                                <small
+                                                    class="badge badge-pill badge-light text-muted">{{ $item->created_at->diffForHumans() }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                            @if ($item->type == 'App\Notifications\NewOrderNotification')
+                                <a href="{{ route('admin.orders.index') }}" class="list-group-item notification-link bg-transparent" data-id="{{$notificationId}}">
+                                    <div
+                                        class="list-group-item {{ $item->read_at == null ? 'bg-light' : 'bg-transparent' }}" >
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="fe fe-box fe-24"></span>
+                                            </div>
+                                            <div class="col">
+                                                <small><strong>{{ $item->data['user'] }}
+                                                        {{ trans('notifiication.ordered') }}</strong></small>
+                                                <small
+                                                    class="badge badge-pill badge-light text-muted">{{ $item->created_at->diffForHumans() }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                            @if ($item->type == 'App\Notifications\NewContactNotification')
+                                <a href="{{ route('admin.contact.index') }}" class="list-group-item notification-link bg-transparent" data-id="{{$notificationId}}">
+                                    <div
+                                        class="list-group-item {{ $item->read_at == null ? 'bg-light' : 'bg-transparent' }}" >
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="fe fe-box fe-24"></span>
+                                            </div>
+                                            <div class="col">
+                                                <small><strong>{{ $item->data['name'] }}
+                                                        {{ trans('notifiication.contact') }}</strong></small>
+                                                <small
+                                                    class="badge badge-pill badge-light text-muted">{{ $item->created_at->diffForHumans() }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
+                        {{-- <div class="list-group-item bg-transparent">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="fe fe-download fe-24"></span>
@@ -86,11 +137,11 @@
                                     <small class="badge badge-pill badge-light text-muted">1h ago</small>
                                 </div>
                             </div>
-                        </div> <!-- / .row -->
+                        </div> <!-- / .row --> --}}
                     </div> <!-- / .list-group -->
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Clear All</button>
+                <div class="modal-footer bg-white">
+                    <button type="button" id="clearAll" class="btn btn-secondary btn-block" data-dismiss="modal">{{ trans('general.clear') }} {{ trans('general.all') }}</button>
                 </div>
             </div>
         </div>

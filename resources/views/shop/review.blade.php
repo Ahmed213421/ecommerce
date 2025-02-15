@@ -8,8 +8,7 @@
     <div class="breadcrumb-section breadcrumb-bg">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 offset-lg-2 text-center">
-                    <div>Get 24/7 Support</p>
+                <div class="col-lg-12 text-center">
                         <h1>{{ trans('general.review') }}</h1>
                     </div>
                 </div>
@@ -24,9 +23,6 @@
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="form-title">
                         <h2>{{ trans('general.review') }}</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, ratione! Laboriosam est,
-                            assumenda. Perferendis, quo alias quaerat aliquid. Corporis ipsum minus voluptate? Dolore, esse
-                            natus!</p>
                     </div>
                     <div id="form_status"></div>
                     <div class="contact-form">
@@ -48,7 +44,7 @@
                             <p>
                                 <textarea name="message" id="message" cols="30" rows="10" placeholder="Message">{{ old('message') }}</textarea>
                             </p>
-                            <p><input type="submit" value="Submit"></p>
+                            <p><input type="submit" value="{{trans('general.submit')}}"></p>
                         </form>
                     </div>
                     @if (session('success'))
@@ -67,21 +63,24 @@
                     @endif
                 </div>
                 <div class="col-lg-4">
-                    <div class="contact-form-wrap">
-                        <div class="contact-form-box">
-                            <h4><i class="fas fa-map"></i> Shop Address</h4>
-                            <p>34/8, East Hukupara <br> Gifirtok, Sadan. <br> Country Name</p>
-                        </div>
-                        <div class="contact-form-box">
-                            <h4><i class="far fa-clock"></i> Shop Hours</h4>
-                            <p>MON - FRIDAY: 8 to 9 PM <br> SAT - SUN: 10 to 8 PM </p>
-                        </div>
-                        <div class="contact-form-box">
-                            <h4><i class="fas fa-address-book"></i> Contact</h4>
-                            <p>Phone: +00 111 222 3333 <br> Email: support@fruitkha.com</p>
-                        </div>
-                    </div>
-                </div>
+					<div class="contact-form-wrap">
+                        @foreach (App\Models\Setting::all() as $item)
+
+						<div class="contact-form-box">
+                            <h4><i class="fas fa-map"></i> {{ trans('general.address') }}</h4>
+							{{$item->address}}
+						</div>
+						<div class="contact-form-box">
+                            <h4><i class="far fa-clock"></i> {{ trans('general.workinghours') }}</h4>
+							<p>{{$item->hours_working}}</p>
+						</div>
+						<div class="contact-form-box">
+                            <h4><i class="fas fa-address-book"></i> {{ trans('shop.contact') }}</h4>
+							<p>{{ trans('general.phone') }}: +{{$item->phone}} <br> {{ trans('general.email') }}: {{$item->email}}</p>
+						</div>
+                        @endforeach
+					</div>
+				</div>
             </div>
         </div>
     </div>

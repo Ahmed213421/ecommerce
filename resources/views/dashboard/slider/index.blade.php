@@ -34,23 +34,23 @@
                         <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer w-100">
 
                             <div class="row">
-                                <div class="col-sm-12 col-md-12">
+                                <div class="col-sm-12 col-md-12 overflow-auto">
                                     <table class="table datatables dataTable no-footer" id="dataTable-1" role="grid"
                                         aria-describedby="dataTable-1_info">
                                         <thead>
                                             <tr role="row">
                                                 <td>#</th>
                                                 <td>{{ trans('dashboard.name') }}</td>
-                                                <td>{{ trans('dashboard.photo') }}</td>
                                                 <td>{{ trans('dashboard.branch_title') }}</td>
+                                                <td>{{ trans('dashboard.photo') }}</td>
                                                 <td>{{ trans('dashboard.created_at') }}</td>
                                                 <td>{{ trans('dashboard.actions') }}</td>
                                             </tr>
 
                                         </thead>
                                         <tbody>
+                                            @foreach ($sliders as $slide)
                                             <tr role="row" class="even">
-                                                @foreach ($sliders as $slide)
                                                     </td>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $slide->main_title }}</td>
@@ -116,11 +116,11 @@
 
 
 
-                    <div class="form-group">
-                        <label for="image">{{ trans('dashboard.photo') }}</label>
-                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
 
-                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                        <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
+                      </div>
 
 
 
@@ -139,8 +139,14 @@
 
 @section('js')
 <script>
+    var currentLocale = '{{ app()->getLocale() }}';
+    console.log(currentLocale);
+
     $('#dataTable-1').DataTable(
     {
+        "language": {
+            "url": currentLocale === 'ar' ? 'https://cdn.datatables.net/plug-ins/2.2.1/i18n/ar.json' : ''
+        },
       autoWidth: true,
       "lengthMenu": [
         [16, 32, 64, -1],
@@ -148,5 +154,7 @@
       ]
     });
 </script>
+
+
 
 @endsection

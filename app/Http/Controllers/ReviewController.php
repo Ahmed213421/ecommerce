@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewCustomerReviewEvent;
+use App\Models\Admin;
 use App\Models\Review;
+use App\Notifications\NewCustomerReviewNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class ReviewController extends Controller
@@ -36,7 +40,7 @@ class ReviewController extends Controller
             ->withInput();
         };
 
-        Review::create([
+        $customer = Review::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -44,6 +48,11 @@ class ReviewController extends Controller
             'message' => $request->message,
             'status' => 0,
         ]);
+
+        $admins = Admin::all();
+        Notification::send($admins,new NewCustomerReviewNotification($customer));
+
+        NewCustomerReviewEvent::dispatch($customer);
 
         return back()->with('success','your message hass sent please wait for verification');
     }

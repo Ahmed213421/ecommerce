@@ -25,6 +25,8 @@ class ProductController extends Controller
 
         $product = Product::with('subcategory')->where('slug', $slug)->firstOrFail();
 
+        $product->increment('views');
+
         return view('shop.products.show',compact('product'));
     }
 

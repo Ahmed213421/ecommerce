@@ -41,8 +41,6 @@
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="section-title">
                         <h3><span class="orange-text"></span> {{ trans('products.products') }}</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet
-                            beatae optio.</p>
                     </div>
                 </div>
             </div>
@@ -56,19 +54,22 @@
                                     alt=""></a>
                         </div>
                         <h3><a href="{{route('customer.product.show',$product->slug)}}">{{ $product->name }}</a></h3>
-                        <p class="product-price"><span>{{ trans('shop.per_kg') }}<br> </span> {{ $product->price }}$
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}<br> </span>{{$product->price}}</del> {{ $product->price_after_discount }}$
                         </p>
                         <p class="product-  price"><span>{{ trans('general.qty') }}</span>
                             <br> {{ $product->quantity }}
                         </p>
+                        @auth
+
                         <div class="favorite-icon">
                             <i
-                                id="heart-{{ $product->id }}"
-                                class="fa fa-heart {{ $product->isFavoritedByUser ? 'active' : '' }}"
-                                onclick="toggleFavorite({{ $product->id }})"
-                                style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
-                            </i>
-                        </div>
+                            id="heart-{{ $product->id }}"
+                            class="fa fa-heart {{ $product->isFavoritedByUser ? 'active' : '' }}"
+                            onclick="toggleFavorite({{ $product->id }})"
+                            style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
+                        </i>
+                    </div>
+                    @endauth
                         <a href="javascript:void(0);" class="cart-btn"
                             onclick="event.preventDefault();
                                     document.getElementById('add-product-to-cart-{{ $product->id }}').submit();">
@@ -76,6 +77,7 @@
                                 action="{{ route('customer.cart.product.add') }}" method="POST" style="display: none;">
                                 @csrf
                                 <input type="hidden" value="{{ $product->id }}" name="productid">
+                                <input type="hidden" value="1" name="quantity">
                             </form>
                             <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
                         </a>

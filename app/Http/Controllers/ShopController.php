@@ -12,7 +12,9 @@ class ShopController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $data['categories'] = Category::all();
+
+        $data['categories'] = Category::with('subcategories.products')->get();
+
         return view('shop.shop',$data);
     }
 }

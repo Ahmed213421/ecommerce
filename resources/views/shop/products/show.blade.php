@@ -100,7 +100,18 @@
                                 ${{ $product->price_after_discount }}
                             </span>
                         </div>
+
                         <p>{{ $product->description }}</p>
+                        @auth
+
+                        <div class="favorite-icon">
+                            <i id="heart-{{ $product->id }}"
+                                class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
+                                onclick="toggleFavorite({{ $product->id }})"
+                                style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
+                            </i>
+                    </div>
+                    @endauth
                         <div class="single-product-form">
                             <div class="d-inline-block">
                                 <form id="add-product-to-cart-{{ $product->id }}"
@@ -108,6 +119,7 @@
 
                                     @csrf
                                     <input type="hidden" value="{{ $product->id }}" name="productid">
+                                    <input type="hidden" name="quantity">
 
                                     <input type="number" name="quantity" class="form-control form-control-sm mr-2"
                                         placeholder="Qty" min="1" value="1" style="width: 70px;">
@@ -237,4 +249,28 @@
             });
         });
     </script>
+<script>
+    function toggleFavorite(productId) {
+        const heart = $(`#heart-${productId}`);
+
+        $.ajax({
+            url: `{{ route('customer.favorites.toggle', ':id') }}`.replace(':id', productId),
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function(response) {
+                if (!response.success) {
+                    heart.toggleClass('active');
+                    // alert('Operation failed on the server.');
+                }
+            },
+            error: function(xhr) {
+                heart.toggleClass('active');
+                console.error('Error:', xhr.responseText);
+                alert('An error occurred! Please try again later.');
+            },
+        });
+    }
+</script>
 @endsection

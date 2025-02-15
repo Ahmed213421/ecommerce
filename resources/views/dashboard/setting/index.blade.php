@@ -33,6 +33,7 @@
                                     <thead>
                                         <tr role="row">
                                             <td>#</th>
+                                            <td>:</th>
                                             <td>#</th>
                                         </tr>
 
@@ -41,52 +42,54 @@
                                         @forelse ($settings as $setting)
                                             <tr>
                                                 <td>{{ trans('dashboard.iconpage') }}</td>
+                                                <td>:</td>
                                                 <td><img src="{{ asset($setting->pageIcon) }}" alt=""
                                                         srcset="" width="20px" height="20px"></td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('dashboard.logo') }}</td>
+                                                <td>:</td>
                                                 <td><img src="{{ asset($setting->logo) }}" alt=""
                                                         srcset="" width="200px" height="100px"></td>
                                             </tr>
                                             <tr>
-                                                <td>{{ trans('dashboard.street') }}</td>
-                                                <td>{{$setting->street}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ trans('dashboard.country') }}</td>
-                                                <td>{{ $setting->country }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ trans('dashboard.desc') }}</td>
-                                                <td>{{$setting->description}}</td>
-                                            </tr>
-                                            <tr>
                                                 <td>{{ trans('general.address') }}</td>
+                                                <td>:</td>
                                                 <td>{{ $setting->address }}</td>
                                             </tr>
                                             <tr>
+                                                <td>{{ trans('dashboard.desc') }}</td>
+                                                <td>:</td>
+                                                <td>{{ $setting->description }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td>{{ trans('general.phone') }}</td>
+                                                <td>:</td>
                                                 <td>{{ $setting->phone }}</td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('dashboard.map') }}</td>
+                                                <td>:</td>
                                                 <td>{{ $setting->map }}</td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('dashboard.twitter') }}</td>
+                                                <td>:</td>
                                                 <td>{{ optional($setting->link)->tw }}</td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('dashboard.facebook') }}</td>
+                                                <td>:</td>
                                                 <td>{{ optional($setting->link)->fb }}</td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('dashboard.instagram') }}</td>
+                                                <td>:</td>
                                                 <td>{{ optional($setting->link)->ins }}</td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('dashboard.linked') }}</td>
+                                                <td>:</td>
                                                 <td>{{ optional($setting->link)->li }}</td>
                                             </tr>
                                         @empty
@@ -132,14 +135,20 @@
 
 @section('js')
 <script>
-    $('#dataTable-1').DataTable(
-    {
-      autoWidth: true,
-      "lengthMenu": [
-        [16, 32, 64, -1],
-        [16, 32, 64, "All"]
-      ]
-    });
-</script>
+    var currentLocale = '{{ app()->getLocale() }}';
+        console.log(currentLocale);
+
+        $('#dataTable-1').DataTable(
+        {
+            "language": {
+                "url": currentLocale === 'ar' ? 'https://cdn.datatables.net/plug-ins/2.2.1/i18n/ar.json' : ''
+            },
+          autoWidth: true,
+          "lengthMenu": [
+            [16, 32, 64, -1],
+            [16, 32, 64, "All"]
+          ]
+        });
+    </script>
 
 @endsection

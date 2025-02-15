@@ -15,40 +15,47 @@ use App\Http\Controllers\Admin\Auth;
 Route::middleware('guest')->group(function () {
 
     Route::get('admin/login', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'create'])
-                ->name('admin.login');
+        ->name('admin.login');
 
     Route::post('admin/login', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'store'])->name('admin.loginstore');
 
+    Route::post('admin/logout', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'destroy'])
+        ->name('admin.logout');
 
+    Route::get('forgot-password', [App\Http\Controllers\Admin\Auth\PasswordResetLinkController::class, 'create'])
+        ->name('admin.password.request');
+
+    Route::post('forgot-password', [App\Http\Controllers\Admin\Auth\PasswordResetLinkController::class, 'store'])
+        ->name('admin.password.email');
+
+
+
+    Route::post('reset-password', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'store'])
+        ->name('admin.password.store');
+
+    Route::get('reset-password/{token}', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'create'])
+        ->name('password.reset');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
-                ->name('verification.notice');
+        ->name('verification.notice');
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-                ->middleware(['signed', 'throttle:6,1'])
-                ->name('verification.verify');
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware('throttle:6,1')
-                ->name('verification.send');
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->name('password.confirm');
+        ->name('password.confirm');
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
-
+        ->name('logout');
 });
-
-
-    Route::post('admin/logout', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'destroy'])
-        ->name('admin.logout')->middleware('admin');
-
-
-

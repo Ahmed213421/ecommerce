@@ -24,6 +24,7 @@
 <div class="bg-white p-4">
     <h2 class="mb-2 page-title">Data table</h2>
 
+
 </div>
 @endsection
 

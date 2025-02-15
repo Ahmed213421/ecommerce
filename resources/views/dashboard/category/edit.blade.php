@@ -15,7 +15,7 @@
 
                 <div class="form-group">
                     <label for="name">{{ trans('dashboard.name') }} {{ trans('dashboard.ineng') }}</label>
-                    <input type="text" class="form-control" id="name" name="name_en" value="{{ $category->getTranslation('name', 'en') }}" required>
+                    <input type="text" class="form-control" id="name" name="name_en" value="{{ $category->getTranslation('name', 'en') }}">
                 </div>
 
                 <div class="form-group">
@@ -32,11 +32,11 @@
                     <textarea class="form-control" id="description" name="description_ar" rows="4">{{ $category->getTranslation('description', 'ar') }}</textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="image">{{ trans('dashboard.photo') }}</label>
-                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                    <img src="{{asset($category->filepath)}}" width="100px" alt="" srcset="">
-                </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                        <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
+                        <img src="{{asset($category->filepath)}}" width="100px" alt="" srcset="">
+                      </div>
 
 
 

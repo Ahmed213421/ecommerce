@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb-text">
-                        <p>Fresh and Organic</p>
+                        <p>{{ trans('shop.fresh') }}</p>
                         <h1>{{ trans('general.cart') }}</h1>
                     </div>
                 </div>
@@ -39,77 +39,89 @@
                             </thead>
                             <tbody>
                                 @if (count($cartItems) > 0)
-                                @foreach ($cartItems as $item)
-                                <tr class="table-body-row">
-                                    <td class="product-remove">
-                                        <!-- Remove item button for logged-in users -->
-                                        @if(Auth::check())
-                                            <form action="{{ route('customer.cart.destroy', $item->id) }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="far fa-window-close"></i>
-                                                </button>
-                                            </form>
+                                    @foreach ($cartItems as $item)
+                                        <tr class="table-body-row">
+                                            <td class="product-remove">
+                                                <!-- Remove item button for logged-in users -->
+                                                @if (Auth::check())
+                                                    <form action="{{ route('customer.cart.destroy', $item->id) }}"
+                                                        method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <i class="far fa-window-close"></i>
+                                                        </button>
+                                                    </form>
                                             <td class="product-image">
-                                                <img src="{{asset($item->product->imagepath) }}" alt="">
+                                                <img src="{{ asset($item->product->imagepath) }}" alt="">
 
                                             </td>
                                             <!-- Check if item has product relationship for logged-in users -->
                                             <td class="product-name">
-                                                <a href="{{route('customer.product.show',$item->product->slug ?? '')}}">{{$item->product->name}}</a>
+                                                <a
+                                                    href="{{ route('customer.product.show', $item->product->slug ?? '') }}">{{ $item->product->name }}</a>
                                             </td>
 
-                                        <!-- Check if item has product relationship for logged-in users -->
-                                        <td class="product-price">
-                                            ${{ $item->product->price_after_discount }}
-                                        </td>
-                                        <td class="product-quantity">{{ $item->quantity }}</td>
+                                            <!-- Check if item has product relationship for logged-in users -->
+                                            <td class="product-price">
+                                                ${{ $item->product->price_after_discount }}
+                                            </td>
+                                            <td class="product-quantity">{{ $item->quantity }}</td>
 
-                                        <td class="product-total">
-                                            {{ number_format( $item->product->price_after_discount * $item->quantity, 2) }}$
-                                        </td>
+                                            <td class="product-total">
+                                                {{ number_format($item->product->price_after_discount * $item->quantity, 2) }}$
+                                            </td>
                                         @else
                                             <!-- For guest users, use session-based removal logic -->
                                             {{-- @dump($item) --}}
-                                            <form action="{{ route('customer.cart.destroy', $item['product_id']) }}" method="POST" style="display: inline;">
+                                            <form action="{{ route('customer.cart.destroy', $item['product_id']) }}"
+                                                method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">
                                                     <i class="far fa-window-close"></i>
                                                 </button>
                                             </form>
-                                        </td>
-                                        <!-- Check if item has product relationship for logged-in users -->
-                                        <td class="product-image">
-                                            @if(isset($item['image']))
-                                            <img src="{{asset($item['image']) }}" alt="">
-                                            @endif
-                                        </td>
-                                        <!-- Check if item has product relationship for logged-in users -->
-                                        <td class="product-name">
-                                        <a href="{{route('customer.product.show',Str::slug($item['name']))}}">{{$item['name']}}</a>
-                                    </td>
+                                            </td>
+                                            <!-- Check if item has product relationship for logged-in users -->
+                                            <td class="product-image">
+                                                @if (isset($item['image']))
+                                                    <img src="{{ asset($item['image']) }}" alt="">
+                                                @endif
+                                            </td>
+                                            <!-- Check if item has product relationship for logged-in users -->
+                                            <td class="product-name">
+                                                <a
+                                                    href="{{ route('customer.product.show', Str::slug($item['name'])) }}">{{ $item['name'] }}</a>
+                                            </td>
 
-                                    <!-- Check if item has product relationship for logged-in users -->
-                                    <td class="product-price">
-                                        ${{ $item['price_after_discount'] }}
-                                    </td>
-                                    <td class="product-quantity">{{ $item['quantity'] }}</td>
+                                            <!-- Check if item has product relationship for logged-in users -->
+                                            <td class="product-price">
+                                                ${{ $item['price_after_discount'] }}
+                                            </td>
+                                            <td class="product-quantity">{{ $item['quantity'] }}</td>
 
-                                    <td class="product-total">
-                                        {{ number_format(( $item['price_after_discount']) * $item['quantity'], 2) }}$
-                                    </td>
+                                            <td class="product-total">
+                                                {{ number_format($item['price_after_discount'] * $item['quantity'], 2) }}$
+                                            </td>
                                     @endif
-                                </tr>
-                                @endforeach
-
-                                @else
-                                    <tr>
-                                        <td colspan="6">{{ trans('shop.no_cart') }}</td>
                                     </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6">{{ trans('shop.no_cart') }}</td>
+                                </tr>
                                 @endif
 
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -127,7 +139,7 @@
                             <tbody>
                                 <tr class="total-data">
                                     <td><strong>Subtotal: </strong></td>
-                                    <td>{{number_format($subtotal,2)}}</td>
+                                    <td>{{ number_format($subtotal, 2) }}</td>
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>Shipping: </strong></td>
@@ -135,14 +147,16 @@
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>{{ trans('general.total') }}: </strong></td>
-                                    <td>${{ number_format($total,2) }}</td>
+                                    <td>${{ number_format($total, 2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="cart-buttons">
-                            <a href="cart.html" class="boxed-btn">Update Cart</a>
+                            <a href="{{ route('customer.cart.edit', 'edit') }}"
+                                class="boxed-btn">{{ trans('dashboard.edit') }} {{ trans('general.cart') }}</a>
                             @if (count($cartItems) > 0)
-                            <a href="{{route('customer.check-out.index')}}" class="boxed-btn black">{{ trans('general.checkout') }}</a>
+                                <a href="{{ route('customer.check-out.index') }}"
+                                    class="boxed-btn black">{{ trans('general.checkout') }}</a>
                             @endif
                         </div>
                     </div>
