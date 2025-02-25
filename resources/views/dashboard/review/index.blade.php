@@ -47,15 +47,15 @@ href="{{ route('admin.review.index') }}">{{ trans('general.review') }}</a></li>
 
                             </thead>
                             <tbody>
+                                @foreach ($reviews as $review)
                                 <tr role="row" class="even">
-                                    @foreach ($reviews as $review)
                                         </td>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $review->name }}</td>
                                         <td>{{ $review->email }}</td>
                                         <td>{{ $review->phone }}</td>
                                         <td>{{ $review->subject }}</td>
-                                        <td>{{ $review->message }}</td>
+                                        <td>{{ Str::limit($review->message,10) }}</td>
                                         <td class="text-center">
 
                                             <form action="{{ route('admin.stauts.change', $review->id) }}"
@@ -92,11 +92,16 @@ href="{{ route('admin.review.index') }}">{{ trans('general.review') }}</a></li>
                                                     data-target="#modaledit{{ $review->id }}">
                                                     {{ trans('dashboard.edit') }}
                                                 </a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                    data-target="#modalview{{ $review->id }}">
+                                                    {{ trans('dashboard.view') }}
+                                                </a>
                                             </div>
                                         </td>
                                 </tr>
                                 @include('dashboard.review.delete')
                                 @include('dashboard.review.edit')
+                                @include('dashboard.review.view')
                                 @endforeach
                             </tbody>
                     </div>
@@ -108,14 +113,20 @@ href="{{ route('admin.review.index') }}">{{ trans('general.review') }}</a></li>
 
 @section('js')
 <script>
-    $('#dataTable-1').DataTable(
-    {
-      autoWidth: true,
-      "lengthMenu": [
-        [16, 32, 64, -1],
-        [16, 32, 64, "All"]
-      ]
-    });
-</script>
+    var currentLocale = '{{ app()->getLocale() }}';
+        console.log(currentLocale);
+
+        $('#dataTable-1').DataTable(
+        {
+            "language": {
+                "url": currentLocale === 'ar' ? 'https://cdn.datatables.net/plug-ins/2.2.1/i18n/ar.json' : ''
+            },
+          autoWidth: true,
+          "lengthMenu": [
+            [16, 32, 64, -1],
+            [16, 32, 64, "All"]
+          ]
+        });
+    </script>
 
 @endsection

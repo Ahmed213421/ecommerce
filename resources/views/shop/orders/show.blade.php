@@ -11,7 +11,7 @@
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb-text text-center">
                         <p>{{ trans('shop.fresh') }}</p>
-                        <h1>{{ trans('shop.wish') }}
+                        <h1>{{ trans('general.my.orders') }}
                         </h1>
                     </div>
                 </div>
@@ -24,23 +24,25 @@
     <div class="order-section mt-150 mb-150">
         <div class="container">
             <div class="row">
+                @foreach ($orders as $order)
+
                 <!-- Order Summary -->
                 <div class="col-md-12">
                     <div class="card mb-4">
                         <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">Order Details</h4>
+                            <h4 class="mb-0">{{$order->created_at}}</h4>
                         </div>
                         <div class="card-body">
                             <!-- Customer Info -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <p><strong>Name:</strong> John Doe</p>
-                                    <p><strong>Email:</strong> john@example.com</p>
-                                    <p><strong>Phone:</strong> +123456789</p>
+                                    <p><strong>{{ trans('dashboard.name') }}:</strong> {{$order->name}}</p>
+                                    <p><strong>{{ trans('general.email') }}:</strong> {{$order->email}}</p>
+                                    <p><strong>{{ trans('general.phone') }}:</strong> +{{$order->phone}}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p><strong>Address:</strong> 123 Main Street, City, Country</p>
-                                    <p><strong>Note:</strong> Please deliver between 9 AM and 12 PM.</p>
+                                    <p><strong>{{trans('general.address')}}:</strong> {{$order->phone}}</p>
+                                    <p><strong>{{ trans('dashboard.desc') }}:</strong> {{$order->note}}</p>
                                 </div>
                             </div>
                             <!-- Order Items -->
@@ -48,36 +50,37 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>#</th>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
+                                        <th>{{ trans('products.product') }}</th>
+                                        <th>{{ trans('dashboard.quantity') }}</th>
+                                        <th>{{ trans('dashboard.price') }}</th>
+                                        <th>{{ trans('general.total') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($order->orderDetails as $item)
+
                                     <tr>
-                                        <td>1</td>
-                                        <td>Product A</td>
-                                        <td>2</td>
-                                        <td>$50.00</td>
-                                        <td>$100.00</td>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$item->product->name}}</td>
+                                        <td>{{$item->quantity}}</td>
+                                        <td>${{$item->product->price_after_discount}}</td>
+                                        <td>${{$item->product->price_after_discount * $item->quantity}}</td>
                                     </tr>
+                                    @endforeach
                                     <tr>
-                                        <td>2</td>
-                                        <td>Product B</td>
-                                        <td>1</td>
-                                        <td>$30.00</td>
-                                        <td>$30.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" class="text-right"><strong>Total:</strong></td>
-                                        <td><strong>$130.00</strong></td>
+                                        <td colspan="4" class="text-right"><strong>{{ trans('general.total') }}:</strong></td>
+                                        <td><strong>${{$total = $order->orderDetails->map(function ($item) {
+                                            return $item->product->price_after_discount * $item->quantity;
+                                        })->sum()}}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                @endforeach
+
+                {{$orders->links('pagination::bootstrap-4')}}
             </div>
         </div>
     </div>

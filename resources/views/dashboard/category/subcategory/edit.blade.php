@@ -26,17 +26,20 @@
                             value="{{ $subcategory->getTranslation('name', 'ar') }}">
                     </div>
 
-                    <select class="custom-select" id="custom-select" name="category_id">
-                        @foreach (App\Models\Category::all() as $category)
-                            <option value="{{ $category->id }}" {{$category->id == $subcategory->category_id ? 'selected':"" }}>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-
                     <div class="form-group">
-                        <label for="image">{{ trans('dashboard.photo') }}</label>
-                        <input type="file" class="form-control" id="image" name="simage" accept="image/*">
-                        <img src="{{ asset($subcategory->filepath) }}" width="100px" alt="" srcset="">
+
+                        <select class="custom-select" id="custom-select" name="category_id">
+                            @foreach (App\Models\Category::all() as $category)
+                            <option value="{{ $category->id }}" {{$category->id == $subcategory->category_id ? 'selected':"" }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFi" name="simage" accept="image/*">
+                        <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
+                      </div>
 
             </div>
             <div class="modal-footer">

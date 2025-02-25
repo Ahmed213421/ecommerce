@@ -44,8 +44,7 @@
                                             <h3>
                                                 <a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a>
                                             </h3>
-                                            <p class="product-price"><span>{{ trans('shop.per_kg') }}<br> </span> {{ $product->price }}$</p>
-                                            <p class="product-quantity"><span>{{ trans('general.qty') }}</span><br> {{ $product->quantity }}</p>
+                                            <p class="product-price"><span>{{ trans('shop.per_kg') }}<br> </span> {{$product->price}}</del> {{ $product->price_after_discount }}$</p>
                                             <div class="favorite-icon">
                                                 <i id="heart-{{ $product->id }}" class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
                                                    onclick="toggleFavorite({{ $product->id }})" style="cursor: pointer;"></i>
@@ -54,6 +53,7 @@
                                                 <form id="add-product-to-cart-{{ $product->id }}" action="{{ route('customer.cart.product.add') }}" method="POST" style="display: none;">
                                                     @csrf
                                                     <input type="hidden" value="{{ $product->id }}" name="productid">
+                                                    <input type="hidden" value="1" name="quantity">
                                                 </form>
                                                 <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
                                             </a>

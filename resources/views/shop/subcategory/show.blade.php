@@ -1,7 +1,6 @@
 @extends('shop.partials.master')
 
 @section('css')
-
 @endsection
 
 @section('content')
@@ -22,19 +21,18 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="single-product-item text-center">
                             <div class="product-image">
-                                <a href="{{route('admin.products.show',$product->slug)}}"><img src="{{asset($product->imagepath)}}"
-                                        alt=""></a>
+                                <a href="{{ route('admin.products.show', $product->slug) }}"><img
+                                        src="{{ asset($product->imagepath) }}" alt=""></a>
                             </div>
-                            <h3><a href="{{route('customer.product.show',$product->slug)}}">{{ $product->name }}</a></h3>
-                            <p class="product-price"><span>{{ trans('shop.per_kg') }} </span> {{ $product->price }}$ </p>
+                            <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a></h3>
+                            <p class="product-price"><span>{{ trans('shop.per_kg') }} </span>{{$product->price}}</del> {{ $product->price_after_discount }}$ </p>
+                            @auth
+
                             <div class="favorite-icon">
-                                <i
-                                    id="heart-{{ $product->id }}"
-                                    class="fa fa-heart {{ $product->isFavoritedByUser ? 'active' : '' }}"
-                                    onclick="toggleFavorite({{ $product->id }})"
-                                    style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
-                                </i>
+                                <i id="heart-{{ $product->id }}" class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
+                                   onclick="toggleFavorite({{ $product->id }})" style="cursor: pointer;"></i>
                             </div>
+                            @endauth
 
                             <a href="{{ route('customer.cart.index') }}" class="cart-btn"
                                 onclick="event.preventDefault();
@@ -45,6 +43,7 @@
                                     style="display: none;">
                                     @csrf
                                     <input type="hidden" value="{{ $product->id }}" name="productid">
+                                    <input type="hidden" value="1" name="quantity">
                                 </form>
                                 <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
                             </a>
@@ -55,4 +54,31 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    function toggleFavorite(productId) {
+        const heart = $(`#heart-${productId}`);
+
+        $.ajax({
+            url: `{{ route('customer.favorites.toggle', ':id') }}`.replace(':id', productId),
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function(response) {
+                if (!response.success) {
+                    heart.toggleClass('active');
+                    // alert('Operation failed on the server.');
+                }
+            },
+            error: function(xhr) {
+                heart.toggleClass('active');
+                console.error('Error:', xhr.responseText);
+                alert('An error occurred! Please try again later.');
+            },
+        });
+    }
+</script>
 @endsection

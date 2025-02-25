@@ -27,8 +27,8 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb-text">
-                    <p>Fresh adn Organic</p>
-                    <h1>404 - Not Found</h1>
+                    <p>{{ trans('shop.fresh') }}</p>
+                    <h1>{{ trans('general.nopagefound') }}</h1>
                 </div>
             </div>
         </div>
@@ -43,9 +43,9 @@
                 <div class="col-lg-12 text-center">
                     <div class="error-text">
                         <i class="far fa-sad-cry"></i>
-                        <h1>Oops! Not Found.</h1>
-                        <p>The page you requested for is not found.</p>
-                        <a href="{{route('customer.home')}}" class="boxed-btn">Back to Home</a>
+                        <h1>{{ trans('general.oops') }}</h1>
+                        <p>{{ trans('general.nopagefound') }}</p>
+                        <a href="{{route('customer.home')}}" class="boxed-btn">{{ trans('general.backto.home') }}</a>
                     </div>
                 </div>
             </div>

@@ -16,14 +16,25 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutCancelController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\CheckoutSuccessController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReplyCommentController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\WishList;
+use App\Mail\NewPostMail;
+use App\Mail\TestMail;
 use App\Models\Order;
 use App\Models\Subcategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -67,6 +78,7 @@ Route::group(
                 ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
@@ -74,8 +86,7 @@ Route::group(
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
                 ->name('password.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->name('password.reset');
+
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
@@ -96,27 +107,36 @@ Route::group(
 
         Route::resource('product',ProductController::class)->only('index','show')->parameters([
             'product' => 'slug'
-        ]);;
+        ]);
         Route::resource('/category', CategoryController::class)->only('index','show')->parameters([
             'category' => 'slug'
-        ]);;
+        ]);
         Route::get('shop',ShopController::class)->name('shop');
         Route::resource('subcategory',SubCategoryController::class)->only('index','show')->parameters([
             'subcategory' => 'slug'
-        ]);;
+        ]);
         Route::resource('review',ReviewController::class)->only('index','store');
-        Route::post('search',SearchController::class)->name('search');
+        Route::get('search/{search}',SearchController::class)->name('search');
         Route::post('addproduct/',[CartController::class , 'addToCart'])->name('cart.product.add');
-        Route::resource('cart',CartController::class);
+        Route::resource('cart',CartController::class)->only('edit','index','destroy','update');
         Route::resource('check-out',CheckOutController::class)->only('index','store')->middleware('auth');
-        Route::resource('wishlist',WishList::class)->middleware('auth');
+        Route::resource('wishlist',WishList::class)->only('index')->middleware('auth');
 
-        Route::view('orders', 'shop.orders.show');
+        Route::resource('contact/us',ContactUsController::class)->only('index','store');
+        Route::resource('orders',OrderController::class)->only('index','destroy');
+
         Route::post('/favorites/toggle/{id}', FavoriteController::class)->name('favorites.toggle');
 
-        Route::any('{any}', function () {
-            return view('shop.errorpage');
-        })->where('any', '.*');
+        Route::resource('subscribe',SubscriptionController::class)->only(['store']);
+        Route::resource('news',NewsController::class)->only('index','show')->parameters([
+            'news' => 'slug'
+        ]);
+        Route::resource('comments',CommentController::class)->only(['store']);
+        Route::resource('reply',ReplyCommentController::class)->only(['store']);
+
+        Route::fallback(function () {
+            return response()->view('shop.errorpage', [], 404);
+        });
 
 
     });
@@ -124,14 +144,15 @@ Route::group(
     Route::get('select/{id}/subcategory', function ($id) {
         $locale = app()->getLocale();
 
+
         $jobs = Subcategory::where('category_id', $id)
-            ->get()
-            ->map(function ($job) use ($locale) {
-                return [
-                    'id' => $job->id,
-                    'name' => $job->getTranslation('name', $locale),
-                ];
-            });
+        ->get()
+        ->map(function ($job) use ($locale) {
+            return [
+                'id' => $job->id,
+                'name' => $job->getTranslation('name', $locale),
+            ];
+        });
 
         return response()->json($jobs);
     });
@@ -139,8 +160,9 @@ Route::group(
     Route::view('home', 'welcome')->name('home');
 
 
+    Route::get('/unsubscribe/{token}', [SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
 
-
-
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+                ->name('password.reset');
 
 require __DIR__.'/auth.php';

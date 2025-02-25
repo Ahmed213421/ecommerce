@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('type',['super_admin','admin'])->default('admin');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('status',['active','unactive']);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -29,6 +30,7 @@ return new class extends Migration
             'email' => 'admin@admin.com',
             'type' => 'super_admin',
             'password' => Hash::make('123'),
+            'status' => 'active',
         ]);
     }
 

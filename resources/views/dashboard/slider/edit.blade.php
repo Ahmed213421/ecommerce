@@ -23,11 +23,12 @@
                 </div>
 
 
-                <div class="form-group">
-                    <label for="image">{{ trans('dashboard.photo') }}</label>
-                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                    <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
                     <img src="{{asset($slide->imagepath)}}" class="mt-2" width="100px" alt="" srcset="">
-                </div>
+                  </div>
 
 
 

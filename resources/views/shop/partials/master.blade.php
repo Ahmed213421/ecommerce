@@ -62,11 +62,10 @@
                     <div class="search-bar">
                         <div class="search-bar-tablecell">
                             <h3>{{ trans('shop.search_for') }}</h3>
-                            <form action="{{ route('customer.search') }}" method="post">
+                            <form action="{{ route('customer.search',['search'=>'search']) }}" method="GET">
                                 @csrf
-                                @method('POST')
                                 <input type="text" placeholder="Keywords" name="search">
-                                <button type="submit">Search <i class="fas fa-search"></i></button>
+                                <button type="submit">{{ trans('shop.search') }} <i class="fas fa-search"></i></button>
                             </form>
                         </div>
                     </div>
@@ -102,39 +101,45 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-box about-widget">
-                        <h2 class="widget-title">About us</h2>
-                        <p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                            doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+                        <h2 class="widget-title">{{ trans('shop.about_us') }}</h2>
+                        @foreach (App\Models\Setting::all() as $item)
+
+                        <p>{{$item->description}}</p>
+                            @endforeach
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
+                    @foreach (App\Models\Setting::all() as $item)
+
                     <div class="footer-box get-in-touch">
-                        <h2 class="widget-title">Get in Touch</h2>
+                        <h2 class="widget-title">{{ trans('slider.contact_us') }}</h2>
                         <ul>
-                            <li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-                            <li>support@fruitkha.com</li>
-                            <li>+00 111 222 3333</li>
+                            <li>{{$item->address}}.</li>
+                            <li>{{$item->email}}</li>
+                            <li>+{{$item->phone}}</li>
                         </ul>
                     </div>
+                    @endforeach
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-box pages">
-                        <h2 class="widget-title">Pages</h2>
+                        <h2 class="widget-title">{{ trans('shop.pages') }}</h2>
                         <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="services.html">Shop</a></li>
-                            <li><a href="news.html">News</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="{{route('customer.home')}}">{{ trans('general.home') }}</a></li>
+                            <li><a href="about.html">{{ trans('shop.about_us') }}</a></li>
+                            <li><a href="{{route('customer.shop')}}">{{ trans('shop.shop') }}</a></li>
+                            <li><a href="{{route('admin.news.index')}}">{{ trans('dashboard.news') }}</a></li>
+                            <li><a href="{{route('customer.us.index')}}">{{ trans('slider.contact_us') }}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-box subscribe">
-                        <h2 class="widget-title">Subscribe</h2>
-                        <p>Subscribe to our mailing list to get the latest updates.</p>
-                        <form action="index.html">
-                            <input type="email" placeholder="Email">
+                        <h2 class="widget-title">{{ trans('shop.subscripe') }}</h2>
+                        <p>{{ trans('shop.subscripe_to') }}</p>
+                        <form action="{{route('customer.subscribe.store')}}" method="POST">
+                            @csrf
+                            <input type="email" placeholder="Email" name="email">
                             <button type="submit"><i class="fas fa-paper-plane"></i></button>
                         </form>
                     </div>
@@ -149,9 +154,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <p>{{ trans('translation.copyright') }} &copy; 2019 - <a href="https://imransdesign.com/">Imran
-                            Hossain</a>, All Rights Reserved.<br>
-                        Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+                    <p>{{ trans('translation.copyright') }} &copy; 2019 - <a href="https://imransdesign.com/">Ahmed Samir</a><br>
+                        
                     </p>
                 </div>
                 <div class="col-lg-6 text-right col-md-12">

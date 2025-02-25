@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->text('logo')->nullable();
             $table->text('address')->nullable();
-            $table->text('country')->nullable();
-            $table->text('street')->nullable();
             $table->text('phone')->nullable();
             $table->text('description')->nullable();
+            $table->text('hours_working')->nullable();
+            $table->text('whoweare')->nullable();
             $table->text('pageIcon')->nullable();
             $table->text('map')->nullable();
             $table->string('email')->unique()->nullable();

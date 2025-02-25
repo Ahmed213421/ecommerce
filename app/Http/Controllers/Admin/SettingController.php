@@ -16,6 +16,7 @@ class SettingController extends Controller
      */
     public function index()
     {
+        // return Setting::find(5);
         $data['settings'] = Setting::all();
         return view('dashboard.setting.index',$data);
     }
@@ -37,6 +38,8 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $validator = Validator::make($request->all(),[
             'iconpage' => ['image','nullable'],
             'logo' => ['image','nullable'],
@@ -57,6 +60,7 @@ class SettingController extends Controller
             $icon = null;
         }
 
+
         if ($request->hasFile('logo')) {
             $logo = 'dashboard/'.$request->logo->storeAs('settings', time().'_'.$request->logo->getClientOriginalName(),'images');
         }
@@ -64,16 +68,17 @@ class SettingController extends Controller
             $logo = null;
         }
 
+
         $setting = Setting::create([
             'pageIcon' => $icon,
-            'street' => $request->street,
-            'country' => $request->country,
-            'address' => $request->address,
+            'address' => ['en' => $request->address_en,'ar' => $request->address_ar],
             'phone' => $request->phone,
-            'description' => $request->description,
+            'description' => ['en' => $request->description_en , 'ar' => $request->description_ar],
             'map' => $request->map,
             'email' => $request->email,
             'logo' => $logo,
+            'whoweare' => ['en' => $request->whoweare_en,'ar' => $request->whoweare_ar],
+            'hours_working' => ['en'=>$request->hours_working_en,'ar' => $request->hours_working_ar],
         ]);
 
         $link = new Link();
@@ -112,6 +117,7 @@ class SettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $validator = Validator::make($request->all(),[
             'iconpage' => ['image','nullable'],
             'logo' => ['image','nullable'],
@@ -144,14 +150,14 @@ class SettingController extends Controller
 
         Setting::find($id)->update([
             'pageIcon' => $icon,
-            'street' => $request->street,
-            'country' => $request->country,
-            'address' => $request->address,
+            'address' => ['en' => $request->address_en,'ar' => $request->address_ar],
             'phone' => $request->phone,
-            'description' => $request->description,
+            'description' => ['en' => $request->description_en , 'ar' => $request->description_ar],
             'map' => $request->map,
             'email' => $request->email,
             'logo' => $logo,
+            'whoweare' => ['en' => $request->whoerare_en,'ar' => $request->whoweare_ar],
+            'hours_working' => ['en'=>$request->hours_working_en,'ar' => $request->hours_working_ar],
         ]);
 
         $link = Link::where('linkable_id', $id)->where('linkable_type', Setting::class)->first();

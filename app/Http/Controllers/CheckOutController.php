@@ -18,16 +18,16 @@ class CheckOutController extends Controller
      */
     public function index()
     {
-        $data['cartItems'] = Cart::with('product')->where('user_id',Auth::user()->id)->get();
+        $data['cartItems'] = Cart::with('product')->where('user_id', Auth::user()->id)->get();
 
 
         $cart = Cart::with('product')
-        ->where('user_id', Auth::user()->id)
-        ->first();
+            ->where('user_id', Auth::user()->id)
+            ->first();
 
 
 
-        return view('shop.cart.checkout',$data);
+        return view('shop.cart.checkout', $data);
     }
 
 
@@ -37,36 +37,36 @@ class CheckOutController extends Controller
     public function store(Request $request)
     {
         $cart = Cart::with('product')
-        ->where('user_id', Auth::user()->id)
-        ->get();
+            ->where('user_id', Auth::user()->id)
+            ->get();
 
 
         $prices = [];
 
-foreach ($cart as $item) {
-    if ($item->product) {
-        $prices[$item->product->stripe_price_id] = $item->quantity;
-    }
-}
-// return $prices;
+        foreach ($cart as $item) {
+            if ($item->product) {
+                $prices[$item->product->stripe_price_id] = $item->quantity;
+            }
+        }
+        // return $prices;
 
         // dd(Auth::user()->checkout($prices));
 
-        $validator = Validator::make($request->all(),[
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'address' => 'required|string|max:255',
-        'phone' => 'required|numeric|digits_between:7,15',
-        'note' => 'nullable|string|max:1000',
-        'payment' => 'required|in:visa,cash',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|numeric|digits_between:7,15',
+            'note' => 'nullable|string|max:1000',
+            'payment' => 'required|in:visa,cash',
         ]);
 
 
         if ($validator->fails()) {
             // Redirect back to the form with the error messages
             return back()
-            ->withErrors($validator)
-            ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
         if (Auth::check()) {
@@ -78,72 +78,68 @@ foreach ($cart as $item) {
                 return $item->product->price * $item->quantity;
             });
 
-            if($request->payment == 'visa'){
-
-                $order = new Order();
-                $order->name = $request->name;
-                $order->email = $request->email;
-                $order->address = $request->address;
-                $order->phone = $request->phone;
-                $order->note = $request->note;
-                $order->user_id = Auth::user()->id;
-                $order->payment = 'visa';
-                $order->status = 'delivered';
-                $order->totalprice = $totalPrice + 0.20;
-                $order->subtotal = $subTotal + 0.20;
-                $order->save();
-
-                $cartproducts = Cart::where('user_id',Auth::user()->id)->get();
-
-                foreach($cartproducts as $cart){
-                    $newOrderDetail = new OrderDetail();
-                    $newOrderDetail->product_id = $cart->product_id;
-                    $newOrderDetail->price = $cart->product->price_after_discount;
-                    $newOrderDetail->quantity = $cart->quantity;
-                    $newOrderDetail->order_id = $order->id;
-                    $newOrderDetail->save();
-                }
-
+            if ($request->payment == 'visa') {
 
 
 
 
                 // return $payment = Auth::user()->checkout(['price_1QgqWY4ROQ2T8rH2mClSz5sw' => 2],[
-                    //     'success_url' => route('customer.checkout-success',['session_id' => 's']),
-                    // ]);
-                    $sessionOrderId = Session::put('orderid',$order->id);
-                    $products = $cart::with('product')->get()->map(function($element){
+                //     'success_url' => route('customer.checkout-success',['session_id' => 's']),
+                // ]);
+                // $sessionOrderId = Session::put('orderid',$order->id);
 
-                        return [
-                            'price_data' => [
+                $products = Cart::with('product')->get()->map(function ($element) {
 
-                                'currency' => env('CASHIER_CURRENCY' , 'usd'),
-                                'product_data' => [
-                                    'name' => $element->product->name,
-                                ],
-                                'unit_amount' => $element->product->price_after_discount + 0.20,
+                    return [
+                        'price_data' => [
+
+                            'currency' => env('CASHIER_CURRENCY', 'usd'),
+                            'product_data' => [
+                                'name' => $element->product->name,
                             ],
-                            'quantity' => $element->quantity,
-                            'adjustable_quantity' => [
-                                'enabled' => true,
-                                'maximum' => 100,
-                                'minimum' => 0,
-                            ],
-                        ];
-                    })->toArray();
-                    // return $payment = Auth::user()->checkout(null,[
-                    //     'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
-                    //     // 'currency' => 'EGP',
-                    //     'line_items' => $products,
-                    // ]);
-                    // dd($totalPrice + 0.20);
-                    return $payment = Auth::user()->checkoutCharge(ceil($totalPrice + 0.20),'products',$cart->quantity,[
-                            'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
-                        ]);
-                    // dd($payment);
+                            'unit_amount' => ceil($element->product->price_after_discount + 0.20),
+                        ],
+                        'quantity' => $element->quantity,
+                        'adjustable_quantity' => [
+                            'enabled' => true,
+                            'maximum' => 100,
+                            'minimum' => 0,
+                        ],
+                    ];
+                })->toArray();
+                $cart_ids = [];
+                foreach ($cart as $item) {
+                    $cart_ids[] = $item->id;
+                }
+                return $payment = Auth::user()->checkout(null, [
+                    'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
+                    'cancel_url' => route('customer.checkout-cancel', ['status' => 'cancelled']) . '?session_id={CHECKOUT_SESSION_ID}',
+                    'line_items' => $products,
+                    'metadata' => [
+                        'cart_id' => implode(',', $cart_ids),
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'address' => $request->address,
+                        'phone' => $request->phone,
+                        'note' => $request->note,
+                        'totalPrice' => $totalPrice,
+                        'subTotal' => $subTotal,
+                    ],
+                ]);
+
+                dd($payment);
+                // dd($totalPrice + 0.20);
+                // return $payment = Auth::user()->checkoutCharge(ceil($totalPrice + 0.20),'products',$cart->quantity,[
+                //         'success_url' => route('customer.checkout-success', ['status' => 'success']) . '?session_id={CHECKOUT_SESSION_ID}',
+                //         'cancel_url' => route('customer.checkout-cancel', ['status' => 'cancelled']) . '?session_id={CHECKOUT_SESSION_ID}',
+                //         'metadata' => [
+                //             'cart_id' => $cart->id,
+                //         ],
+                //     ]);
+                // dd($payment);
             }
 
-            if($request->payment == 'cash'){
+            if ($request->payment == 'cash') {
                 $order = new Order();
                 $order->name = $request->name;
                 $order->email = $request->email;
@@ -157,9 +153,9 @@ foreach ($cart as $item) {
                 $order->subtotal = $subTotal + 0.20;
                 $order->save();
 
-                $cartproducts = Cart::where('user_id',Auth::user()->id)->get();
+                $cartproducts = Cart::where('user_id', Auth::user()->id)->get();
 
-                foreach($cartproducts as $cart){
+                foreach ($cartproducts as $cart) {
                     $newOrderDetail = new OrderDetail();
                     $newOrderDetail->product_id = $cart->product_id;
                     $newOrderDetail->price = $cart->product->price_after_discount;
@@ -168,12 +164,8 @@ foreach ($cart as $item) {
                     $newOrderDetail->save();
                 }
                 // App\Models\Cart::where('user_id',auth()->user()->id)->delete();
-                return redirect()->route('customer.home','requested');
+                return redirect()->route('customer.home', 'requested');
             }
-
         }
     }
-
-
-
 }

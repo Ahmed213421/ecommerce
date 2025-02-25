@@ -12,7 +12,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data['categories'] = Category::all();
+
+        $data['categories'] = Category::with('subcategories.products')->get();
+
         return view('shop.shop',$data);
     }
 
