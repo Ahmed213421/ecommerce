@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('status',['pending','delivered','cancelled'])->default('pending');
             $table->enum('payment',['visa','cash']);
             $table->text('note')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
