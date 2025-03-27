@@ -22,19 +22,19 @@ Route::middleware('guest')->group(function () {
     Route::post('admin/logout', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'destroy'])
         ->name('admin.logout');
 
-    Route::get('forgot-password', [App\Http\Controllers\Admin\Auth\PasswordResetLinkController::class, 'create'])
+    Route::get('admin/forgot-password', [App\Http\Controllers\Admin\Auth\PasswordResetLinkController::class, 'create'])
         ->name('admin.password.request');
 
-    Route::post('forgot-password', [App\Http\Controllers\Admin\Auth\PasswordResetLinkController::class, 'store'])
+    Route::post('admin/forgot-password', [App\Http\Controllers\Admin\Auth\PasswordResetLinkController::class, 'store'])
         ->name('admin.password.email');
 
 
 
-    Route::post('reset-password', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'store'])
+    Route::post('dashboard/reset-password', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'store'])
         ->name('admin.password.store');
 
-    Route::get('reset-password/{token}', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'create'])
-        ->name('password.reset');
+    Route::get('dashboard/reset-password/{token}', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'create'])
+        ->name('admin.password.reset');
 });
 
 Route::middleware('auth')->group(function () {

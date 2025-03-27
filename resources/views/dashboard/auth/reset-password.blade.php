@@ -45,7 +45,7 @@
 <body class="light ">
     <div class="wrapper vh-100">
         <div class="row align-items-center h-100">
-            <form method="POST" class="col-lg-3 col-md-4 col-10 mx-auto text-center" action="{{ route('admin.password.email') }}">
+            <form method="POST" class="col-lg-3 col-md-4 col-10 mx-auto text-center" action="{{ route('admin.password.store') }}">
                 @csrf
 
                 <!-- Password Reset Token -->
@@ -77,9 +77,12 @@
                 </div>
 
                 <div class="flex items-center justify-end mt-4">
-                    <x-primary-button>
-                        {{ __('Reset Password') }}
-                    </x-primary-button>
+                    <div class="form-group text-right mt-4">
+
+                        <button type="submit" class="btn btn-primary">
+                            {{ __('Email Password Reset Link') }}
+                        </button>
+                    </div>
                 </div>
 
             </form>

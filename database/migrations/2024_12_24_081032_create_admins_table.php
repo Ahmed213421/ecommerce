@@ -32,6 +32,14 @@ return new class extends Migration
             'password' => Hash::make('123'),
             'status' => 'active',
         ]);
+
+        Admin::create([
+            'name' => 'Ahmed Samir',
+            'email' => 'spiderofegypt98@gmail.com',
+            'type' => 'super_admin',
+            'password' => Hash::make('123'),
+            'status' => 'active',
+        ]);
     }
 
     /**

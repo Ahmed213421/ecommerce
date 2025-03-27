@@ -46,7 +46,7 @@
     <div class="wrapper vh-100">
         <div class="row align-items-center h-100">
             <form method="POST" class="col-lg-3 col-md-4 col-10 mx-auto text-center"
-                action="{{ route('admin.password.email') }}">
+                action="{{ route('admin.password.request') }}">
                 @csrf
 
                 <!-- Email Address -->
