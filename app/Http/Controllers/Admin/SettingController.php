@@ -45,6 +45,7 @@ class SettingController extends Controller
             'logo' => ['image','nullable'],
             'email' => ['email','email:filter','unique:settings,email'],
             'phone' => ['regex:/^\d{11}$/'],
+            'tax' => 'decimal:2',
         ]);
         if ($validator->fails()) {
             // Redirect back to the form with the error messages
@@ -79,6 +80,7 @@ class SettingController extends Controller
             'logo' => $logo,
             'whoweare' => ['en' => $request->whoweare_en,'ar' => $request->whoweare_ar],
             'hours_working' => ['en'=>$request->hours_working_en,'ar' => $request->hours_working_ar],
+            'tax' => $request->tax,
         ]);
 
         $link = new Link();
@@ -123,6 +125,7 @@ class SettingController extends Controller
             'logo' => ['image','nullable'],
             'email' => ['email','email:filter',Rule::unique('settings', 'email')->ignore($id)],
             'phone' => ['regex:/^\d{11}$/'],
+            'tax' => 'decimal:2',
         ]);
         if ($validator->fails()) {
             // Redirect back to the form with the error messages
@@ -158,6 +161,7 @@ class SettingController extends Controller
             'logo' => $logo,
             'whoweare' => ['en' => $request->whoerare_en,'ar' => $request->whoweare_ar],
             'hours_working' => ['en'=>$request->hours_working_en,'ar' => $request->hours_working_ar],
+            'tax' => $request->tax,
         ]);
 
         $link = Link::where('linkable_id', $id)->where('linkable_type', Setting::class)->first();

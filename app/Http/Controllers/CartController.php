@@ -82,6 +82,10 @@ class CartController extends Controller
             $subtotal = 0;
             $cartItems = [];
 
+            if(Cart::count() == 0){
+                toastr()->warning('please fill out products');
+            }
+
             if (Auth::check()) {
                 // Get cart items from the database
                 $cartItems = Cart::where('user_id', Auth::user()->id)->with('product')->get();
@@ -144,10 +148,7 @@ class CartController extends Controller
 
             if (Auth::check()) {
 
-                $result = Cart::where('user_id', Auth::user()->id)
-
-                    ->where('product_id', $request->product_id)
-                    ->first();
+                $result = Cart::where('user_id', Auth::user()->id)->where('product_id', $request->product_id)->first();
 
 
                     $newQuantity = $result->quantity + $request->input('quantity', 1);
