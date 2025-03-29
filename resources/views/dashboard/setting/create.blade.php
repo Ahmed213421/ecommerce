@@ -43,6 +43,12 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control"  name="tax">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <label for="inputText"
                                             class="col-sm-2 col-form-label">{{ trans('dashboard.logo') }}</label>
                                         <div class="col-sm-10">

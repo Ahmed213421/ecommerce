@@ -14,7 +14,8 @@
                     <div class="row justify-content-center">
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-header text-center">{{ __('Register') }}</div>
+                                <div class="card-header text-center">
+                                    {{ app()->getLocale() == 'ar' ? 'استعاده كلمه المرور' : 'Password Reset Link' }} </div>
 
                                 <div class="card-body">
                                 <form method="POST" action="{{ route('customer.password.email') }}">
@@ -38,7 +39,7 @@
                                                         <div class="form-group text-right mt-4">
 
                                                             <button type="submit" class="btn btn-primary">
-                                                                {{ __('Email Password Reset Link') }}
+                                                                {{ app()->getLocale() == 'ar' ? 'ارسال ايميل ل استعاده كلمه المرور' : 'Email Password Reset Link' }}
                                                             </button>
                                                         </div>
                                                     </form>

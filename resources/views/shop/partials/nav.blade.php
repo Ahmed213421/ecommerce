@@ -1,5 +1,5 @@
 <!-- header -->
-<div class="top-header-area" id="sticker" style="{{app()->getLocale() == 'ar' ? 'background:#051922' : ''}}">
+<div class="top-header-area {{App\Models\Slider::count() == 0 ? 'bg-primary' : ''}}" id="sticker" style="{{app()->getLocale() == 'ar' ? 'background:#051922' : ''}}">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-sm-12 text-center">

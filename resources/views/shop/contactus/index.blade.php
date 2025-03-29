@@ -35,7 +35,7 @@
             <div class="row">
 				<div class="col-lg-8 mb-5 mb-lg-0">
 					<div class="form-title">
-						<h2>{{ trans('shop.anyq') }} ?</h2>
+						<h2>{{ trans('shop.anyq') }}</h2>
 					</div>
 				 	<div id="form_status"></div>
 					<div class="contact-form">

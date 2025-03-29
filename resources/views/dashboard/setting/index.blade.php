@@ -47,6 +47,11 @@
                                                         srcset="" width="20px" height="20px"></td>
                                             </tr>
                                             <tr>
+                                                <td>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax' }}</td>
+                                                <td>:</td>
+                                                <td>{{$setting->tax_rate}}</td>
+                                            </tr>
+                                            <tr>
                                                 <td>{{ trans('dashboard.logo') }}</td>
                                                 <td>:</td>
                                                 <td><img src="{{ asset($setting->logo) }}" alt=""
@@ -145,8 +150,8 @@
             },
           autoWidth: true,
           "lengthMenu": [
-            [16, 32, 64, -1],
-            [16, 32, 64, "All"]
+            [30, 32, 64, -1],
+            [30, 32, 64, "All"]
           ]
         });
     </script>

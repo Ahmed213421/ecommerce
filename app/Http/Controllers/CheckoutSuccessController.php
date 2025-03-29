@@ -25,7 +25,7 @@ class CheckoutSuccessController extends Controller
     {
 
         try {
-            DB::beginTransaction(); // Start transaction
+            DB::beginTransaction();
 
         $session = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
         $cart_ids = explode(',',$session->metadata->cart_id);
@@ -77,14 +77,14 @@ class CheckoutSuccessController extends Controller
 
         NewOrderEvent::dispatch($user);
 
-    // App\Models\Cart::where('user_id',auth()->user()->id)->delete();
-        DB::commit(); // Commit if successful
+        Cart::where('user_id',auth()->user()->id)->delete();
+        DB::commit();
         toastr()->success('تم الدفع');
 
 
         return view('welcome');
     } catch (Exception $e) {
-        DB::rollBack(); // Rollback if an error occurs
+        DB::rollBack(); 
 
 	    Log::error('Cart update failed: ' . $e->getMessage(), [
             'exception' => $e

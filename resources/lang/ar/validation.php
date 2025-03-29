@@ -11,6 +11,7 @@ return array(
     'exists' => ':attribute المحدد غير صالح.',
     'regex' => 'صيغة حقل :attribute غير صحيحة.',
     'image' => 'حقل :attribute يجب أن يكون صورة.',
+    'decimal' => 'يجب ان يكون الحقل رقم عشري',
     'attributes' => [
         'name' => 'الاسم',
         'message' => 'الرسالة',

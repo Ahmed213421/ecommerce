@@ -70,7 +70,7 @@
                                     <td>
                                         @if (!empty($user->getRoleNames()))
                                             @foreach ($user->getRoleNames() as $rolename)
-                                                <label class="badge bg-primary mx-1">{{ $rolename }}</label>
+                                                <label class="badge bg-primary mx-1 text-white">{{ $rolename }}</label>
                                             @endforeach
                                         @endif
                                     </td>

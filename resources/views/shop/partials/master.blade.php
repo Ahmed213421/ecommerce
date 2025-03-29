@@ -65,7 +65,7 @@
                             <form action="{{ route('customer.search',['search'=>'search']) }}" method="GET">
                                 @csrf
                                 <input type="text" placeholder="Keywords" name="search">
-                                <button type="submit">{{ trans('shop.search') }} <i class="fas fa-search"></i></button>
+                                <button type="submit">{{ trans('general.search') }} <i class="fas fa-search"></i></button>
                             </form>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <p>{{ trans('translation.copyright') }} &copy; 2019 - <a href="https://imransdesign.com/">Ahmed Samir</a><br>
-                        
+
                     </p>
                 </div>
                 <div class="col-lg-6 text-right col-md-12">

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('whoweare')->nullable();
             $table->text('pageIcon')->nullable();
             $table->text('map')->nullable();
+            $table->decimal('tax_rate', 5, 2)->default(0.20);
             $table->string('email')->unique()->nullable();
             $table->timestamps();
         });

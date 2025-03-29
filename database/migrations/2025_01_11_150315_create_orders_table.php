@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('email');
             $table->text('address');
             $table->string('phone');
-            $table->decimal('tax')->default(0.20);
             $table->enum('status',['pending','delivered','cancelled'])->default('pending');
             $table->enum('payment',['visa','cash']);
             $table->text('note')->nullable();

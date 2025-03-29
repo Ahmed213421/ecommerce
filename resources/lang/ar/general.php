@@ -39,7 +39,7 @@ return array (
   'new' => 'جديده',
   'change' => 'تغيير',
   'profile' => 'الحساب الشخصي',
-  'forgetpass' => '؟هل نسيت كلمه السر',
+  'forgetpass' => 'هل نسيت كلمه السر؟',
   'subscribers' => 'المشتركون',
   'readmore' => 'اقرأ المزيد',
   'leavecomment' => 'اترك تعليقا',

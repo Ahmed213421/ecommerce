@@ -11,6 +11,7 @@ return array(
     'exists' => 'The selected :attribute is invalid.',
     'regex' => 'The :attribute format is invalid.',
     'image' => 'The :attribute must be an image.',
+    'decimal' => 'The :attribute must be a decimal number',
     'attributes' => [
         'name' => 'name',
         'message' => 'message',

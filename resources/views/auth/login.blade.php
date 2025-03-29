@@ -38,9 +38,9 @@
 
                                         <div class="form-group mb-3">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="remember">
-                                                    {{ __('Remember Me') }}
+                                                    {{ app()->getLocale() == 'ar' ? 'ذكرني لاحقا' : 'remeber me' }}
                                                 </label>
                                             </div>
                                         </div>

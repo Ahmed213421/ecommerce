@@ -197,7 +197,7 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr class="total-data">
-                                                                            <td><strong>Subtotal: </strong></td>
+                                                                            <td><strong>{{ app()->getLocale() == 'ar' ? 'المجموع الكلي قبل الخصم' : 'Subtotal:' }} </strong></td>
                                                                             <td>${{ number_format(
                                                                                 $cartItems->sum(function ($item) {
                                                                                     return $item->product->price_after_discount * $item->quantity;
@@ -206,8 +206,8 @@
                                                                             ) }}</td>
                                                                         </tr>
                                                                         <tr class="total-data">
-                                                                            <td><strong>Shipping: </strong></td>
-                                                                            <td>$0.20</td>
+                                                                            <td><strong>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }} </strong></td>
+                                                                            <td>{{App\Models\Setting::getTaxRate()}}</td>
                                                                         </tr>
                                                                         <tr class="total-data">
                                                                             <td><strong>{{ trans('general.total') }}:

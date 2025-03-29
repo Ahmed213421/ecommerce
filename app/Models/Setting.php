@@ -20,4 +20,14 @@ class Setting extends Model
 
 
     }
+
+    public static function getTaxRate()
+    {
+        return self::first()->tax_rate ?? "0.20";
+    }
+
+    public static function updateTaxRate($newRate)
+    {
+        self::query()->update(['tax_rate' => $newRate]);
+    }
 }

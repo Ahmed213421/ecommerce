@@ -14,7 +14,7 @@ return array (
   'subscripe' => 'Subscripe',
   'pages' => 'Pages',
   'about_us' => 'About us',
-  'anyq' => 'Have you any question',
+  'anyq' => 'Have you any questions?',
   'subscripe_to' => 'Subscribe to our mailing list to get the latest updates.',
   'more' => 'more',
 );

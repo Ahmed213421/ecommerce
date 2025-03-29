@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb-text">
-                        <p>Fresh and Organic</p>
+                        <p>{{ trans('shop.fresh') }}</p>
                         <h1>{{ trans('general.cart') }}</h1>
                     </div>
                 </div>
@@ -154,12 +154,12 @@
                             </thead>
                             <tbody>
                                 <tr class="total-data">
-                                    <td><strong>Subtotal: </strong></td>
+                                    <td><strong>{{ app()->getLocale() == 'ar' ? 'المجموع الكلي قبل الخصم' : 'Subtotal:' }}</strong></td>
                                     <td>{{ number_format($subtotal, 2) }}</td>
                                 </tr>
                                 <tr class="total-data">
-                                    <td><strong>Shipping: </strong></td>
-                                    <td>$0.20</td>
+                                    <td><strong>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }} </strong></td>
+                                    <td>{{App\Models\Setting::getTaxRate()}}</td>
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>{{ trans('general.total') }}: </strong></td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -149,8 +150,8 @@ class CheckOutController extends Controller
                 $order->user_id = Auth::user()->id;
                 $order->payment = 'cash';
                 $order->status = 'pending';
-                $order->totalprice = $totalPrice + 0.20;
-                $order->subtotal = $subTotal + 0.20;
+                $order->totalprice = $totalPrice + Setting::getTaxRate();
+                $order->subtotal = $subTotal + Setting::getTaxRate();
                 $order->save();
 
                 $cartproducts = Cart::where('user_id', Auth::user()->id)->get();
