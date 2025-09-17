@@ -183,8 +183,21 @@ php artisan db:seed --class=UserRolePermissionSeeder
 
 ## 📱 Admin Dashboard
 
-Access the admin dashboard at `/admin` with the following features:
+### Admin Login
+Access the admin dashboard at `/admin/login` with the following credentials:
 
+**Super Admin Account:**
+- **Email**: `admin@admin.com`
+- **Password**: `123`
+- **Type**: Super Admin (Full Access)
+
+
+**Regular Admin Account:**
+- **Email**: `admin@gmail.com`
+- **Password**: `12345678`
+- **Type**: Admin (Limited Access)
+
+### Admin Dashboard Features
 - **Dashboard**: Analytics and overview
 - **Products**: Manage products, categories, subcategories
 - **Orders**: View and manage customer orders
