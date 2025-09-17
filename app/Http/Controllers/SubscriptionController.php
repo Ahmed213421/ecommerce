@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscriber;
-use App\Models\Subscribers;
-use App\Models\Subscription;
+use App\Repositories\Interfaces\SubscriberRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class SubscriptionController extends Controller
 {
+    protected $subscriberRepository;
+
+    public function __construct(SubscriberRepositoryInterface $subscriberRepository)
+    {
+        $this->subscriberRepository = $subscriberRepository;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -20,7 +24,7 @@ class SubscriptionController extends Controller
             'email' => 'required|email|unique:subscribers,email',
         ]);
 
-        Subscriber::create([
+        $this->subscriberRepository->create([
             'email' => $request->email,
         ]);
 
@@ -33,14 +37,13 @@ class SubscriptionController extends Controller
     {
 
         $decryptedToken = Crypt::decrypt($token);
-        $subscriber = Subscriber::where('unsubscribe_token', $decryptedToken)->first();
+        $subscriber = $this->subscriberRepository->findByToken($decryptedToken);
 
         if (!$subscriber) {
-
             return 'Invalid unsubscribe link.';
         }
 
-        $subscriber->delete();
+        $this->subscriberRepository->deleteByToken($decryptedToken);
 
         return 'unsubscribed successfully';
     }

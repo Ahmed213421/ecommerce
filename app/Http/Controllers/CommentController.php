@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
+use App\Repositories\Interfaces\CommentRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
+    protected $commentRepository;
+
+    public function __construct(CommentRepositoryInterface $commentRepository)
+    {
+        $this->commentRepository = $commentRepository;
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -27,13 +33,13 @@ class CommentController extends Controller
             ->withInput();
         }
 
-        $comment = new Comment();
-        $comment->post_id = $request->postid;
-        $comment->name = $request->name;
-        $comment->email = $request->email;
-        $comment->message = $request->message;
-        $comment->status = 0;
-        $comment->save();
+        $this->commentRepository->create([
+            'post_id' => $request->postid,
+            'name' => $request->name,
+            'email' => $request->email,
+            'message' => $request->message,
+            'status' => 0,
+        ]);
 
         return back()->with('success','your message has sent please wait for verification');
     }

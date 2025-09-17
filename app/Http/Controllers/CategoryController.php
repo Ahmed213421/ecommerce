@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    protected $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $data['categories'] = Category::with('subcategories.products')->get();
+        $data['categories'] = $this->categoryRepository->getAllWithSubcategoriesAndProducts();
 
         return view('shop.shop',$data);
     }
@@ -25,7 +31,7 @@ class CategoryController extends Controller
      */
     public function show(string $slug)
     {
-        $category = Category::where('slug',$slug)->firstOrFail();
+        $category = $this->categoryRepository->findBySlug($slug);
         return view('shop.categories.show',compact('category'));
     }
 }

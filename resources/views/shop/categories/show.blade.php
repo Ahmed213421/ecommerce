@@ -43,14 +43,14 @@
                                                     alt=""></a>
                                         </div>
                                         <h3><a href="{{route('customer.product.show',$item->slug)}}">{{ $item->name }}</a></h3>
-                                        <p class="product-  price"><span>{{ trans('shop.per_kg') }}</span>
-                                            <br> {{$product->price}}</del> {{ $product->price_after_discount }}$
+                                        <p class="product-price"><span></span>
+                                            <br> {{$item->price}}</del> {{ $item->price_after_discount }}$
                                         </p>
                                         @auth
 
                                         <div class="favorite-icon">
-                                            <i id="heart-{{ $product->id }}" class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
-                                               onclick="toggleFavorite({{ $product->id }})" style="cursor: pointer;"></i>
+                                            <i id="heart-{{ $item->id }}" class="fa fa-heart {{ $item->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
+                                               onclick="toggleFavorite({{ $item->id }})" style="cursor: pointer;"></i>
                                         </div>
                                     </div>
                                     @endauth

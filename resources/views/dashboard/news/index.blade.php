@@ -30,22 +30,17 @@
             <div class="col-md-12 col-sm-6">
                 <div class="card shadow">
                     <div class="card-body">
-                        <form action="{{ route('admin.news.destroy', 'test') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <div class="modal-body">
-                                {{-- {{ trans('My_Classes_trans.Warning_Grade') }} --}}
-                                <input type="hidden" name="page" value="2">
-                                <input type="hidden" id="delete_all_id" name="delete_all_id" value=''>
-                            </div>
+                        <form id="bulk-delete-form" action="{{ route('admin.news.deleteAll') }}" method="POST">
+    @csrf
+    @method('DELETE')
+    <input type="hidden" name="page" value="2">
+    <input type="hidden" id="delete_all_id" name="delete_all_id" value=''>
 
-                            <div class="modal-footer">
-                                {{-- <button type="button" class="btn btn-secondary" --}}
-                                {{-- data-bs-dismiss="modal">{{ trans('My_Classes_trans.Close') }}</button> --}}
-                                <button type="submit"
-                                    class="btn btn-danger deletebtn">{{ trans('dashboard.delete') }}</button>
-                            </div>
-                        </form>
+    <button type="button" id="confirm-delete" class="btn btn-danger deletebtn">
+        {{ trans('dashboard.delete') }}
+    </button>
+</form>
+
                         <!-- table -->
                         <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
 
@@ -219,26 +214,22 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
+    $(document).ready(function () {
+    $("#confirm-delete").click(function (e) {
+        e.preventDefault(); 
 
-        $(".deletebtn").click(function() {
-
-
-            var selected = [];
-            $("input[type=checkbox]:checked").each(function() {
-                selected.push(this.value);
-
-            });
-
-
-
-            if (selected.length > 0) {
-                // $('#btn-delete-all').modal('show');
-                $('input[id="delete_all_id"]').val(JSON.stringify(selected));
-            }
-
-
+        var selected = [];
+        $("input[type=checkbox]:checked").each(function () {
+            selected.push(this.value);
         });
+
+        if (selected.length > 0) {
+            $('#delete_all_id').val(JSON.stringify(selected));
+            $("#bulk-delete-form").submit();         } else {
+            alert("Please select at least one item to delete.");
+        }
     });
+});
+
 </script>
 @endsection

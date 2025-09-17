@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    protected $postRepository;
+
+    public function __construct(PostRepositoryInterface $postRepository)
+    {
+        $this->postRepository = $postRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['posts'] = Post::latest()->paginate(12);
+        $data['posts'] = $this->postRepository->getLatestPaginated(12);
         return view('shop.news.index',$data);
     }
 
@@ -21,10 +28,8 @@ class NewsController extends Controller
      */
     public function show(string $slug)
     {
-        $data['post'] = Post::where('slug', $slug)->with(['comments' => function($query) {
-            $query->where('status', 1);
-        }])->firstOrFail();
-        $data['posts'] = Post::latest()->take(5)->get();
+        $data['post'] = $this->postRepository->findBySlug($slug);
+        $data['posts'] = $this->postRepository->getLatest(5);
         return view('shop.news.show',$data);
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\Product;
+use App\Repositories\Interfaces\CartRepositoryInterface;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +16,16 @@ use function Symfony\Component\String\b;
 
 class CartController extends Controller
 {
+    protected $cartRepository;
+    protected $productRepository;
+
+    public function __construct(CartRepositoryInterface $cartRepository, ProductRepositoryInterface $productRepository)
+    {
+        $this->cartRepository = $cartRepository;
+        $this->productRepository = $productRepository;
+        $this->middleware('auth')->only(['edit', 'update']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,15 +39,10 @@ class CartController extends Controller
 
             if (Auth::check()) {
 
-                $cartItems = Cart::where('user_id', Auth::user()->id)->with('product')->get();
+                $cartItems = $this->cartRepository->getUserCartItems(Auth::user()->id);
 
-
-                $subtotal = $cartItems->sum(function ($item) {
-                    return $item->product->price_after_discount * $item->quantity;
-                });
-                $total = $cartItems->sum(function ($item) {
-                    return ceil(($item->product->price_after_discount * $item->quantity) + 0.20);
-                });
+                $subtotal = $this->cartRepository->getCartSubtotal(Auth::user()->id);
+                $total = $this->cartRepository->getCartTotal(Auth::user()->id);
             } else {
 
                 $cartItems = session('cart', []);
@@ -74,6 +79,10 @@ class CartController extends Controller
      */
     public function edit(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('customer.cart.index');
+        }
+
         try {
             DB::beginTransaction();
 
@@ -82,34 +91,20 @@ class CartController extends Controller
             $subtotal = 0;
             $cartItems = [];
 
+
             if(Cart::count() == 0){
                 toastr()->warning('please fill out products');
             }
 
-            if (Auth::check()) {
-                // Get cart items from the database
-                $cartItems = Cart::where('user_id', Auth::user()->id)->with('product')->get();
+            $cartItems = Cart::where('user_id', Auth::user()->id)->with('product')->get();
 
-                $subtotal = $cartItems->sum(function ($item) {
-                    return $item->product->price_after_discount * $item->quantity;
-                });
+            $subtotal = $cartItems->sum(function ($item) {
+                return $item->product->price_after_discount * $item->quantity;
+            });
 
-                $total = $cartItems->sum(function ($item) {
-                    return ceil(($item->product->price_after_discount * $item->quantity) + 0.20);
-                });
-            } else {
-
-                // Get cart items from the session
-                $cartItems = session('cart', []);
-
-                $subtotal = collect($cartItems)->sum(function ($item) {
-                    return $item['price_after_discount'] * $item['quantity'];
-                });
-
-                $total = collect($cartItems)->sum(function ($item) {
-                    return ceil($item['price_after_discount'] * $item['quantity'] + 0.20);
-                });
-            }
+            $total = $cartItems->sum(function ($item) {
+                return ceil(($item->product->price_after_discount * $item->quantity) + 0.20);
+            });
 
             DB::commit(); // Commit transaction
 
@@ -129,6 +124,9 @@ class CartController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!Auth::check()) {
+            return redirect()->route('customer.cart.index');
+        }
 
         try {
 
@@ -146,34 +144,19 @@ class CartController extends Controller
 
             $product_quantity = Product::find($request->product_id)->quantity;
 
-            if (Auth::check()) {
+            $result = Cart::where('user_id', Auth::user()->id)
+                ->where('product_id', $request->product_id)
+                ->first();
 
-                $result = Cart::where('user_id', Auth::user()->id)->where('product_id', $request->product_id)->first();
-
-
-                    $newQuantity = $result->quantity + $request->input('quantity', 1);
-                    if ($newQuantity > $product_quantity) {
-
-
-                        toastr()->warning('Not enough stock available');
-                        return back();
-                    }
-
-                    $result->quantity =  $request->quantity;
-                    $result->save();
-
-            } else {
-                $cart = session()->get('cart', []);
-
-                if (($cart[$request->product_id]['quantity'] + $request->input('quantity', 1)) > $product_quantity) {
-
-                    toastr()->warning('Not enough stock available');
-                    return back();
-                }
-
-                $cart[$request->product_id]['quantity'] = $request->input('quantity', 1);
-                session()->put('cart', $cart);
+            $newQuantity = $result->quantity + $request->input('quantity', 1);
+            if ($newQuantity > $product_quantity) {
+                toastr()->warning('Not enough stock available');
+                return back();
             }
+
+            $result->quantity = $request->quantity;
+            $result->save();
+
             toastr()->success(__('toaster.update'));
 
             DB::commit(); // Commit if successful
@@ -219,104 +202,111 @@ class CartController extends Controller
     }
 
 
-    public function addToCart(Request $request)
-    {
 
-        // return $request;
+public function addToCart(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'productid' => 'required|exists:products,id',
+        'quantity' => 'numeric|min:1|max:100',
+    ]);
 
-        $validator = Validator::make($request->all(), [
-            'productid' => 'required|exists:products,id',
-            'quantity' => 'numeric|min:1|max:100',
-        ]);
-
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-                ->withErrors($validator)
-                ->withInput();
+    if ($validator->fails()) {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
 
-
-
-        $product_quantity = Product::find($request->productid)->quantity;
-
-
-        if (Auth::check()) {
-
-
-            $result = Cart::where('user_id', Auth::user()->id)
-                ->where('product_id', $request->productid)
-                ->first();
-
-            if ($product_quantity == 0) {
-                toastr()->warning('Product is out of stock');
-                return back();
-            }
-
-            if ($result) {
-                if (($result->quantity + $request->input('quantity', 1)) > $product_quantity) {
-
-                    toastr()->warning('Not enough stock available');
-                    return back();
-                }
-
-
-                $result->quantity += $request->input('quantity', 1);
-                $result->save();
-            } else {
-
-                if ($request->input('quantity', 1) > $product_quantity) {
-                    toastr()->warning('Not enough stock available');
-                    return back();
-                }
-
-
-                $newcart = new Cart();
-                $newcart->user_id = Auth::user()->id;
-                $newcart->product_id = $request->productid;
-                $newcart->quantity = $request->input('quantity', 1);
-                $newcart->save();
-            }
-        } else {
-
-            $cart = session()->get('cart', []);
-
-            if ($product_quantity == 0) {
-                toastr()->warning('Product is out of stock');
-                return back();
-            }
-
-
-
-
-
-
-            if (isset($cart[$request->productid])) {
-                if (($cart[$request->productid]['quantity'] + $request->input('quantity', 1)) > $product_quantity) {
-
-                    toastr()->warning('Not enough stock available');
-                    return back();
-                }
-                $cart[$request->productid]['quantity'] += $request->input('quantity', 1);
-            } else {
-
-
-
-                $cart[$request->productid] = [
-                    'product_id' => $request->productid,
-                    'image' => Product::find($request->productid)->imagepath,
-                    'name' => Product::find($request->productid)->name,
-                    'price_after_discount' => Product::find($request->productid)->price_after_discount,
-                    'quantity' => $request->input('quantity', 1),
-                ];
-            }
-
-
-            session()->put('cart', $cart);
-        }
-
-        toastr()->success(__('toaster.cart'));
-
-        return back();
+        return back()->withErrors($validator)->withInput();
     }
+
+    $product = Product::find($request->productid);
+
+    if (!$product || $product->quantity == 0) {
+        $message = 'Product is out of stock';
+
+        return $request->expectsJson()
+            ? response()->json(['success' => false, 'message' => $message], 400)
+            : back()->with('error', $message);
+    }
+
+    if (Auth::check()) {
+        $userId = Auth::id();
+
+        $cartItem = Cart::where('user_id', $userId)
+            ->where('product_id', $product->id)
+            ->first();
+
+        $requestedQty = $request->input('quantity', 1);
+
+        if ($cartItem) {
+            if (($cartItem->quantity + $requestedQty) > $product->quantity) {
+                $message = 'Not enough stock available';
+                return $request->expectsJson()
+                    ? response()->json(['success' => false, 'message' => $message], 400)
+                    : back()->with('error', $message);
+            }
+
+            $cartItem->quantity += $requestedQty;
+            $cartItem->save();
+        } else {
+            if ($requestedQty > $product->quantity) {
+                $message = 'Not enough stock available';
+                return $request->expectsJson()
+                    ? response()->json(['success' => false, 'message' => $message], 400)
+                    : back()->with('error', $message);
+            }
+
+            Cart::create([
+                'user_id' => $userId,
+                'product_id' => $product->id,
+                'quantity' => $requestedQty,
+            ]);
+        }
+    } else {
+        $cart = session()->get('cart', []);
+        $productId = $product->id;
+        $requestedQty = $request->input('quantity', 1);
+
+        if (isset($cart[$productId])) {
+            if (($cart[$productId]['quantity'] + $requestedQty) > $product->quantity) {
+                $message = 'Not enough stock available';
+                return $request->expectsJson()
+                    ? response()->json(['success' => false, 'message' => $message], 400)
+                    : back()->with('error', $message);
+            }
+
+            $cart[$productId]['quantity'] += $requestedQty;
+        } else {
+            $cart[$productId] = [
+                'product_id' => $productId,
+                'image' => $product->imagepath,
+                'name' => $product->name,
+                'price_after_discount' => $product->price_after_discount,
+                'quantity' => $requestedQty,
+            ];
+        }
+
+        session()->put('cart', $cart);
+    }
+
+    return $request->expectsJson()
+        ? response()->json(['success' => true, 'message' => __('toaster.cart')])
+        : back()->with('success', __('toaster.cart'));
+    }
+
+    public function count()
+    {
+        if (auth()->check()) {
+            $count = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
+        } else {
+            $cart = session('cart', []);
+            $count = array_sum(array_column($cart, 'quantity'));
+        }
+
+        return response()->json(['count' => $count]);
+    }
+
+
 }

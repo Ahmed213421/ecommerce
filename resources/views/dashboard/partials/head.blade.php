@@ -10,6 +10,51 @@
     <link rel="icon" href="favicon.ico">
     <title>@yield('title')</title>
 
+    <!-- Theme initialization script - runs before page loads to prevent flash -->
+    <script>
+        (function() {
+            // Get theme from localStorage
+            var theme = localStorage.getItem('mode');
+
+            // Apply theme immediately to prevent flash
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark');
+            }
+        })();
+    </script>
+
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        /* Prevent flash of unstyled content */
+        html.dark {
+            background-color: #212529 !important;
+            color: #adb5bd !important;
+        }
+
+        html.dark body {
+            background-color: #212529 !important;
+            color: #adb5bd !important;
+        }
+
+        /* Ensure smooth transitions */
+        html, body {
+            transition: background-color 0.1s ease, color 0.1s ease;
+        }
+
+        /* Hide content until theme is fully loaded */
+        body {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        body.theme-loaded {
+            opacity: 1;
+        }
+    </style>
 
     @if (App::getLocale() == 'ar')
         <link rel="stylesheet" href="{{ asset('admin/rtl/css/simplebar.css') }}">
@@ -49,205 +94,8 @@
     @yield('css')
     <script src="{{ asset('admin/js/jquery.min.js') }}"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <script>
-        $(document).ready(function() {
-
-            const translations = {
-                ordered: "{{ __('notifiication.ordered') }}",
-                review: "{{ __('notifiication.review') }}",
-                contact: "{{__('notifiication.contact')}}",
-            };
-
-            // Enable pusher logging - don't include this in production
-            Pusher.logToConsole = true;
-
-            var pusher = new Pusher('400e613895e0965e5d41', {
-                cluster: 'eu'
-            });
-
-
-            var channel = pusher.subscribe('new_user_channel');
-            channel.bind('App\\Events\\NewUserRegisteredEvent', function(data) {
-
-                console.log(JSON.stringify(data));
-
-                // let unreadCount = parseInt(document.querySelector('.dot').textContent);
-                // document.querySelector('.dot').textContent = unreadCount + 1;
-
-
-
-
-            });
-
-            var channel = pusher.subscribe('review_channel');
-            channel.bind('App\\Events\\NewCustomerReviewEvent', function(data) {
-                console.log('review1');
-
-                console.log(JSON.stringify(data));
-
-                let unreadCount = parseInt(document.querySelector('.dot').textContent);
-                document.querySelector('.dot').textContent = unreadCount + 1;
-
-                const notification = data.review;
-
-                var notificationHtml = `
-                    <div class="list-group-item bg-light mb-2">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="fe fe-box fe-24"></span>
-                                            </div>
-                                            <div class="col">
-                                                <small><strong>
-                                                        ${translations.review}</strong></small>
-                                                <small class="badge badge-pill badge-light text-muted">${new Date(notification.created_at).toLocaleString()}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-             `;
-
-                // Check if the list exists
-                if (notificationsList) {
-                    // Append the new notification to the notification list
-                    notificationsList.insertAdjacentHTML('afterbegin', notificationHtml);
-                } else {
-                    // If the list doesn't exist, create it and append to the container
-                    const notificationContainer = document.querySelector(
-                        '.list-group.list-group-flush.all-notifications');
-
-                    if (notificationContainer) {
-                        // Create a new notifications list wrapper
-                        const newList = document.createElement('div');
-                        newList.classList.add('list-group-item', 'notification-link');
-
-                        // Add the notification HTML to the new list
-                        newList.insertAdjacentHTML('afterbegin', notificationHtml);
-
-                        // Append the new list to the container
-                        notificationContainer.appendChild(newList);
-                    } else {
-                        console.error("Notification container not found in the DOM.");
-                    }
-                }
-
-
-            });
-            var channel = pusher.subscribe('order_channel');
-            channel.bind('App\\Events\\NewOrderEvent', function(data) {
-
-                console.log(JSON.stringify(data));
-
-                let unreadCount = parseInt(document.querySelector('.dot').textContent);
-                document.querySelector('.dot').textContent = unreadCount + 1;
-
-                const notification = data.user;
-
-                var notificationHtml = `
-                <div class="list-group-item bg-light mb-2">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="fe fe-box fe-24"></span>
-                                            </div>
-                                            <div class="col">
-                                                <small><strong>${notification.name}
-                                                        ${translations.ordered} </strong></small>
-                                                <small class="badge badge-pill badge-light text-muted">${new Date(notification.created_at).toLocaleString()}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        `;
-
-                // Select the notifications list
-                var notificationsList = document.querySelector('.list-group-item.notification-link');
-
-                // Check if the list exists
-                if (notificationsList) {
-                    // Append the new notification to the notification list
-                    notificationsList.insertAdjacentHTML('afterbegin', notificationHtml);
-                } else {
-                    // If the list doesn't exist, create it and append to the container
-                    const notificationContainer = document.querySelector(
-                        '.list-group.list-group-flush.all-notifications');
-
-                    if (notificationContainer) {
-                        // Create a new notifications list wrapper
-                        const newList = document.createElement('div');
-                        newList.classList.add('list-group-item', 'notification-link');
-
-                        // Add the notification HTML to the new list
-                        newList.insertAdjacentHTML('afterbegin', notificationHtml);
-
-                        // Append the new list to the container
-                        notificationContainer.appendChild(newList);
-                    } else {
-                        console.error("Notification container not found in the DOM.");
-                    }
-                }
-
-
-
-
-            });
-            var channel = pusher.subscribe('contact_channel');
-            channel.bind('App\\Events\\NewContactEvent', function(data) {
-                console.log('recieved');
-
-
-                console.log(JSON.stringify(data));
-
-                let unreadCount = parseInt(document.querySelector('.dot').textContent);
-                document.querySelector('.dot').textContent = unreadCount + 1;
-
-                const notification = data;
-
-                var notificationHtml = `
-                <div class="list-group-item bg-light mb-2">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="fe fe-box fe-24"></span>
-                                            </div>
-                                            <div class="col">
-                                                <small><strong>${data.name}
-                                                        ${translations.contact} </strong></small>
-                                                <small class="badge badge-pill badge-light text-muted">${new Date(notification.created_at).toLocaleString()}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        `;
-
-                // Select the notifications list
-                var notificationsList = document.querySelector('.list-group-item.notification-link');
-
-                // Check if the list exists
-                if (notificationsList) {
-                    // Append the new notification to the notification list
-                    notificationsList.insertAdjacentHTML('afterbegin', notificationHtml);
-                } else {
-                    // If the list doesn't exist, create it and append to the container
-                    const notificationContainer = document.querySelector(
-                        '.list-group.list-group-flush.all-notifications');
-
-                    if (notificationContainer) {
-                        // Create a new notifications list wrapper
-                        const newList = document.createElement('div');
-                        newList.classList.add('list-group-item', 'notification-link');
-
-                        // Add the notification HTML to the new list
-                        newList.insertAdjacentHTML('afterbegin', notificationHtml);
-
-                        // Append the new list to the container
-                        notificationContainer.appendChild(newList);
-                    } else {
-                        console.error("Notification container not found in the DOM.");
-                    }
-                }
-
-
-
-
-            });
-
-        });
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
 
 
 </head>

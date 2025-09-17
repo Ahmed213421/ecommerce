@@ -57,7 +57,7 @@
 
 
             <div class="custom-file mb-3">
-                <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                <input type="file" class="custom-file-input" id="customFi" name="imagepath" accept="image/*">
                 <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
                 <img src="{{asset($product->imagepath)}}" width="100px" class="my-2 img-fluid" alt="" srcset="">
             </div>
@@ -71,7 +71,7 @@
                     @endforeach
                 </select>
             </div> --}}
-            <div class="form-group my-3">
+            <div class="form-group my-3 mt-5">
                 <label for="custom-select">{{ trans('dashboard.sel.category') }}</label>
                 <select class="custom-select" id="categoryselect" name="category">
                     <option value="">{{ trans('dashboard.sel.category') }}</option>
@@ -83,7 +83,7 @@
             </div>
             <input type="hidden" value="{{$product->id}}" id="productId">
             {{-- @dump({{ $category->id == $product->category_id ? 'selected' : '' }}) --}}
-
+            <label for="custom-select">{{ trans('dashboard.sel.subcategory') }}</label>
             <select class="custom-select" id="subSelect" name="subcategory_id">
                 <option value="">{{ __('dashboard.sel.subcategory') }}</option>
                 @foreach ($subcategories as $subcategory)
@@ -94,7 +94,7 @@
                 @endforeach
             </select>
 
-            <div class="form-group mb-3">
+            <div class="form-group my-3">
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="customFi" name="images[]" multiple accept="image/*">
                     <label class="custom-file-label" for="customFile">{{ trans('dashboard.photos') }}</label>

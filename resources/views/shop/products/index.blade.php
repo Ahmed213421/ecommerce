@@ -54,7 +54,7 @@
                                     alt=""></a>
                         </div>
                         <h3><a href="{{route('customer.product.show',$product->slug)}}">{{ $product->name }}</a></h3>
-                        <p class="product-price"><span>{{ trans('shop.per_kg') }}<br> </span>{{$product->price}}</del> {{ $product->price_after_discount }}$
+                        <p class="product-price"><span><br> </span>{{$product->price}}</del> {{ $product->price_after_discount }}$
                         </p>
                         <p class="product-  price"><span>{{ trans('general.qty') }}</span>
                             <br> {{ $product->quantity }}

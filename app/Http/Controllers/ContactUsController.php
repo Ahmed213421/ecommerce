@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewContactEvent;
 use App\Models\Admin;
-use App\Models\Contact;
+use App\Repositories\Interfaces\ContactRepositoryInterface;
 use App\Notifications\NewContactNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class ContactUsController extends Controller
 {
+    protected $contactRepository;
+
+    public function __construct(ContactRepositoryInterface $contactRepository)
+    {
+        $this->contactRepository = $contactRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -42,11 +48,12 @@ class ContactUsController extends Controller
             ->withInput();
         }
 
-        Contact::create(['name'=> $request->name,
-        'email' => $request->email,
-        'phone' => $request->phone,
-        'subject' => $request->subject,
-        'message' => $request->message,
+        $this->contactRepository->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'subject' => $request->subject,
+            'message' => $request->message,
         ]);
 
         $admins = Admin::all();

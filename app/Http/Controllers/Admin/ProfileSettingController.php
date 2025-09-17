@@ -34,7 +34,6 @@ class ProfileSettingController extends Controller
             'photo' => 'image',
         ]);
         if ($validator->fails()) {
-            // Redirect back to the form with the error messages
             return back()
             ->withErrors($validator)
             ->withInput();

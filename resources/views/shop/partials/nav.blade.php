@@ -37,7 +37,7 @@
 
                             </li>
                             <li class="{{Route::is('customer.us.*') ? 'current-list-item' : ''}}"><a href="{{ route('customer.us.index') }}">{{ trans('slider.contact_us') }}</a></li>
-                            <li class="{{Route::is('customer.review.*') ? 'current-list-item' : ''}}"><a href="{{ route('customer.review.index') }}">{{ trans('shop.reviews') }}</a></li>
+                            <li class="{{Route::is('customer.testmonials.*') ? 'current-list-item' : ''}}"><a href="{{ route('customer.testmonials.index') }}">{{ trans('shop.reviews') }}</a></li>
                             {{-- <li><a href="{{ route('customer.product.index') }}">Reviews</a></li> --}}
                             <li class="{{Route::is('customer.shop')  ? 'current-list-item' : ''}}"><a href="{{ route('customer.shop') }}">{{ trans('shop.shop') }}</a>
                                 <ul class="sub-menu">
@@ -67,6 +67,8 @@
                                         <li><a href="{{route('customer.orders.index')}}">{{ trans('general.all') }} {{ trans('general.orders') }}</a></li>
                                         <li><a href="{{ route('customer.wishlist.index') }}">{{ trans('shop.wish') }}</a>
                                         </li>
+                                        <li><a href="{{ route('customer.deactive') }}">{{ trans('shop.deactive') }}</a>
+                                        </li>
                                         <li>
                                             <a href="#"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ trans('general.logout') }}</a>
@@ -92,19 +94,19 @@
                             </li>
                             <li>
                                 <div class="header-icons">
-                                    <span class="badge badge-danger position-absolute top-0 start-100 translate-middle">
+                                    <span id="cart-count" class="badge badge-danger position-absolute top-0 start-100 translate-middle">
                                         @php
                                             $cart = session('cart', []);
                                             $cartCount = count($cart);
                                         @endphp
                                         @auth
                                             {{ \App\Models\Cart::where('user_id', auth()->id())->sum('quantity') }}
-
                                         @endauth
                                         @guest
                                             {{ $cartCount }}
                                         @endguest
                                     </span>
+
                                     <a class="shopping-cart" href="{{ route('customer.cart.index') }}"><i
                                             class="fas fa-shopping-cart"></i></a>
                                     <a class="mobile-hide search-bar-icon" href="#">

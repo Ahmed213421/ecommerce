@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\NewOrderEvent;
 use App\Models\Admin;
-use App\Models\Cart;
-use App\Models\Order;
+use App\Repositories\Interfaces\CartRepositoryInterface;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Models\OrderDetail;
 use App\Notifications\NewOrderNotification;
 use Exception;
@@ -18,6 +18,15 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutSuccessController extends Controller
 {
+    protected $cartRepository;
+    protected $orderRepository;
+
+    public function __construct(CartRepositoryInterface $cartRepository, OrderRepositoryInterface $orderRepository)
+    {
+        $this->cartRepository = $cartRepository;
+        $this->orderRepository = $orderRepository;
+    }
+
     /**
      * Handle the incoming request.
      */
@@ -29,22 +38,23 @@ class CheckoutSuccessController extends Controller
 
         $session = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
         $cart_ids = explode(',',$session->metadata->cart_id);
-        $cart = Cart::whereIn('id',$cart_ids)->get();
+        // Note: We'll need to add a method to get cart items by IDs in the repository
+        $cart = $this->cartRepository->getUserCartItems(Auth::user()->id);
 
-        $order = new Order();
-        $order->name = $session->metadata->name;
-        $order->email = $session->metadata->email;
-        $order->address = $session->metadata->address;
-        $order->phone = $session->metadata->phone;
-        $order->note = $session->metadata->note;
-        $order->user_id = Auth::user()->id;
-        $order->payment = 'visa';
-        $order->status = 'delivered';
-        $order->totalprice = ceil($session->metadata->totalPrice + 0.20);
-        $order->subtotal = ceil($session->metadata->subTotal + 0.20);
-        $order->save();
+        $order = $this->orderRepository->create([
+            'name' => $session->metadata->name,
+            'email' => $session->metadata->email,
+            'address' => $session->metadata->address,
+            'phone' => $session->metadata->phone,
+            'note' => $session->metadata->note,
+            'user_id' => Auth::user()->id,
+            'payment' => 'visa',
+            'status' => 'delivered',
+            'totalprice' => ceil($session->metadata->totalPrice + 0.20),
+            'subtotal' => ceil($session->metadata->subTotal + 0.20),
+        ]);
 
-        $cartproducts = Cart::where('user_id',Auth::user()->id)->get();
+        $cartproducts = $this->cartRepository->getUserCartItems(Auth::user()->id);
 
         foreach($cartproducts as $cart){
             $newOrderDetail = new OrderDetail();
@@ -55,7 +65,7 @@ class CheckoutSuccessController extends Controller
             $newOrderDetail->save();
         }
 
-        $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
+        $cartItems = $this->cartRepository->getUserCartItems(auth()->id());
 
         if ($cartItems->isEmpty()) {
             return response()->json(['message' => 'No items in cart'], 400);
@@ -77,7 +87,7 @@ class CheckoutSuccessController extends Controller
 
         NewOrderEvent::dispatch($user);
 
-        Cart::where('user_id',auth()->user()->id)->delete();
+        $this->cartRepository->clearUserCart(auth()->user()->id);
         DB::commit();
         toastr()->success('تم الدفع');
 

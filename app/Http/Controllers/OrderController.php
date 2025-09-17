@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\OrderDetail;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected $orderRepository;
+
+    public function __construct(OrderRepositoryInterface $orderRepository)
+    {
+        $this->orderRepository = $orderRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['orders'] = Order::where('user_id',auth()->user()->id)->where('status','delivered')->paginate(5);
+        $data['orders'] = $this->orderRepository->getUserOrdersPaginated(auth()->user()->id, 'delivered', 5);
 
         return view('shop.orders.show',$data);
     }

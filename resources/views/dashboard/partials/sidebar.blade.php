@@ -34,7 +34,7 @@
             </a>
             <ul class="collapse list-unstyled pl-4 w-100 {{Route::is('admin.category.*') ? 'show' : ''}}" id="ui-elements1">
               <li class="nav-item">
-                <a class="nav-link pl-3" href="{{route('admin.category.index')}}"><span class="ml-1 item-text">{{ trans('dashboard.all_cat') }}</span>
+                <a class="nav-link pl-3" href="{{route('admin.category.index')}}"><span class="ml-1 item-text">{{ trans('general.all') }} {{ trans('category.categories')  }}</span>
                 </a>
               </li>
             </ul>
@@ -112,7 +112,14 @@
           </a>
         </li>
         <li class="nav-item w-100">
-          <a class="nav-link {{Route::is('admin.review.index') ? 'activelink' : ''}}" href="{{route('admin.review.index')}}">
+          <a class="nav-link {{Route::is('admin.testmonials.index') ? 'activelink' : ''}}" href="{{route('admin.testmonials.index')}}">
+            <i class="fa-regular fa-star"></i>
+            {{-- <span class="ml-3 item-text">{{ trans('general.review') }}</span> --}}
+            <span class="ml-3 item-text">{{ trans('general.testmonials') }}</span>
+          </a>
+        </li>
+        <li class="nav-item w-100">
+          <a class="nav-link {{Route::is('admin.reviews.index') ? 'activelink' : ''}}" href="{{route('admin.review.index')}}">
             <i class="fa-regular fa-star"></i>
             <span class="ml-3 item-text">{{ trans('general.review') }}</span>
           </a>
@@ -121,6 +128,12 @@
           <a class="nav-link {{Route::is('admin.contact.index') ? 'activelink' : ''}}" href="{{route('admin.contact.index')}}">
             <i class="fa-regular fa-address-book"></i>
             <span class="ml-3 item-text">{{ trans('general.contact') }}</span>
+          </a>
+        </li>
+        <li class="nav-item w-100">
+          <a class="nav-link {{Route::is('admin.customers.index') ? 'activelink' : ''}}" href="{{route('admin.customers.index')}}">
+            <i class="fa-solid fa-circle-user"></i>
+            <span class="ml-3 item-text">{{ trans('dashboard.customers') }}</span>
           </a>
         </li>
 

@@ -44,19 +44,40 @@
         <div class="homepage-slider">
             <!-- single home slider -->
 
-
-            @foreach (App\Models\Slider::get() as $slide)
-                <div class="single-homepage-slider" style="background-image: url({{ asset($slide->imagepath) }})">
+            @if (count($slider) > 0)
+                @foreach ($slider as $slide)
+                    <div class="single-homepage-slider" style="background-image: url({{ asset($slide->imagepath) }})">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                    <div class="hero-text">
+                                        <div class="hero-text-tablecell">
+                                            <p class="subtitle">{{ $slide->main_title }}</p>
+                                            <h1>{{ $slide->branch_title }}</h1>
+                                            <div class="hero-btns">
+                                                <a href="#mostviewed" class="boxed-btn">Fruit Collection</a>
+                                                <a href="{{ route('customer.us.index') }}" class="bordered-btn">Contact Us</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <!-- Default slide if no slides exist -->
+                <div class="single-homepage-slider" style="background-image: url('{{ asset('images/default-slider.jpg') }}')">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
                                 <div class="hero-text">
                                     <div class="hero-text-tablecell">
-                                        <p class="subtitle">{{ $slide->main_title }}</p>
-                                        <h1>{{ $slide->branch_title }}</h1>
+                                        <p class="subtitle">Welcome</p>
+                                        <h1>Our Fruit Collection</h1>
                                         <div class="hero-btns">
                                             <a href="#mostviewed" class="boxed-btn">Fruit Collection</a>
-                                            <a href="{{ route('admin.users.index') }}" class="bordered-btn">Contact Us</a>
+                                            <a href="{{ route('customer.us.index') }}" class="bordered-btn">Contact Us</a>
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @endif
             <!-- single home slider -->
             <div class="single-homepage-slider homepage-bg-2">
                 <div class="container">
@@ -72,7 +93,7 @@
                         <div class="col-lg-10 offset-lg-1 text-center">
                             <div class="hero-text">
                                 <div class="hero-text-tablecell">
-                                    <p class="subtitle">Fresh Everyday</p>
+                                    <p class="subtitle">{{ trans('shop.fresh') }}</p>
                                     <h1>100% Organic Collection</h1>
                                     <div class="hero-btns">
                                         <a href="#mostviewed" class="boxed-btn">Visit Shop</a>
@@ -160,7 +181,7 @@
             </div>
 
             <div class="row">
-                @foreach (App\Models\Product::all() as $product)
+                @foreach ($products_most_viewed as $product)
                     <div class="col-md-4 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
@@ -182,17 +203,55 @@
                                     </i>
                                 </div>
                             @endauth
-                            <a href="{{ route('customer.cart.index') }}" class="cart-btn"
-                                onclick="event.preventDefault();
-                                        document.getElementById('add-product-to-cart-{{ $product->id }}').submit();">
+                            <a href="#" class="cart-btn" onclick="addToCart({{ $product->id }}); return false;">
+                                <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
+                            </a>
 
-                                <form id="add-product-to-cart-{{ $product->id }}"
-                                    action="{{ route('customer.cart.product.add') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                    <input type="hidden" value="{{ $product->id }}" name="productid">
-                                    <input type="hidden" value="1" name="quantity">
-                                </form>
+
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+        </div>
+    </div>
+    <!-- end product section -->
+    <!-- product section -->
+    <div class="product-section mt-150" id="mostviewed">
+        <div class="container">
+            <div class="row">
+                <div class="offset-lg-2 {{ app()->getLocale() == 'ar' ? 'col-lg-12' : 'col-lg-8' }}  text-center">
+                    <div class="section-title">
+                        <h3><span class="orange-text"></span> {{ trans('general.featured') }}</h3>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach ($featured as $product)
+                    <div class="col-md-4 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="{{ route('customer.product.show', $product->slug) }}"><img
+                                        src="{{ asset($product->imagepath) }}" alt=""></a>
+                            </div>
+                            <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a>
+                            </h3>
+                            <p class="product-price"><span>{{ trans('shop.per_kg') }}<br>
+                                </span><del>{{ $product->price }}</del> {{ $product->price_after_discount }}$
+                            </p>
+                            @auth
+
+                                <div class="favorite-icon">
+                                    <i id="heart-{{ $product->id }}"
+                                        class="fa fa-heart {{ $product->favoritedBy->contains(auth()->id()) ? 'active' : '' }}"
+                                        onclick="toggleFavorite({{ $product->id }})"
+                                        style="cursor: pointer; color: {{ $product->isFavoritedByUser ? 'red' : 'gray' }};">
+                                    </i>
+                                </div>
+                            @endauth
+                            <a href="#" class="cart-btn" onclick="addToCart({{ $product->id }}); return false;">
                                 <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
                             </a>
 
@@ -207,7 +266,7 @@
     <!-- end product section -->
 
     <!-- cart banner section -->
-    <section class="cart-banner pt-100 pb-100">
+    {{-- <section class="cart-banner pt-100 pb-100">
         <div class="container">
             <div class="row clearfix">
                 <!--Image Column-->
@@ -251,21 +310,39 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- end cart banner section -->
 
-    <div class="slider-container my-5">
-        <div class="slider">
-            @foreach (App\Models\Review::where('status', 1)->get() as $review)
-                <div class="slide">
-                    {{-- <img src="{{$}}" alt="Image 1" class="slider-image"> --}}
-                    <h3 class="slider-title">{{ $review->name }}</h3>
-                    <p class="slider-description">{{ $review->message }}.</p>
+    @if (app()->getLocale() !== 'ar')
+        <!-- testimonail-section -->
+        <div class="testimonail-section mt-150 mb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 offset-lg-1 text-center">
+                        <div class="testimonial-sliders">
+                            @foreach ($testmonials as $review)
+                                <div class="single-testimonial-slider">
+                                    <div class="client-avater">
+                                        <img src="{{ asset($review->image) }}" alt="">
+                                    </div>
+                                    <div class="client-meta">
+                                        <h3>{{ $review->name }} <span>{{ $review->subject }}</span></h3>
+                                        <p class="testimonial-body">
+                                            " {{ $review->message }} "
+                                        </p>
+                                        <div class="last-icon">
+                                            <i class="fas fa-quote-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
-            @endforeach
-            <!-- Add more slides as needed -->
+            </div>
         </div>
-    </div>
+        <!-- end testimonail-section -->
+    @endif
 
 
     <!-- advertisement section -->
@@ -279,10 +356,9 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    @foreach (App\Models\Setting::all() as $item)
+                    @foreach ($setting as $item)
                         {!! $item->whoweare !!}
                     @endforeach
-                    <a href="about.html" class="boxed-btn mt-4">know more</a>
                 </div>
             </div>
         </div>
@@ -290,6 +366,7 @@
     </div>
     <!-- end advertisement section -->
 
+    @if (app()->getLocale() !== 'ar')
     <!-- shop banner -->
     <section class="shop-banner">
         <div class="container">
@@ -299,6 +376,7 @@
         </div>
     </section>
     <!-- end shop banner -->
+    @endif
 
     <!-- latest news -->
     <div class="latest-news pt-150 pb-150">
@@ -313,7 +391,7 @@
             </div>
 
             <div class="row">
-                @foreach (App\Models\Post::latest()->take(3)->get() as $post)
+                @foreach ($posts as $post)
                     <div class="col-lg-4 col-md-6">
                         <div class="single-latest-news">
                             <a href="{{ route('customer.news.show', $post->slug) }}" class="news-image">
@@ -418,4 +496,30 @@
 
         setInterval(changeSlide, 4000); // Change slide every 3 seconds
     </script>
+<script>
+function addToCart(productId) {
+    fetch("{{ route('customer.cart.product.add') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            productid: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ " + data.message);
+            refreshCartCount();
+        } else {
+            alert("⚠️ " + (data.message || 'Failed to add to cart'));
+        }
+    });
+}
+
+</script>
 @endsection

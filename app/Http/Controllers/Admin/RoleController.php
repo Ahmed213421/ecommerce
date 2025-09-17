@@ -7,20 +7,24 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Repositories\Admin\Interfaces\RoleRepositoryInterface;
 
 class RoleController extends Controller
 {
-    public function __construct()
+    protected $roleRepository;
+
+    public function __construct(RoleRepositoryInterface $roleRepository)
     {
         // $this->middleware('permission:view role', ['only' => ['index']]);
         // $this->middleware('permission:create role', ['only' => ['create','store','addPermissionToRole','givePermissionToRole']]);
         // $this->middleware('permission:update role', ['only' => ['update','edit']]);
         // $this->middleware('permission:delete role', ['only' => ['destroy']]);
+        $this->roleRepository = $roleRepository;
     }
 
     public function index()
     {
-        $roles = Role::get();
+        $roles = $this->roleRepository->getAll();
         return view('dashboard.role-permission.role.index', ['roles' => $roles]);
     }
 
@@ -39,7 +43,7 @@ class RoleController extends Controller
             ]
         ]);
 
-        Role::create([
+        $this->roleRepository->create([
             'name' => $request->name
         ]);
 
@@ -63,7 +67,7 @@ class RoleController extends Controller
             ]
         ]);
 
-        $role->update([
+        $this->roleRepository->update($role->id, [
             'name' => $request->name
         ]);
 
@@ -72,19 +76,15 @@ class RoleController extends Controller
 
     public function destroy($roleId)
     {
-        $role = Role::find($roleId);
-        $role->delete();
+        $this->roleRepository->delete($roleId);
         return redirect()->route('admin.roles.index')->with('status','Role Deleted Successfully');
     }
 
     public function addPermissionToRole($roleId)
     {
         $permissions = Permission::get();
-        $role = Role::findOrFail($roleId);
-        $rolePermissions = DB::table('role_has_permissions')
-                                ->where('role_has_permissions.role_id', $role->id)
-                                ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-                                ->all();
+        $role = $this->roleRepository->find($roleId);
+        $rolePermissions = $this->roleRepository->getRolePermissions($roleId);
 
         return view('dashboard.role-permission.role.add-permissions', [
             'role' => $role,
@@ -99,8 +99,7 @@ class RoleController extends Controller
             'permission' => 'required'
         ]);
 
-        $role = Role::findOrFail($roleId);
-        $role->syncPermissions($request->permission);
+        $this->roleRepository->syncPermissions($roleId, $request->permission);
 
         return redirect()->back()->with('status','Permissions added to role');
     }

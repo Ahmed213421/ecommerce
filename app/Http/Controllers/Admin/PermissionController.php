@@ -5,21 +5,24 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\Controller;
+use App\Repositories\Admin\Interfaces\PermissionRepositoryInterface;
 
 class PermissionController extends Controller
 {
-    public function __construct()
+    protected $permissionRepository;
+
+    public function __construct(PermissionRepositoryInterface $permissionRepository)
     {
-        $this->middleware('permission:view-permission,admin', ['only' => ['index']]);
+        // $this->middleware('permission:view-permission,admin', ['only' => ['index']]);
         // $this->middleware('permission:create-permission,admin', ['only' => ['create','store']]);
         // $this->middleware('permission:update-permission,admin', ['only' => ['update','edit']]);
         // $this->middleware('permission:delete-permission,admin', ['only' => ['destroy']]);
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function index()
     {
-
-        $permissions = Permission::get();
+        $permissions = $this->permissionRepository->getAll();
         return view('dashboard.role-permission.permission.index', ['permissions' => $permissions]);
     }
 
@@ -38,7 +41,7 @@ class PermissionController extends Controller
             ]
         ]);
 
-        Permission::create([
+        $this->permissionRepository->create([
             'name' => $request->name
         ]);
 
@@ -60,7 +63,7 @@ class PermissionController extends Controller
             ]
         ]);
 
-        $permission->update([
+        $this->permissionRepository->update($permission->id, [
             'name' => $request->name
         ]);
 
@@ -69,9 +72,7 @@ class PermissionController extends Controller
 
     public function destroy($permissionId)
     {
-
-        $permission = Permission::find($permissionId);
-        $permission->delete();
+        $this->permissionRepository->delete($permissionId);
         return redirect()->route('admin.permissions.index')->with('status','Permission Deleted Successfully');
     }
 }

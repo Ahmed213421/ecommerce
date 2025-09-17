@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Subcategory;
+use App\Http\Requests\Admin\SubCategoryRequest;
+use App\Http\Requests\Admin\UpdateSubCategoryRequest;
+use App\Repositories\Admin\SubCategoryRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class SubCategoryController extends Controller
 {
+    protected $subCategoryRepository;
+
+    public function __construct(SubCategoryRepositoryInterface $subCategoryRepository)
+    {
+        $this->subCategoryRepository = $subCategoryRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +36,7 @@ class SubCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubCategoryRequest $request)
     {
         // // return $request;
         // $validator = Validator::make($request->all(),[
@@ -83,40 +89,10 @@ class SubCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSubCategoryRequest $request, string $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name_en' => 'required',
-            'name_ar' => 'required',
-            'category_id' => 'exists:categories,id',
-            'simage' => 'image',
-        ]);
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-
-        $category = Subcategory::find($id);
-        $img = $category->imagepath;
-
-        if ($request->hasFile('simage')) {
-            if ($category->imagepath &&  file_exists(public_path($category->imagepath))) {
-                unlink(public_path($category->imagepath));
-            }
-            $img =  'dashboard/'.$request->simage->storeAs('subcategory', time().'_'.$request->simage->getClientOriginalName(),'images');
-        }
-
-        Subcategory::find($id)->update([
-            'name' => ['en' => $request->name_en , 'ar' => $request->name_ar],
-            'category_id' => $request->category_id,
-            'imagepath' => $img,
-            'slug' => Str::slug($request->name_en),
-        ]);
-
+        $this->subCategoryRepository->update($request->validated(), $id);
         toastr()->success(__('toaster.update'));
-
         return back();
     }
 
@@ -125,15 +101,7 @@ class SubCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-
-        $subcategory = Subcategory::find($id);
-        if($subcategory){
-
-            if ($subcategory->imagepath &&  file_exists(public_path($subcategory->imagepath))) {
-                unlink(public_path($subcategory->imagepath));
-            }
-        }
-        Subcategory::destroy($id);
+        $this->subCategoryRepository->delete($id);
         toastr()->success(__('toaster.del'));
         return back();
     }

@@ -58,6 +58,15 @@
                     </div>
                     <div class="col-md-6 col-lg-3 mb-4 text-center">
                         <h4 class="h1 font-weight-normal mb-3">
+                            <i class="fa-regular fa-star"></i>
+                            <span class="d-inline-block">{{ App\Models\Testmonial::count() }}</span>
+                        </h4>
+                        <a href="{{ route('admin.review.index') }}">
+                            <p class="font-weight-normal text-muted">{{ trans('general.testmonials') }}</p>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4 text-center">
+                        <h4 class="h1 font-weight-normal mb-3">
                             <i class="fa-regular fa-newspaper"></i>
                             <span class="d-inline-block">{{ App\Models\Post::count() }}</span>
                         </h4>
@@ -81,6 +90,15 @@
                         </h4>
                         <a href="{{ route('admin.subcategory.index') }}">
                             <p class="font-weight-normal text-muted">{{ trans('general.subscribers') }}</p>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4 text-center">
+                        <h4 class="h1 font-weight-normal mb-3">
+                            <i class="fa-solid fa-circle-user"></i>
+                            <span class="d-inline-block">{{ App\Models\User::count() }}</span>
+                        </h4>
+                        <a href="{{ route('admin.customers.index') }}">
+                            <p class="font-weight-normal text-muted">{{ trans('dashboard.customers') }}</p>
                         </a>
                     </div>
 

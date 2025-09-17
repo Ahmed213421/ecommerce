@@ -11,6 +11,7 @@ return array (
   'create_slide' => 'create new slider',
   'created_at' => 'created at',
   'dashboard' => 'Dashboard',
+  'customers' => 'Customers',
   'del' =>
   array (
     'item' => 'are you sure you want to remove?',
@@ -32,6 +33,7 @@ return array (
     'category' => 'select category',
     'tags' => 'select tags',
     'subcategory' => 'select subcateogry',
+    'status' => 'select user status',
   ),
   'slider' => 'Slider',
   'view' => 'view',
@@ -64,4 +66,7 @@ return array (
   'most_ordered' => 'Most Orders In Months',
   'photos' => 'photos',
   'subscribe_success' => 'subscribed successfully',
+  'active' => 'active user',
+  'deactive' => 'deactive user',
+  'blocked' => 'block user',
 );

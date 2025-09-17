@@ -2,6 +2,9 @@
 
 @section('title')
 @endsection
+@section('css')
+
+@endsection
 
 
 @section('content')
@@ -21,7 +24,7 @@
     <!-- end breadcrumb section -->
 
     <!-- products -->
-    <div class="order-section mt-150 mb-150">
+    <div class="order-section mt-150 mb-150 show-in-print">
         <div class="container">
             <div class="row">
                 @foreach ($orders as $order)

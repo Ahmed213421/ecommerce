@@ -198,7 +198,20 @@
 
     @yield('scripts')
 
+    <script>
+        function refreshCartCount() {
+            fetch("{{ route('customer.cart.count') }}", {
+                headers: {
+                    "Accept": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cart-count').innerText = data.count;
+            });
+        }
 
+    </script>
 </body>
 
 </html>

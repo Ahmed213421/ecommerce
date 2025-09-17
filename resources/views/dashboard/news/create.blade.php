@@ -55,7 +55,7 @@
             <div>
 
             <div class="custom-file my-3">
-                <input type="file" class="custom-file-input" id="customFile" name="image" accept="image/*">
+                <input type="file" class="custom-file-input" id="customFile" name="imagepath" accept="image/*">
                 <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
               </div>
               <div class="form-group mb-3">

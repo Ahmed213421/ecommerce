@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,7 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate($guard = null): void
+    public function authenticate($guard = null)
     {
         $this->ensureIsNotRateLimited();
 
@@ -52,13 +53,25 @@ class LoginRequest extends FormRequest
         $user = Auth::guard($guard)->user();
 
         // Check user status for 'users' guard only
-        if ($guard === 'users' && $user->status !== 'active') {
+        if (auth('web')->user() && auth('web')->user()->status == 'blocked') {
+            Auth::guard($guard)->logout();
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth is blocked'),
+            ]);
+        }
+
+        // Check user status for 'admins' guard only
+        if ($guard === 'admin' && $user->status !== 'active') {
             Auth::guard($guard)->logout();
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.inactive'),
             ]);
         }
+
+
+
 
         RateLimiter::clear($this->throttleKey());
     }

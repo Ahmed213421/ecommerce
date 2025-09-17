@@ -44,12 +44,12 @@
                             <div class="col-lg-4 col-md-6 text-center {{ Str::slug($category->name) }}">
                                 <div class="single-product-item">
                                     <div class="product-image">
-                                        <a href="{{ route('admin.products.show', $item->slug) }}">
+                                        <a href="{{ route('customer.product.show', $item->slug) }}">
                                             <img src="{{ asset($item->imagepath) }}" alt="">
                                         </a>
                                     </div>
                                     <h3><a href="{{ route('customer.product.show', $item->slug) }}">{{ $item->name }}</a></h3>
-                                    <p class="product-price"><span>{{ trans('shop.per_kg') }}</span><br>{{$product->price}}</del> {{ $product->price_after_discount }}$</p>
+                                    <p class="product-price"><span></span><br>{{$item->price}}</del> {{ $item->price_after_discount }}$</p>
 
                                     @auth
                                         <div class="favorite-icon">

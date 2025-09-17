@@ -3,70 +3,48 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tag;
+use App\Http\Requests\Admin\TagRequest;
+use App\Http\Requests\Admin\UpdateTagRequest;
+use App\Repositories\Admin\Interfaces\TagRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
 {
+    protected $tagRepository;
+
+    public function __construct(TagRepositoryInterface $tagRepository)
+    {
+        $this->tagRepository = $tagRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['tags'] = Tag::latest()->get();
-        return view('dashboard.tags.index',$data);
+        $data['tags'] = $this->tagRepository->getAll();
+        return view('dashboard.tags.index', $data);
     }
-
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name_en' => 'required',
-            'name_ar' => 'required',
-        ]);
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-
-        $tag = new Tag();
-        $tag->name = ['en' => $request->name_en , 'ar' => $request->name_ar];
-        $tag->save();
+        $this->tagRepository->create($request->validated());
 
         toastr()->success(__('toaster.add'));
-
         return back();
     }
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTagRequest $request, string $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name_en' => 'required',
-            'name_ar' => 'required',
-        ]);
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-
-        $tag = Tag::find($id);
-        $tag->name = ['en' => $request->name_en , 'ar' => $request->name_ar];
-        $tag->save();
+        $this->tagRepository->update($request->validated(), $id);
 
         toastr()->success(__('toaster.update'));
-
         return back();
     }
 
@@ -75,10 +53,9 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        Tag::find($id)->delete();
+        $this->tagRepository->delete($id);
 
         toastr()->success(__('toaster.del'));
-
         return back();
     }
 }

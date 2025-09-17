@@ -11,6 +11,7 @@ return array (
   'create_slide' => 'اضافه سلايد جديده',
   'created_at' => 'منذ',
   'dashboard' => 'الرئيسيه',
+  'customers' => 'الزبائن',
   'del' =>
   array (
     'item' => 'هل انت متأكد من عمليه الحذف؟',
@@ -32,6 +33,7 @@ return array (
     'category' => 'اختار قسم',
     'tags' => 'اختار كلمات دلاليه',
     'subcategory' => 'اختار فرع قسم',
+    'status' => 'احتار حاله المستخدم',
   ),
   'slider' => 'سلايدر',
   'view' => 'الاتطلاع',
@@ -64,5 +66,8 @@ return array (
   'all' => 'كل',
   'most_ordered' => 'بيان طلبات بالاشهر',
   'photos' => 'صور',
+  'active' => 'تنشيط المستخدم',
+  'deactive' => 'ايقاف المستخدم مؤقتا',
+  'blocked' => 'حظر المستخدم',
 
 );

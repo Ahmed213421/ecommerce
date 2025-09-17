@@ -56,6 +56,12 @@ class AuthenticatedSessionController extends Controller
             session()->forget('cart');
         }
 
+        $user = \App\Models\User::where('email', $request->email)->first();
+
+        if ($user->status == 'deactive') {
+            $user->update(['status' => 'active']);
+        }
+
         return redirect()->route('customer.home');
     }
 

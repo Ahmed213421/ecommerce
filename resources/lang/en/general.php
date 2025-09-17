@@ -68,4 +68,6 @@ return array (
     'change_pic' => 'Change Profile Picture',
     'contact' => 'Contactors',
     'clear' => 'Clear',
+    'testmonials' => 'Testimonials',
+    'featured' => 'Featured Products',
 );

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('subcategory_id')->constrained();
             $table->text('imagepath')->nullable();
             $table->integer('views')->default(0);
+            $table->integer('featured')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

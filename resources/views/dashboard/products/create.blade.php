@@ -36,7 +36,7 @@
                 <label for="simpleinput">{{ trans('dashboard.desc') }} {{ trans('dashboard.ineng') }}</label>
                 <input type="text" id="simpleinput" class="form-control" name="description_en" value="{{old('description_en')}}">
             </div>
-            
+
             <div class="form-group mb-3">
                 <label for="simpleinput">{{ trans('dashboard.desc') }} {{ trans('dashboard.inarabic') }}</label>
                 <input type="text" id="simpleinput" class="form-control" name="description_ar" value="{{old('description_ar')}}">
@@ -51,11 +51,11 @@
             </div>
             <div class="form-group mb-3">
                 <label for="discount">{{ trans('dashboard.discount') }}</label>
-                <input type="number" id="discount" class="form-control" name="discount"min="0" value="{{old('discount')}}" required oninput="this.value = Math.max(0, this.value)">
+                <input type="number" id="discount" class="form-control" name="discount"min="0" value="{{old('discount')}}" oninput="this.value = Math.max(0, this.value)">
             </div>
 
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                <input type="file" class="custom-file-input" id="customFi" name="imagepath" accept="image/*">
                 <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
               </div>
 

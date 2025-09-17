@@ -26,7 +26,7 @@
                     </div>
                     <div id="form_status"></div>
                     <div class="contact-form">
-                        <form method="POST" id="fruitkha-contact" action="{{ route('customer.review.store') }}">
+                        <form method="POST" id="fruitkha-contact" action="{{ route('customer.testmonials.store') }}">
                             @csrf
                             @method('POST')
                             <p>

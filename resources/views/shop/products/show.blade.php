@@ -141,7 +141,7 @@
 
                             <p><strong>{{ trans('category.categories') }}: </strong>
                                 <a
-                                    href="{{ route('customer.subcategory.show', $product->subcategory->id) }}">{{ $product->subcategory->name }}</a>
+                                    href="{{ route('customer.shop') }}">{{ $product->subcategory->name }}</a>
                             </p>
                         </div>
                         <h4>{{ trans('general.share') }}:</h4>
@@ -157,6 +157,59 @@
         </div>
     </div>
     <!-- end single product -->
+
+    <div class="contact-from-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="form-title">
+                        <h2>Customer Reviews</h2>
+                    </div>
+                    <div id="form_status"></div>
+                    <div class="contact-form">
+                        <form method="POST" id="fruitkha-contact" action="{{ route('customer.reviews.store') }}">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <p>
+                                <input type="text" placeholder="Name" name="name" id="name" value="">
+                                <input type="email" placeholder="Email" name="email" id="email" value="">
+                            </p>
+                            <p>
+                                <input type="tel" placeholder="Phone" name="phone" id="phone" value="">
+                                <input type="text" placeholder="Subject" name="subject" id="subject" value="">
+                            </p>
+                            <p>
+                                <textarea name="message" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                            </p>
+                            <p>
+                                <input type="submit" value="submit">
+                            </p>
+                        </form>
+
+                    </div>
+                                                        </div>
+                <div class="col-lg-4">
+					<div class="contact-form-wrap">
+                        					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- start review section -->
+<!-- start review section -->
+<div class="testimonail-section mt-150 mb-150" id="ajax-reviews">
+    <div class="container">
+        @include('shop.products.reviews') <!-- تحميل التقييمات والصفحات -->
+    </div>
+</div>
+<!-- end review section -->
+
+
+<!-- end review section -->
+
+
+
 
     <!-- more products -->
     <div class="more-products mb-150">
@@ -273,4 +326,32 @@
         });
     }
 </script>
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+
+            let url = $(this).attr('href');
+            if (!url || url === '#') return;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $('#ajax-reviews').html(data);
+                    // window.history.pushState({}, '', url);
+                },
+                error: function (xhr) {
+                    console.error('AJAX Error:', xhr);
+                    alert('حدث خطأ أثناء التحميل');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
 @endsection

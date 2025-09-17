@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\Order;
+use App\Repositories\Interfaces\CartRepositoryInterface;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Models\OrderDetail;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -14,17 +14,26 @@ use Laravel\Cashier\Checkout;
 
 class CheckOutController extends Controller
 {
+    protected $cartRepository;
+    protected $orderRepository;
+
+    public function __construct(CartRepositoryInterface $cartRepository, OrderRepositoryInterface $orderRepository)
+    {
+        $this->cartRepository = $cartRepository;
+        $this->orderRepository = $orderRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['cartItems'] = Cart::with('product')->where('user_id', Auth::user()->id)->get();
+        $data['cartItems'] = $this->cartRepository->getUserCartItems(Auth::user()->id);
 
 
-        $cart = Cart::with('product')
-            ->where('user_id', Auth::user()->id)
-            ->first();
+        // Get first cart item for any additional processing if needed
+        $cartItems = $this->cartRepository->getUserCartItems(Auth::user()->id);
+        $cart = $cartItems->first();
 
 
 
@@ -37,9 +46,7 @@ class CheckOutController extends Controller
      */
     public function store(Request $request)
     {
-        $cart = Cart::with('product')
-            ->where('user_id', Auth::user()->id)
-            ->get();
+        $cart = $this->cartRepository->getUserCartItems(Auth::user()->id);
 
 
         $prices = [];
@@ -141,20 +148,20 @@ class CheckOutController extends Controller
             }
 
             if ($request->payment == 'cash') {
-                $order = new Order();
-                $order->name = $request->name;
-                $order->email = $request->email;
-                $order->address = $request->address;
-                $order->phone = $request->phone;
-                $order->note = $request->note;
-                $order->user_id = Auth::user()->id;
-                $order->payment = 'cash';
-                $order->status = 'pending';
-                $order->totalprice = $totalPrice + Setting::getTaxRate();
-                $order->subtotal = $subTotal + Setting::getTaxRate();
-                $order->save();
+                $order = $this->orderRepository->create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                    'phone' => $request->phone,
+                    'note' => $request->note,
+                    'user_id' => Auth::user()->id,
+                    'payment' => 'cash',
+                    'status' => 'pending',
+                    'totalprice' => $totalPrice + Setting::getTaxRate(),
+                    'subtotal' => $subTotal + Setting::getTaxRate(),
+                ]);
 
-                $cartproducts = Cart::where('user_id', Auth::user()->id)->get();
+                $cartproducts = $this->cartRepository->getUserCartItems(Auth::user()->id);
 
                 foreach ($cartproducts as $cart) {
                     $newOrderDetail = new OrderDetail();

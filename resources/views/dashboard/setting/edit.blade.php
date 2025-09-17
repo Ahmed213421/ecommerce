@@ -36,7 +36,7 @@
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.iconpage') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="file" class="form-control" accept="image/*" name="iconpage">
+                                            <input type="file" class="form-control" accept="image/*" name="pageIcon">
                                             <img src="{{asset($setting->pageIcon)}}" alt="" srcset="" width="20px" height="20px">
                                         </div>
                                     </div>
@@ -50,124 +50,115 @@
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control"  name="tax">
+                                            <input type="text" class="form-control" name="tax_rate" value="{{ $setting->tax_rate }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.phone') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="phone" value="{{$setting->phone}}">
+                                            <input type="text" class="form-control" name="phone" value="{{ $setting->phone }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.whoweare') }} {{ trans('dashboard.ineng') }}</label>
                                         <div class="col-sm-10">
                                             <textarea class="form-control" id="editor" style="height: 300px" name="whoweare_en">
-
                                                 @if (old('whoweare_en'))
-                                                {{old('whoweare_en')}}
-                                            @else
-                                            <div class="abt-text">
-                                                {{ $setting->getTranslation('whoweare', 'en') }}
-                                            @endif
-                                        </textarea>
+                                                    {{ old('whoweare_en') }}
+                                                @else
+                                                    {{ $setting->getTranslation('whoweare', 'en') }}
+                                                @endif
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.whoweare') }} {{ trans('dashboard.inarabic') }}</label>
                                         <div class="col-sm-10">
                                             <textarea class="form-control" id="editor-2" style="height: 300px" name="whoweare_ar">
-
                                                 @if (old('whoweare_ar'))
-                                                {{old('whoweare_ar')}}
-                                            @else
-                                            <div class="abt-text">
-                                                {{$setting->getTranslation('whoweare','ar')}}
-                                            @endif
-                                        </textarea>
+                                                    {{ old('whoweare_ar') }}
+                                                @else
+                                                    {{ $setting->getTranslation('whoweare', 'ar') }}
+                                                @endif
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.description') }} {{ trans('dashboard.ineng') }}</label>
                                         <div class="col-sm-10">
-                                            <textarea type="text" class="form-control" name="description_en">
-                                                {{ old('description_en','Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.') }}
-                                            </textarea>
+                                            <textarea type="text" class="form-control" name="description_en">{{ old('description_en', $setting->getTranslation('description', 'en')) }}</textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.description') }} {{ trans('dashboard.inarabic') }}</label>
                                         <div class="col-sm-10">
-                                            <textarea type="text" class="form-control" name="description_ar" >
-                                                {{ old('description_ar','لوريم إيبسوم هو ببساطة نص شكلي يستخدم في صناعة الطباعة والتنضيد. كان لوريم إيبسوم النص القياسي للصناعة منذ القرن الخامس عشر.') }}
-                                            </textarea>
+                                            <textarea type="text" class="form-control" name="description_ar">{{ old('description_ar', $setting->getTranslation('description', 'ar')) }}</textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.workinghours') }} {{ trans('dashboard.ineng') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="hours_working_en" value="{{$setting->getTranslation('hours_working','en')}}">
+                                            <input type="text" class="form-control" name="hours_working_en" value="{{ old('hours_working_en', $setting->getTranslation('hours_working', 'en')) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.workinghours') }} {{ trans('dashboard.inarabic') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="hours_working_ar" value="{{$setting->getTranslation('hours_working','ar')}}">
+                                            <input type="text" class="form-control" name="hours_working_ar" value="{{ old('hours_working_ar', $setting->getTranslation('hours_working', 'ar')) }}">
                                         </div>
                                     </div>
-
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.map') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="map" value="{{ $setting->map }}">
+                                            <input type="text" class="form-control" name="map" value="{{ old('map', $setting->map) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.address') }} {{ trans('dashboard.ineng') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="address_en" value="{{$setting->getTranslation('address','en')}}">
+                                            <input type="text" class="form-control" name="address_en" value="{{ old('address_en', $setting->getTranslation('address', 'en')) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.address') }} {{ trans('dashboard.inarabic') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="address_ar" value="{{$setting->getTranslation('address','ar')}}">
+                                            <input type="text" class="form-control" name="address_ar" value="{{ old('address_ar', $setting->getTranslation('address', 'ar')) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.facebook') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="fb" value="{{ optional($setting->link)->fb }}">
+                                            <input type="text" class="form-control" name="fb" value="{{ old('fb', optional($setting->link)->fb) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.linked') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="li" value="{{ optional($setting->link)->li }}">
+                                            <input type="text" class="form-control" name="li" value="{{ old('li', optional($setting->link)->li) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.twitter') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="tw" value="{{ optional($setting->link)->tw }}">
+                                            <input type="text" class="form-control" name="tw" value="{{ old('tw', optional($setting->link)->tw) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.instagram') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="ins" value="{{ optional($setting->link)->ins }}">
+                                            <input type="text" class="form-control" name="ins" value="{{ old('ins', optional($setting->link)->ins) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('general.email') }}</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" name="email" value="{{ $setting->email }}">
+                                            <input type="email" class="form-control" name="email" value="{{ old('email', $setting->email) }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputPassword" class="col-sm-2 col-form-label">{{ trans('dashboard.desc') }}</label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" style="height: 100px" name="description">{{ $setting->description }}</textarea>
+                                            <textarea class="form-control" style="height: 100px" name="description">{{ old('description', $setting->description) }}</textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">

@@ -230,7 +230,7 @@
                                 </div>
 
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                                    <input type="file" class="custom-file-input" id="customFi" name="imagepath" accept="image/*">
                                     <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
                                   </div>
 

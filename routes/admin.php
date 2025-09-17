@@ -20,10 +20,12 @@ Route::group(
         Route::resource('products', Admin\ProductController::class);
         Route::resource('slider',Admin\SlideController::class)->only('index','store','update','destroy');
 
+        Route::resource('testmonials',Admin\TestmonialController::class)->only('index','update','destroy');
         Route::resource('review',Admin\ReviewController::class)->only('index','update','destroy');
-        Route::post('changeStatus/{id}',Admin\ChangeStatusContnroller::class)->name('stauts.change');
+        Route::post('changeStatus/{id}',Admin\ChangeStatusController::class)->name('stauts.change');
         Route::resource('setting', Admin\SettingController::class);
         Route::resource('profile/settings', Admin\ProfileSettingController::class)->names('profile')->only('index','update','destroy');
+        Route::delete('news/deleteAll', [Admin\PostController::class,'deleteAll'])->name('news.deleteAll');
         Route::resource('news', Admin\PostController::class);
         Route::resource('subscribers', Admin\SubscriberController::class)->only('index');
         Route::resource('comments', Admin\CommentController::class);
@@ -33,6 +35,7 @@ Route::group(
         Route::get('/notifications/clear-all', Admin\ClearNotificationController::class)->name('notifications.clear');
         Route::get('search/{search}',Admin\SearhController::class)->name('search');
         Route::resource('contact',Admin\ContactController::class)->only('index','destroy');
+        Route::resource('customers',Admin\CustomersController::class);
 
         Route::fallback(function () {
             return response()->view('dashboard.errorpage', [], 404);

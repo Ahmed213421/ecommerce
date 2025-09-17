@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Product;
 use App\Models\Review;
 use App\Models\Subscriber;
+use App\Models\Testmonial;
 use Illuminate\Http\Request;
 
-class ChangeStatusContnroller extends Controller
+class ChangeStatusController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -22,6 +24,28 @@ class ChangeStatusContnroller extends Controller
             }
             else{
                 $review->update(['status' => 0]);
+            }
+
+            return back();
+        }
+        if($request->status == 'testmonial'){
+            $review = Testmonial::find($id);
+            if($review->status == 0){
+                $review->update(['status' => 1]);
+            }
+            else{
+                $review->update(['status' => 0]);
+            }
+
+            return back();
+        }
+        if($request->status == 'featured'){
+            $product = Product::find($id);
+            if($product->featured == 0){
+                $product->update(['featured' => 1]);
+            }
+            else{
+                $product->update(['featured' => 0]);
             }
 
             return back();

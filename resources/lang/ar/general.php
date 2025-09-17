@@ -68,4 +68,6 @@ return array (
   'change_pic' => 'تغيير صوره الشخصيه',
   'contact' => 'المتواصلون',
   'clear' => 'حذف',
+  'testmonials' => 'ألتيست مونال',
+  'featured' => 'المميزون',
 );

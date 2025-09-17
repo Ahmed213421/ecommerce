@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AccountSettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeactiveController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WelcomeController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -22,7 +25,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReplyCommentController;
-use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TestmonialController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SubCategoryController;
@@ -92,12 +95,14 @@ Route::group(
 
     Route::resource('settings' , AccountSettingController::class)->only('index','update','destroy')->middleware('auth');
 
+    Route::get('/',[WelcomeController::class, 'index'])->name('home');
 
 
-        Route::get('/', function () {
-            $categories = Category::all();
-            return view('welcome',['categories' => $categories]);
-        })->name('home');
+
+        // Route::get('/', function () {
+        //     $categories = Category::all();
+        //     return view('welcome',['categories' => $categories]);
+        // })->name('home');
 
         Route::get('/checkout-success/{status}' , CheckoutSuccessController::class)->name('checkout-success');
         Route::get('/checkout-cancel/{status}' , CheckoutCancelController::class)->name('checkout-cancel');
@@ -114,9 +119,12 @@ Route::group(
         Route::resource('subcategory',SubCategoryController::class)->only('index','show')->parameters([
             'subcategory' => 'slug'
         ]);
-        Route::resource('review',ReviewController::class)->only('index','store');
+        Route::resource('testmonials',TestmonialController::class)->only('index','store');
+        Route::resource('reviews',ReviewController::class)->only('index','store');
         Route::get('search/{search}',SearchController::class)->name('search');
         Route::post('addproduct/',[CartController::class , 'addToCart'])->name('cart.product.add');
+        Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+
         Route::resource('cart',CartController::class)->only('edit','index','destroy','update');
         Route::resource('check-out',CheckOutController::class)->only('index','store')->middleware('auth');
         Route::resource('wishlist',WishList::class)->only('index')->middleware('auth');
@@ -132,6 +140,7 @@ Route::group(
         ]);
         Route::resource('comments',CommentController::class)->only(['store']);
         Route::resource('reply',ReplyCommentController::class)->only(['store']);
+        Route::get('deactive',DeactiveController::class)->name('deactive');
 
         Route::fallback(function () {
             return response()->view('shop.errorpage', [], 404);
@@ -156,7 +165,7 @@ Route::group(
         return response()->json($jobs);
     });
 
-    Route::view('home', 'welcome')->name('home');
+    // Route::view('home', 'welcome')->name('home');
 
 
     Route::get('/unsubscribe/{token}', [SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');

@@ -49,7 +49,7 @@
 
 
                             @if ($item->type == 'App\Notifications\NewCustomerReviewNotification')
-                                <a href="{{ route('admin.review.index') }}" class="list-group notification-link my-2 bg-transparent" data-id="{{$notificationId}}">
+                                <a href="{{ route('admin.testmonials.index') }}" class="list-group notification-link my-2 bg-transparent" data-id="{{$notificationId}}">
                                     <div
                                         class="list-group-item {{ $item->read_at == null ? 'bg-light' : 'bg-transparent' }}">
                                         <div class="row align-items-center">

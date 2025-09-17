@@ -17,4 +17,5 @@ return array (
   'anyq' => 'Have you any questions?',
   'subscripe_to' => 'Subscribe to our mailing list to get the latest updates.',
   'more' => 'more',
+  'deactive' => 'Deactive Account',
 );

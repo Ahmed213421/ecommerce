@@ -18,6 +18,15 @@ html {
   height: 100%;
 }
 
+@media print {
+    * {
+      display: none !important;
+    }
+    .show-in-print {
+      display: block !important;
+    }
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('subject');
             $table->integer('status')->default(0);
             $table->text('message');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

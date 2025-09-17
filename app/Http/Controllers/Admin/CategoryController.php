@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CategoryRequest;
+use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Subcategory;
+use App\Repositories\Admin\Interfaces\CategoryRepositoryInterface;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -13,6 +17,13 @@ use function Ramsey\Uuid\v1;
 
 class CategoryController extends Controller
 {
+
+    protected $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,48 +45,19 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        // return $request;
+        try{
+            DB::beginTransaction();
 
-        $validator = Validator::make($request->all(),[
-            'name_en' => 'required|string|max:255',
-            'name_ar' => 'required|string|max:255',
-            'image' => 'image',
-            'category_id' => 'nullable|exists:categories,id'
-        ]);
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
+            $this->categoryRepository->create($request->validated());
+            toastr()->success(__('toaster.cat_create'));
+            DB::commit();
         }
-
-        if ($request->hasFile('image')) {
-            $img =  'dashboard/'.$request->image->storeAs('category', time().'_'.$request->image->getClientOriginalName(),'images');
+        catch(\Exception $e){
+            DB::rollBack();
+            toastr()->error(__('error'));
         }
-        else{
-            $img = null;
-        }
-
-        if($request->category_id){
-            Subcategory::create([
-                'name' => ['en' => $request->name_en , 'ar' => $request->name_ar],
-                'category_id' => $request->category_id,
-                'imagepath' => $img,
-                'slug' => Str::slug($request->name_en),
-            ]);
-        }
-        else{
-            Category::create([
-                'name' => ['en' => $request->name_en , 'ar' => $request->name_ar],
-                'description' => ['en' => $request->description_en , 'ar' => $request->description_ar],
-                'imagepath' => $img,
-                'slug' => Str::slug($request->name_en),
-            ]);
-        }
-
-        toastr()->success(__('toaster.cat_create'));
 
         return back();
     }
@@ -100,37 +82,20 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request,Category $category)
     {
-        $validator = Validator::make($request->all(),[
-            'name_en' => 'required',
-            'name_ar' => 'required',
-            'image' => 'image',
-        ]);
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
+        try{
+            DB::beginTransaction();
+            $this->categoryRepository->update($category,$request->validated());
+            DB::commit();
+            toastr()->success(__('toaster.cat_create'));
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+            toastr()->error(__('error'));
         }
 
-        $category = Category::find($id);
-        $img = $category->imagepath;
 
-        if ($request->hasFile('image')) {
-            if ($category->imagepath &&  file_exists(public_path($category->imagepath))) {
-                unlink(public_path($category->imagepath));
-            }
-            $img =  'dashboard/'.$request->image->storeAs('category', time().'_'.$request->image->getClientOriginalName(),'images');
-        }
-        Category::find($id)->update([
-            'name' => ['en' => $request->name_en , 'ar' => $request->name_ar],
-            'description' => ['en' => $request->description_en , 'ar' => $request->description_ar],
-            'imagepath' => $img,
-            'slug' => Str::slug($request->name_en),
-        ]);
-
-        toastr()->success(__('toaster.cat_create'));
 
         return back();
     }
@@ -138,15 +103,21 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
-
-        Category::destroy($id);
-        if ($category->imagepath &&  file_exists(public_path($category->imagepath))) {
-            unlink(public_path($category->imagepath));
+        try{
+            DB::beginTransaction();
+            $this->categoryRepository->destroy($category);
+            toastr()->success(__('toaster.del'));
+            DB::commit();
         }
-        toastr()->success(__('toaster.del'));
+        catch(\Exception $e){
+            DB::rollBack();
+            toastr()->error(__('error'));
+        }
+
         return back();
+
+
     }
 }

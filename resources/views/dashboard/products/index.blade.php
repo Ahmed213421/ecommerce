@@ -27,22 +27,7 @@
             <div class="col-md-12 col-sm-6">
                 <div class="card shadow">
                     <div class="card-body">
-                        <form action="{{ route('admin.products.destroy', 'test') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <div class="modal-body">
-                                {{-- {{ trans('My_Classes_trans.Warning_Grade') }} --}}
-                                <input type="hidden" name="page" value="2">
-                                <input class="text" type="hidden" id="delete_all_id" name="delete_all_id" value=''>
-                            </div>
-
-                            <div class="modal-footer">
-                                {{-- <button type="button" class="btn btn-secondary" --}}
-                                {{-- data-bs-dismiss="modal">{{ trans('My_Classes_trans.Close') }}</button> --}}
-                                <button type="submit"
-                                    class="btn btn-danger deletebtn">{{ trans('dashboard.delete') }}</button>
-                            </div>
-                        </form>
+                        <button id="deletebtn" class="btn btn-danger">Delete All</button>
                         <!-- table -->
                         <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <div class="row">
@@ -70,6 +55,7 @@
                                                 <td>{{ trans('general.after') }} {{ trans('dashboard.discount') }}</td>
                                                 <td>{{ trans('category.category') }}</td>
                                                 <td>{{ trans('dashboard.quantity') }}</td>
+                                                <td>{{ trans('general.featured') }}</td>
                                                 <td>{{ trans('dashboard.created_at') }}</td>
                                                 <td>{{ trans('dashboard.actions') }}</td>
                                         </thead>
@@ -92,6 +78,25 @@
                                                             href="{{ route('admin.subcategory.show', $product->subcategory->id) }}">{{ $product->subcategory->name }}</a>
                                                     </td>
                                                     <td class="text-center">{{ $product->quantity }}</td>
+                                                    <td class="text-center">
+                                                        <form action="{{ route('admin.stauts.change', $product->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('POST')
+                                                        <input type="hidden" name="status" value="featured">
+                                                            <button type="submit" class="btn btn-link p-0">
+                                                                <span class="badge badge-secondary">
+                                                                    @if ($product->featured == 1)
+                                                                        <span
+                                                                            class="badge badge-light p-2 mt-1">{{ trans('general.active') }}</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge badge-dark p-2 mt-1">{{ trans('general.unactive') }}</span>
+                                                                    @endif
+                                                                </span>
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                     <td>{{ $product->created_at->diffForHumans() }}</td>
 
                                                     <td><button class="btn btn-sm dropdown-toggle more-horizontal"
@@ -115,6 +120,7 @@
                                                     </td>
                                                     @include('dashboard.products.delete')
                                                     @include('dashboard.products.view')
+                                                    @include('dashboard.products.delete-all')
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -143,7 +149,7 @@
                 <script type="text/javascript">
                     $(function() {
 
-                        $(".deletebtn").click(function() {
+                        $("#deletebtn").click(function() {
 
 
                             var selected = [];
@@ -155,8 +161,8 @@
 
 
                             if (selected.length > 0) {
-                                // $('#btn-delete-all').modal('show');
-                                $('input[id="delete_all_id"]').val(JSON.stringify(selected));
+                                    $('#deleteAllModal').modal('show');
+                                    $('input[id="delete_all_id"]').val(JSON.stringify(selected));
                             }
 
 
