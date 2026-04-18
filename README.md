@@ -247,7 +247,6 @@ Access the admin dashboard at `/admin/login` with the following credentials:
 
 ### Frontend Packages
 - **Tailwind CSS**: Utility-first CSS framework
-- **Alpine.js**: Lightweight JavaScript framework
 - **Vite**: Modern build tool
 
 ## 🚀 Deployment
