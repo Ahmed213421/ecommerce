@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\WelcomeRepositoryInterface;
+use App\Repositories\Contracts\WelcomeContract;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
     protected $welcomeRepository;
 
-    public function __construct(WelcomeRepositoryInterface $welcomeRepository)
+    public function __construct(WelcomeContract $welcomeRepository)
     {
         $this->welcomeRepository = $welcomeRepository;
     }

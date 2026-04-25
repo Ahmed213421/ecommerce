@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TagRequest;
 use App\Http\Requests\Admin\UpdateTagRequest;
-use App\Repositories\Admin\Interfaces\TagRepositoryInterface;
+use App\Repositories\Admin\Contracts\TagContract;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
     protected $tagRepository;
 
-    public function __construct(TagRepositoryInterface $tagRepository)
+    public function __construct(TagContract $tagRepository)
     {
         $this->tagRepository = $tagRepository;
     }

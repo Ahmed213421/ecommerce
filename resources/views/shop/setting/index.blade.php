@@ -119,7 +119,7 @@
                                     <label for="name">{{ trans('general.change') }} {{ trans('dashboard.photo') }}</label>
                                     <div class="avatar-wrapper">
                                         <div class="avatar avatar-xl">
-                                            <img src="default-avatar.jpg" alt="Avatar"
+                                            <img src="{{ auth()->user()->image ? asset(auth()->user()->image->imagepath) : asset('default-avatar.jpg') }}" alt="Avatar"
                                                 class="avatar avatar-img rounded-circle" id="avatar">
                                             <div class="hover-text" id="hoverText">Change Picture</div>
                                             <input type="file" name="photo" id="fileInput" style="display: none;" />

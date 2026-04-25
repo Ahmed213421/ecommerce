@@ -3,10 +3,10 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Admin;
-use App\Repositories\Admin\Interfaces\AdminRepositoryInterface;
+use App\Repositories\Admin\Contracts\AdminContract;
 use Illuminate\Support\Facades\Hash;
 
-class AdminRepository implements AdminRepositoryInterface
+class AdminRepository implements AdminContract
 {
     protected $model;
 

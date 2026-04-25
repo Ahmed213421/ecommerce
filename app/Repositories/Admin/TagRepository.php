@@ -3,9 +3,9 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Tag;
-use App\Repositories\Admin\Interfaces\TagRepositoryInterface;
+use App\Repositories\Admin\Contracts\TagContract;
 
-class TagRepository implements TagRepositoryInterface
+class TagRepository implements TagContract
 {
     protected $model;
 

@@ -7,10 +7,10 @@ use App\Events\NewCustomerReviewEvent;
 use App\Models\Admin;
 use App\Models\Testmonial;
 use App\Notifications\NewCustomerReviewNotification;
-use App\Repositories\Admin\Interfaces\TestmonialRepositoryInterface;
+use App\Repositories\Admin\Contracts\TestmonialContract;
 use Illuminate\Support\Facades\Notification;
 
-class TestmonialRepository implements TestmonialRepositoryInterface
+class TestmonialRepository implements TestmonialContract
 {
     protected $model;
 

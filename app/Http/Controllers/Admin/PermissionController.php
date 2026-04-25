@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Interfaces\PermissionRepositoryInterface;
+use App\Repositories\Admin\Contracts\PermissionContract;
 
 class PermissionController extends Controller
 {
     protected $permissionRepository;
 
-    public function __construct(PermissionRepositoryInterface $permissionRepository)
+    public function __construct(PermissionContract $permissionRepository)
     {
         // $this->middleware('permission:view-permission,admin', ['only' => ['index']]);
         // $this->middleware('permission:create-permission,admin', ['only' => ['create','store']]);

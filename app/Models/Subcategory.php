@@ -16,7 +16,7 @@ class Subcategory extends Model
 
     public function getRouteKeyName()
 {
-    return 'slug';
+    return 'id';
 }
 
     protected $table = 'subcategories';

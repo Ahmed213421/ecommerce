@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\CartRepositoryInterface;
-use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Models\Cart;
+use App\Models\Product;
+use App\Repositories\Contracts\CartContract;
+use App\Repositories\Contracts\ProductContract;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,7 @@ class CartController extends Controller
     protected $cartRepository;
     protected $productRepository;
 
-    public function __construct(CartRepositoryInterface $cartRepository, ProductRepositoryInterface $productRepository)
+    public function __construct(CartContract $cartRepository, ProductContract $productRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->productRepository = $productRepository;

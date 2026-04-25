@@ -3,10 +3,10 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Slider;
-use App\Repositories\Admin\Interfaces\SliderRepositoryInterface;
+use App\Repositories\Admin\Contracts\SliderContract;
 use Illuminate\Support\Facades\File;
 
-class SliderRepository implements SliderRepositoryInterface
+class SliderRepository implements SliderContract
 {
     protected $slider;
 

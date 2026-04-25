@@ -30,7 +30,7 @@ class UpdateProductRequest extends FormRequest
             'discount' => 'nullable|numeric|min:0|max:100',
             'quantity' => 'numeric|min:0|max:100',
             'subcategory_id' => 'required|exists:subcategories,id',
-            'imagepath' => 'required|image',
+            'imagepath' => 'nullable|image',
             'images.*' => 'image|nullable',
         ];
     }

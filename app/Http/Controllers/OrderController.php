@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Contracts\OrderContract;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     protected $orderRepository;
 
-    public function __construct(OrderRepositoryInterface $orderRepository)
+    public function __construct(OrderContract $orderRepository)
     {
         $this->orderRepository = $orderRepository;
     }

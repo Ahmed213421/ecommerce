@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SubCategoryRequest;
 use App\Http\Requests\Admin\UpdateSubCategoryRequest;
-use App\Repositories\Admin\SubCategoryRepositoryInterface;
+use App\Models\Subcategory;
+use App\Repositories\Admin\Contracts\SubCategoryContract;
 use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
     protected $subCategoryRepository;
 
-    public function __construct(SubCategoryRepositoryInterface $subCategoryRepository)
+    public function __construct(SubCategoryContract $subCategoryRepository)
     {
         $this->subCategoryRepository = $subCategoryRepository;
     }
@@ -75,7 +76,7 @@ class SubCategoryController extends Controller
      */
     public function show(string $id)
     {
-        return view('dashboard.category.subcategory.show',['subcategory' => Subcategory::find($id)]);
+        return view('dashboard.category.subcategory.show',['subcategory' => Subcategory::with('category')->findOrFail($id)]);
     }
 
     /**

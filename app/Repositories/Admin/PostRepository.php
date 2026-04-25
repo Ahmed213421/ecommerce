@@ -5,12 +5,12 @@ namespace App\Repositories\Admin;
 use App\Mail\NewPostMail;
 use App\Models\Post;
 use App\Models\Subscriber;
-use App\Repositories\Admin\Interfaces\PostRepositoryInterface;
+use App\Repositories\Admin\Contracts\PostContract;
 use Flasher\Laravel\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class PostRepository implements PostRepositoryInterface
+class PostRepository implements PostContract
 {
     protected $model;
     public function __construct(Post $post){
@@ -35,7 +35,26 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function update($model,array $data){
+    public function update($model, array $data){
+        if (request()->hasFile('imagepath')) {
+            // Delete old image if exists
+            if ($model->imagepath && file_exists(public_path($model->imagepath))) {
+                unlink(public_path($model->imagepath));
+            }
+            $data['imagepath'] = 'dashboard/'.$data['imagepath']->storeAs('news', time().'_'.$data['imagepath']->getClientOriginalName(),'images');
+        } else {
+            // Remove imagepath from data if not provided to keep existing image
+            unset($data['imagepath']);
+        }
+
+        $model->update($data);
+
+        // Sync tags
+        if (request()->has('tags')) {
+            $model->tags()->sync(request()->tags);
+        }
+
+        return $model;
     }
 
     public function destroy($model){

@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 use App\Repositories\Admin\AdminRepository;
-use App\Repositories\Admin\Interfaces\AdminRepositoryInterface;
+use App\Repositories\Admin\Contracts\AdminContract;
 use App\Repositories\Admin\CategoryRepository;
-use App\Repositories\Admin\Interfaces\TestmonialRepositoryInterface;
+use App\Repositories\Admin\Contracts\TestmonialContract;
 use App\Repositories\Admin\PostRepository;
-use App\Repositories\Admin\Interfaces\CategoryRepositoryInterface;
-use App\Repositories\Admin\Interfaces\PostRepositoryInterface;
+use App\Repositories\Admin\Contracts\CategoryContract as AdminCategoryContract;
+use App\Repositories\Admin\Contracts\PostContract as AdminPostContract;
+use App\Repositories\Admin\Contracts\SubCategoryContract;
+use App\Repositories\Admin\SubCategoryRepository;
 use App\Repositories\Admin\TestmonialRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
@@ -19,10 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CategoryRepositoryInterface::class,CategoryRepository::class);
-        $this->app->bind(PostRepositoryInterface::class,PostRepository::class);
-        $this->app->bind(AdminRepositoryInterface::class,AdminRepository::class);
-        $this->app->bind(TestmonialRepositoryInterface::class,TestmonialRepository::class);
+        $this->app->bind(AdminCategoryContract::class, CategoryRepository::class);
+        $this->app->bind(AdminPostContract::class, PostRepository::class);
+        $this->app->bind(AdminContract::class, AdminRepository::class);
+        $this->app->bind(TestmonialContract::class, TestmonialRepository::class);
+        $this->app->bind(SubCategoryContract::class, SubCategoryRepository::class);
     }
 
     /**

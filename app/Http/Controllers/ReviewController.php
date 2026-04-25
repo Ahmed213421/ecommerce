@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NewCustomerReviewEvent;
 use App\Http\Requests\Admin\ReviewRequest;
 use App\Models\Admin;
-use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use App\Repositories\Contracts\ReviewContract;
 use App\Notifications\NewCustomerReviewNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +15,7 @@ class ReviewController extends Controller
 {
     protected $reviewRepository;
 
-    public function __construct(ReviewRepositoryInterface $reviewRepository)
+    public function __construct(ReviewContract $reviewRepository)
     {
         $this->reviewRepository = $reviewRepository;
     }

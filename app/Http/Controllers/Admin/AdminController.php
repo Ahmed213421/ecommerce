@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Interfaces\AdminRepositoryInterface;
+use App\Repositories\Admin\Contracts\AdminContract;
 use App\Http\Requests\Admin\AdminStoreRequest;
 use App\Http\Requests\Admin\AdminUpdateRequest;
 
@@ -16,7 +16,7 @@ class AdminController extends Controller
 {
     protected $adminRepository;
 
-    public function __construct(AdminRepositoryInterface $adminRepository)
+    public function __construct(AdminContract $adminRepository)
     {
         $this->adminRepository = $adminRepository;
     }

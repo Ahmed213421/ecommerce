@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->text('email')->unique()->nullable();
+            $table->string('email')->unique()->nullable();
             $table->text('message');
             $table->boolean('status')->default(0);
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');

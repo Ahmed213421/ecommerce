@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Subcategory;
-use App\Repositories\Admin\Interfaces\ProductRepositoryInterface;
+use App\Repositories\Admin\Contracts\ProductContract;
 use App\Http\Requests\Admin\ProductRequest;
 use DB;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class ProductController extends Controller
 {
     protected $productRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(ProductContract $productRepository)
     {
         $this->productRepository = $productRepository;
     }
@@ -55,7 +55,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::with(['subcategory', 'subcategory.category'])->findOrFail($id);
+        return view('dashboard.products.show', compact('product'));
     }
 
     /**
