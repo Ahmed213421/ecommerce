@@ -34,21 +34,15 @@ class ReviewRepository extends BaseRepository implements ReviewContract
         return $query->paginate($perPage);
     }
 
-    public function findById(int $id)
-    {
-        return $this->model->findOrFail($id);
-    }
-
     public function updateById(int $id, array $data)
     {
-        $review = $this->findById($id);
-        $review->update($data);
-        return $review;
+        $review = $this->findOrFail($id);
+        return $this->update($review, $data);
     }
 
     public function deleteById(int $id)
     {
-        $review = $this->findById($id);
-        return $review->delete();
+        $review = $this->findOrFail($id);
+        return $this->remove($review);
     }
 }

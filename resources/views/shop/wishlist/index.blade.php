@@ -29,7 +29,7 @@
                 <div class="col-md-12">
                     <div class="card mb-4">
                         <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">My Wish List</h4>
+                            <h4 class="mb-0">{{ trans('general.my_wishlist') }}</h4>
                         </div>
                         <div class="card-body">
                             <div class="row"> <!-- Ensure this row exists to wrap the columns -->
@@ -121,7 +121,7 @@
                 error: function(xhr) {
                     heart.toggleClass('active');
                     console.error('Error:', xhr.responseText);
-                    alert('An error occurred! Please try again later.');
+                    alert('{{ trans('general.error_occurred') }}');
                 },
             });
         }

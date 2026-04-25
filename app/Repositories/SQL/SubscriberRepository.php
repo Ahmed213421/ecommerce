@@ -12,11 +12,6 @@ class SubscriberRepository extends BaseRepository implements SubscriberContract
         parent::__construct($model);
     }
 
-    public function findById(int $id)
-    {
-        return $this->model->findOrFail($id);
-    }
-
     public function findByEmail(string $email)
     {
         return $this->model->where('email', $email)->first();
@@ -29,8 +24,8 @@ class SubscriberRepository extends BaseRepository implements SubscriberContract
 
     public function deleteById(int $id)
     {
-        $subscriber = $this->findById($id);
-        return $subscriber->delete();
+        $subscriber = $this->findOrFail($id);
+        return $this->remove($subscriber);
     }
 
     public function deleteByToken(string $token)

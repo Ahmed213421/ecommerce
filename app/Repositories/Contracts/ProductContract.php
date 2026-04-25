@@ -2,11 +2,9 @@
 
 namespace App\Repositories\Contracts;
 
-interface ProductContract
+interface ProductContract extends BaseContract
 {
-    public function all();
     public function findBySlug(string $slug);
-    public function findById(int $id);
     public function getMostViewed(int $limit = 3);
     public function getFeatured(int $limit = 3);
     public function incrementViews(int $id);

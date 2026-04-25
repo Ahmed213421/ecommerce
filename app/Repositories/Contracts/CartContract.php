@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface CartContract
+interface CartContract extends BaseContract
 {
     public function getUserCartItems(int $userId);
     public function addToCart(int $userId, int $productId, int $quantity);

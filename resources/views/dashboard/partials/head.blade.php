@@ -11,7 +11,7 @@
     <title>@yield('title')</title>
 
     <!-- Theme initialization script - runs before page loads to prevent flash -->
-    <script>
+    <!-- <script>
         (function() {
             // Get theme from localStorage
             var theme = localStorage.getItem('mode');
@@ -25,10 +25,10 @@
                 document.body.classList.remove('dark');
             }
         })();
-    </script>
+    </script> -->
 
     <!-- Critical CSS to prevent flash -->
-    <style>
+    <!-- <style>
         /* Prevent flash of unstyled content */
         html.dark {
             background-color: #212529 !important;
@@ -54,7 +54,7 @@
         body.theme-loaded {
             opacity: 1;
         }
-    </style>
+    </style> -->
 
     @if (App::getLocale() == 'ar')
         <link rel="stylesheet" href="{{ asset('admin/rtl/css/simplebar.css') }}">

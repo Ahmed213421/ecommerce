@@ -19,7 +19,7 @@ class SearchController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $results = $this->searchRepository->searchAll($request->search);
+        $results = $this->searchRepository->searchAll($request->query('search', ''));
         
         $products = $results['products'];
         $categories = $results['categories'];

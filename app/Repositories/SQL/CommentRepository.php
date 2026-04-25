@@ -12,11 +12,6 @@ class CommentRepository extends BaseRepository implements CommentContract
         parent::__construct($model);
     }
 
-    public function findById(int $id)
-    {
-        return $this->model->findOrFail($id);
-    }
-
     public function getByPostId(int $postId, int $status = null)
     {
         $query = $this->model->where('post_id', $postId);
@@ -30,14 +25,13 @@ class CommentRepository extends BaseRepository implements CommentContract
 
     public function updateById(int $id, array $data)
     {
-        $comment = $this->findById($id);
-        $comment->update($data);
-        return $comment;
+        $comment = $this->findOrFail($id);
+        return $this->update($comment, $data);
     }
 
     public function deleteById(int $id)
     {
-        $comment = $this->findById($id);
-        return $comment->delete();
+        $comment = $this->findOrFail($id);
+        return $this->remove($comment);
     }
 }

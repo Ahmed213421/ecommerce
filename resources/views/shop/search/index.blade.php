@@ -27,7 +27,7 @@
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="breadcrumb-text">
                         <p>{{ trans('shop.fresh') }}</p>
-                        <h1>{{ trans('shop.search_for') }} {{ Request('search') }} </h1>
+                        <h1>{{ trans('shop.search_for') }} "{{ request('search') }}"</h1>
                     </div>
                 </div>
             </div>
@@ -45,13 +45,14 @@
                 </div>
             </div>
 
+            @if ($products->count() > 0 || $categories->count() > 0 || $subcategories->count() > 0)
+                <div class="alert alert-success text-center">
+                    <p>{{ trans('general.search_results_found') }}: {{ $products->count() }} {{ trans('general.products') }}, {{ $categories->count() }} {{ trans('general.categories') }}, {{ $subcategories->count() }} {{ trans('general.subcategories') }}</p>
+                </div>
+            @endif
             @if ($no_results)
                 <div class="no-results">
                     <p>{{ trans('general.noresult') }}.</p>
-                    <form action="{{ route('customer.search') }}" method="GET">
-                        <input type="text" name="search" placeholder="Search again..." class="search-input">
-                        <button type="submit" class="search-button btn btn-primary">{{ trans('general.search') }}</button>
-                    </form>
                 </div>
             @endif
             <div class="row">
@@ -94,6 +95,9 @@
 
 
                 @if ($categories->count() > 0)
+                    <div class="col-lg-12 mb-4">
+                        <h4>{{ trans('general.categories') }}</h4>
+                    </div>
                     @forelse ($categories as $category)
                         <div class="col-md-4 text-center">
                             <div class="single-product-item">
@@ -103,6 +107,25 @@
                                 </div>
                                 <h3><a
                                         href="{{ route('customer.category.show', $category->slug) }}">{{ $category->name }}</a>
+                                </h3>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+
+                @if ($subcategories->count() > 0)
+                    <div class="col-lg-12 mb-4 mt-4">
+                        <h4>{{ trans('general.subcategories') }}</h4>
+                    </div>
+                    @foreach ($subcategories as $subcategory)
+                        <div class="col-md-4 text-center">
+                            <div class="single-product-item">
+                                <div class="product-image">
+                                    <a href="{{ route('customer.subcategory.show', $subcategory->slug) }}"><img
+                                            src="{{ asset($subcategory->imagepath ?? 'images/default-product.jpg') }}" alt=""></a>
+                                </div>
+                                <h3><a
+                                        href="{{ route('customer.subcategory.show', $subcategory->slug) }}">{{ $subcategory->name }}</a>
                                 </h3>
                             </div>
                         </div>
@@ -162,7 +185,7 @@ function toggleFavorite(productId) {
                 error: function(xhr) {
                     heart.toggleClass('active');
                     console.error('Error:', xhr.responseText);
-                    alert('An error occurred! Please try again later.');
+                    alert('{{ trans('general.error_occurred') }}');
                 },
             });
         }

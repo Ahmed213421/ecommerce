@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface PostContract
+interface PostContract extends BaseContract
 {
     public function getLatestPaginated(int $perPage = 12);
     public function findBySlug(string $slug);

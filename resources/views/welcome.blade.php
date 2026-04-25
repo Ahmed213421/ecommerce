@@ -55,8 +55,8 @@
                                             <p class="subtitle">{{ $slide->main_title }}</p>
                                             <h1>{{ $slide->branch_title }}</h1>
                                             <div class="hero-btns">
-                                                <a href="#mostviewed" class="boxed-btn">Fruit Collection</a>
-                                                <a href="{{ route('customer.us.index') }}" class="bordered-btn">Contact Us</a>
+                                                <a href="#mostviewed" class="boxed-btn">{{ trans('general.fruit_collection') }}</a>
+                                                <a href="{{ route('customer.us.index') }}" class="bordered-btn">{{ trans('general.contact_us') }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -73,11 +73,11 @@
                             <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
                                 <div class="hero-text">
                                     <div class="hero-text-tablecell">
-                                        <p class="subtitle">Welcome</p>
-                                        <h1>Our Fruit Collection</h1>
+                                        <p class="subtitle">{{ trans('general.welcome') }}</p>
+                                        <h1>{{ trans('general.our_fruit_collection') }}</h1>
                                         <div class="hero-btns">
-                                            <a href="#mostviewed" class="boxed-btn">Fruit Collection</a>
-                                            <a href="{{ route('customer.us.index') }}" class="bordered-btn">Contact Us</a>
+                                            <a href="#mostviewed" class="boxed-btn">{{ trans('general.fruit_collection') }}</a>
+                                            <a href="{{ route('customer.us.index') }}" class="bordered-btn">{{ trans('general.contact_us') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -94,10 +94,10 @@
                             <div class="hero-text">
                                 <div class="hero-text-tablecell">
                                     <p class="subtitle">{{ trans('shop.fresh') }}</p>
-                                    <h1>100% Organic Collection</h1>
+                                    <h1>{{ trans('general.organic_collection') }}</h1>
                                     <div class="hero-btns">
-                                        <a href="#mostviewed" class="boxed-btn">Visit Shop</a>
-                                        <a href="{{ route('customer.us.index') }}" class="bordered-btn">Contact Us</a>
+                                        <a href="#mostviewed" class="boxed-btn">{{ trans('general.visit_shop') }}</a>
+                                        <a href="{{ route('customer.us.index') }}" class="bordered-btn">{{ trans('general.contact_us') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
     @endif
     @if (request('status') == 'success')
         <div class="alert alert-success">
-            success
+            {{ trans('general.success') }}
         </div>
 
     @endif
@@ -135,8 +135,8 @@
                             <i class="fas fa-shipping-fast"></i>
 						</div>
 						<div class="content">
-                            <h3>Free Shipping</h3>
-							<p>When order over $75</p>
+                            <h3>{{ trans('general.free_shipping') }}</h3>
+							<p>{{ trans('general.when_order_over') }}</p>
 						</div>
 					</div>
 				</div>
@@ -146,8 +146,8 @@
 							<i class="fas fa-phone-volume"></i>
 						</div>
 						<div class="content">
-							<h3>24/7 Support</h3>
-							<p>Get support all day</p>
+							<h3>{{ trans('general.24_7_support') }}</h3>
+							<p>{{ trans('general.get_support_all_day') }}</p>
 						</div>
 					</div>
 				</div>
@@ -157,8 +157,8 @@
                             <i class="fas fa-sync"></i>
 						</div>
 						<div class="content">
-                            <h3>Refund</h3>
-							<p>Get refund within 3 days!</p>
+                            <h3>{{ trans('general.refund') }}</h3>
+							<p>{{ trans('general.get_refund_within_3_days') }}</p>
 						</div>
 					</div>
 				</div>

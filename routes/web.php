@@ -119,7 +119,7 @@ Route::group(
         ]);
         Route::resource('testmonials',TestmonialController::class)->only('index','store');
         Route::resource('reviews',ReviewController::class)->only('index','store');
-        Route::get('search/{search}',SearchController::class)->name('search');
+        Route::get('search',SearchController::class)->name('search');
         Route::post('addproduct/',[CartController::class , 'addToCart'])->name('cart.product.add');
         Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 

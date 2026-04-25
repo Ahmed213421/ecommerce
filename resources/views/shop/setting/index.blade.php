@@ -112,7 +112,7 @@
                                 <div class="form-group">
                                     <label for="name">{{ trans('dashboard.name') }}</label>
                                     <input type="text" class="form-control" id="name"
-                                    value="{{ old('name', auth()->user()->name) }}" placeholder="Enter your full name"
+                                    value="{{ old('name', auth()->user()->name) }}" placeholder="{{ trans('general.enter_your_full_name') }}"
                                     name="name">
                                 </div>
                                 <div class="form-group">
@@ -121,7 +121,7 @@
                                         <div class="avatar avatar-xl">
                                             <img src="{{ auth()->user()->image ? asset(auth()->user()->image->imagepath) : asset('default-avatar.jpg') }}" alt="Avatar"
                                                 class="avatar avatar-img rounded-circle" id="avatar">
-                                            <div class="hover-text" id="hoverText">Change Picture</div>
+                                            <div class="hover-text" id="hoverText">{{ trans('general.change_picture') }}</div>
                                             <input type="file" name="photo" id="fileInput" style="display: none;" />
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                 <div class="form-group">
                                     <label for="email">{{ trans('general.email') }}</label>
                                     <input type="email" class="form-control" id="email"
-                                        value="{{ old('email', auth()->user()->email) }}" placeholder="Enter your email"
+                                        value="{{ old('email', auth()->user()->email) }}" placeholder="{{ trans('general.enter_your_email') }}"
                                         name="email">
                                 </div>
                                 <div class="form-group">
@@ -142,13 +142,13 @@
                                 <div class="form-group">
                                     <label for="password">{{ trans('general.new') }} {{ trans('general.password') }}</label>
                                     <input type="password" class="form-control" id="password"
-                                        placeholder="Enter new password" name="password">
+                                        placeholder="{{ trans('general.enter_new_password') }}" name="password">
                                 </div>
                                 <!-- Password Confirmation -->
                                 <div class="form-group">
                                     <label for="confirm-password">{{ trans('general.confirm_password') }}</label>
                                     <input type="password" class="form-control" name="password_confirmation"
-                                        id="confirm-password" placeholder="Confirm new password">
+                                        id="confirm-password" placeholder="{{ trans('general.confirm_new_password') }}">
                                 </div>
                                 <!-- Submit Button -->
                                 <button type="submit"

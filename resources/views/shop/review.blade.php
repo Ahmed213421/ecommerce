@@ -30,19 +30,19 @@
                             @csrf
                             @method('POST')
                             <p>
-                                <input type="text" placeholder="Name" name="name" id="name"
+                                <input type="text" placeholder="{{ trans('general.name') }}" name="name" id="name"
                                     value="{{ old('name') }}">
-                                <input type="email" placeholder="Email" name="email" id="email"
+                                <input type="email" placeholder="{{ trans('general.email') }}" name="email" id="email"
                                     value="{{ old('email') }}">
                             </p>
                             <p>
-                                <input type="tel" placeholder="Phone" name="phone" id="phone"
+                                <input type="tel" placeholder="{{ trans('general.phone') }}" name="phone" id="phone"
                                     value="{{ old('phone') }}">
-                                <input type="text" placeholder="Subject" name="subject" id="subject"
+                                <input type="text" placeholder="{{ trans('general.subject') }}" name="subject" id="subject"
                                     value="{{ old('subject') }}">
                             </p>
                             <p>
-                                <textarea name="message" id="message" cols="30" rows="10" placeholder="Message">{{ old('message') }}</textarea>
+                                <textarea name="message" id="message" cols="30" rows="10" placeholder="{{ trans('general.message') }}">{{ old('message') }}</textarea>
                             </p>
                             <p><input type="submit" value="{{trans('general.submit')}}"></p>
                         </form>
