@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\CartRepositoryInterface;
-use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Contracts\CartContract;
+use App\Repositories\Contracts\OrderContract;
 use App\Models\OrderDetail;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +18,7 @@ class CheckOutController extends Controller
     protected $cartRepository;
     protected $orderRepository;
 
-    public function __construct(CartRepositoryInterface $cartRepository, OrderRepositoryInterface $orderRepository)
+    public function __construct(CartContract $cartRepository, OrderContract $orderRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->orderRepository = $orderRepository;

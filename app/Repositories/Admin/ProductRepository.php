@@ -3,11 +3,11 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Product;
-use App\Repositories\Admin\Interfaces\ProductRepositoryInterface;
+use App\Repositories\Admin\Contracts\ProductContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class ProductRepository implements ProductRepositoryInterface
+class ProductRepository implements ProductContract
 {
     protected $model;
 

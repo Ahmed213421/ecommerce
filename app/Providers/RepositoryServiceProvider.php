@@ -3,48 +3,47 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Admin\Interfaces\AdminRepositoryInterface;
+// Admin Repository Contracts and Implementations
+use App\Repositories\Admin\Contracts\AdminContract;
 use App\Repositories\Admin\AdminRepository;
-use App\Repositories\Admin\Interfaces\PermissionRepositoryInterface;
+use App\Repositories\Admin\Contracts\PermissionContract;
 use App\Repositories\Admin\PermissionRepository;
-use App\Repositories\Admin\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Admin\Contracts\RoleContract;
 use App\Repositories\Admin\RoleRepository;
+use App\Repositories\Admin\Contracts\TagContract;
 use App\Repositories\Admin\TagRepository;
-use App\Repositories\Admin\Interfaces\TagRepositoryInterface;
+use App\Repositories\Admin\Contracts\SliderContract;
 use App\Repositories\Admin\SliderRepository;
-use App\Repositories\Admin\Interfaces\SliderRepositoryInterface;
-use App\Repositories\Admin\SubCategoryRepository;
-use App\Repositories\Admin\Interfaces\SubCategoryRepositoryInterface;
-use App\Repositories\Admin\Interfaces\ReviewRepositoryInterface as AdminReviewRepositoryInterface;
+use App\Repositories\Admin\Contracts\ReviewContract as AdminReviewContract;
 use App\Repositories\Admin\ReviewRepository as AdminReviewRepository;
-use App\Repositories\Admin\Interfaces\ProductRepositoryInterface as AdminProductRepositoryInterface;
+use App\Repositories\Admin\Contracts\ProductContract as AdminProductContract;
 use App\Repositories\Admin\ProductRepository as AdminProductRepository;
 
-// Non-Admin Repository Interfaces and Implementations
-use App\Repositories\Interfaces\ProductRepositoryInterface;
-use App\Repositories\ProductRepository;
-use App\Repositories\Interfaces\CartRepositoryInterface;
-use App\Repositories\CartRepository;
-use App\Repositories\Interfaces\PostRepositoryInterface;
-use App\Repositories\PostRepository;
-use App\Repositories\Interfaces\OrderRepositoryInterface;
-use App\Repositories\OrderRepository;
-use App\Repositories\Interfaces\ReviewRepositoryInterface;
-use App\Repositories\ReviewRepository;
-use App\Repositories\Interfaces\CategoryRepositoryInterface;
-use App\Repositories\CategoryRepository;
-use App\Repositories\Interfaces\WelcomeRepositoryInterface;
-use App\Repositories\WelcomeRepository;
-use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\Repositories\UserRepository;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
-use App\Repositories\CommentRepository;
-use App\Repositories\Interfaces\ContactRepositoryInterface;
-use App\Repositories\ContactRepository;
-use App\Repositories\Interfaces\SearchRepositoryInterface;
-use App\Repositories\SearchRepository;
-use App\Repositories\Interfaces\SubscriberRepositoryInterface;
-use App\Repositories\SubscriberRepository;
+// Non-Admin Repository Contracts and Implementations
+use App\Repositories\Contracts\ProductContract;
+use App\Repositories\SQL\ProductRepository;
+use App\Repositories\Contracts\CartContract;
+use App\Repositories\SQL\CartRepository;
+use App\Repositories\Contracts\PostContract;
+use App\Repositories\SQL\PostRepository;
+use App\Repositories\Contracts\OrderContract;
+use App\Repositories\SQL\OrderRepository;
+use App\Repositories\Contracts\ReviewContract;
+use App\Repositories\SQL\ReviewRepository;
+use App\Repositories\Contracts\CategoryContract;
+use App\Repositories\SQL\CategoryRepository;
+use App\Repositories\Contracts\WelcomeContract;
+use App\Repositories\SQL\WelcomeRepository;
+use App\Repositories\Contracts\UserContract;
+use App\Repositories\SQL\UserRepository;
+use App\Repositories\Contracts\CommentContract;
+use App\Repositories\SQL\CommentRepository;
+use App\Repositories\Contracts\ContactContract;
+use App\Repositories\SQL\ContactRepository;
+use App\Repositories\Contracts\SearchContract;
+use App\Repositories\SQL\SearchRepository;
+use App\Repositories\Contracts\SubscriberContract;
+use App\Repositories\SQL\SubscriberRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -54,28 +53,27 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Admin Repository Bindings
-        $this->app->bind(AdminRepositoryInterface::class, AdminRepository::class);
-        $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
-        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
-        $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
-        $this->app->bind(SliderRepositoryInterface::class, SliderRepository::class);
-        $this->app->bind(SubCategoryRepositoryInterface::class, SubCategoryRepository::class);
-        $this->app->bind(AdminReviewRepositoryInterface::class, AdminReviewRepository::class);
-        $this->app->bind(AdminProductRepositoryInterface::class, AdminProductRepository::class);
+        $this->app->bind(AdminContract::class, AdminRepository::class);
+        $this->app->bind(PermissionContract::class, PermissionRepository::class);
+        $this->app->bind(RoleContract::class, RoleRepository::class);
+        $this->app->bind(TagContract::class, TagRepository::class);
+        $this->app->bind(SliderContract::class, SliderRepository::class);
+        $this->app->bind(AdminReviewContract::class, AdminReviewRepository::class);
+        $this->app->bind(AdminProductContract::class, AdminProductRepository::class);
 
         // Non-Admin Repository Bindings
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
-        $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
-        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
-        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
-        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
-        $this->app->bind(WelcomeRepositoryInterface::class, WelcomeRepository::class);
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
-        $this->app->bind(ContactRepositoryInterface::class, ContactRepository::class);
-        $this->app->bind(SearchRepositoryInterface::class, SearchRepository::class);
-        $this->app->bind(SubscriberRepositoryInterface::class, SubscriberRepository::class);
+        $this->app->bind(ProductContract::class, ProductRepository::class);
+        $this->app->bind(CartContract::class, CartRepository::class);
+        $this->app->bind(PostContract::class, PostRepository::class);
+        $this->app->bind(OrderContract::class, OrderRepository::class);
+        $this->app->bind(ReviewContract::class, ReviewRepository::class);
+        $this->app->bind(CategoryContract::class, CategoryRepository::class);
+        $this->app->bind(WelcomeContract::class, WelcomeRepository::class);
+        $this->app->bind(UserContract::class, UserRepository::class);
+        $this->app->bind(CommentContract::class, CommentRepository::class);
+        $this->app->bind(ContactContract::class, ContactRepository::class);
+        $this->app->bind(SearchContract::class, SearchRepository::class);
+        $this->app->bind(SubscriberContract::class, SubscriberRepository::class);
     }
 
     /**

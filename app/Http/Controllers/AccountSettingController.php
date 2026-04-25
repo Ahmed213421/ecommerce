@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Contracts\UserContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class AccountSettingController extends Controller
 {
     protected $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserContract $userRepository)
     {
         $this->userRepository = $userRepository;
     }
@@ -62,17 +63,15 @@ class AccountSettingController extends Controller
             }
         }
 
-        if(!Hash::check($request->oldpassword, $user->password)){
-            return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
-        }
+        if ($request->filled('password')) {
+            if(!Hash::check($request->oldpassword, $user->password)){
+                return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
+            }
 
-        if ($request->filled('password') && Hash::check($request->oldpassword, $user->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
 
-
             Auth::logout();
-
 
             return redirect()->route('customer.logout');
         }

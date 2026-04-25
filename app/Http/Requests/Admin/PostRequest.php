@@ -26,7 +26,7 @@ class PostRequest extends FormRequest
             'title_ar' => 'required|string',
             'description_en' => 'required|string',
             'description_ar' => 'required|string',
-            'imagepath' => 'required|image',
+            'imagepath' => 'nullable|image',
             'subcategory_id' => 'required|exists:subcategories,id',
             'slug' => 'nullable|unique:posts,slug',
         ];

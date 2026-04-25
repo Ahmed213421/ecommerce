@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SliderRequest;
 use App\Http\Requests\Admin\UpdateSliderRequest;
-use App\Repositories\Admin\Interfaces\SliderRepositoryInterface;
+use App\Repositories\Admin\Contracts\SliderContract;
 use Illuminate\Http\Request;
 
 class SlideController extends Controller
 {
     protected $sliderRepository;
 
-    public function __construct(SliderRepositoryInterface $sliderRepository)
+    public function __construct(SliderContract $sliderRepository)
     {
         $this->sliderRepository = $sliderRepository;
     }

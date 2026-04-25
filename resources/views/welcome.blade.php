@@ -44,7 +44,7 @@
         <div class="homepage-slider">
             <!-- single home slider -->
 
-            @if (count($slider) > 0)
+            @if ($slider && count($slider) > 0)
                 @foreach ($slider as $slide)
                     <div class="single-homepage-slider" style="background-image: url({{ asset($slide->imagepath) }})">
                         <div class="container">

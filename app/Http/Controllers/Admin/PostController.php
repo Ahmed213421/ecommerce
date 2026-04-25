@@ -10,7 +10,7 @@ use App\Models\Post;
 use App\Models\Subcategory;
 use App\Models\Subscriber;
 use App\Models\Tag;
-use App\Repositories\Admin\Interfaces\PostRepositoryInterface;
+use App\Repositories\Admin\Contracts\PostContract;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +22,7 @@ class PostController extends Controller
 
     protected $postRepository;
 
-    public function __construct(PostRepositoryInterface $postRepository)
+    public function __construct(PostContract $postRepository)
     {
         $this->postRepository = $postRepository;
     }
@@ -91,9 +91,20 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, string $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $post = Post::findOrFail($id);
+            $this->postRepository->update($post, $request->validated());
+            toastr()->success(__('toaster.update'));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            toastr()->error(__('error') . $e->getMessage());
+        }
+
+        return to_route('admin.news.index');
     }
 
     /**

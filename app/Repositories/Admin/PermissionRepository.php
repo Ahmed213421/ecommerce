@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Admin;
 
-use App\Repositories\Admin\Interfaces\PermissionRepositoryInterface;
+use App\Repositories\Admin\Contracts\PermissionContract;
 use Spatie\Permission\Models\Permission;
 
-class PermissionRepository implements PermissionRepositoryInterface
+class PermissionRepository implements PermissionContract
 {
     protected $model;
 

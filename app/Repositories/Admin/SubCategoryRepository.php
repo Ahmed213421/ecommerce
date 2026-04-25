@@ -3,9 +3,10 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Subcategory;
+use App\Repositories\Admin\Contracts\SubCategoryContract;
 use Illuminate\Support\Facades\File;
 
-class SubCategoryRepository implements SubCategoryRepositoryInterface
+class SubCategoryRepository implements SubCategoryContract
 {
     protected $subcategory;
 

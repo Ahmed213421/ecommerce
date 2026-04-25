@@ -4,11 +4,11 @@ namespace App\Repositories\Admin;
 
 use App\Models\Category;
 use App\Models\Subcategory;
-use App\Repositories\Admin\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Admin\Contracts\CategoryContract;
 use Flasher\Laravel\Http\Request;
 use Illuminate\Support\Str;
 
-class CategoryRepository implements CategoryRepositoryInterface
+class CategoryRepository implements CategoryContract
 {
     protected $model;
     public function __construct(Category $category){

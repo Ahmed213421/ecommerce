@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Admin;
 
-use App\Repositories\Admin\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Admin\Contracts\RoleContract;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
-class RoleRepository implements RoleRepositoryInterface
+class RoleRepository implements RoleContract
 {
     protected $model;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\CommentRepositoryInterface;
+use App\Repositories\Contracts\CommentContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +10,7 @@ class CommentController extends Controller
 {
     protected $commentRepository;
 
-    public function __construct(CommentRepositoryInterface $commentRepository)
+    public function __construct(CommentContract $commentRepository)
     {
         $this->commentRepository = $commentRepository;
     }

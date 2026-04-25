@@ -63,17 +63,15 @@ class ProfileSettingController extends Controller
             }
         }
 
-        if(!Hash::check($request->oldpassword, $user->password)){
-            return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
-        }
+        if ($request->filled('password')) {
+            if(!Hash::check($request->oldpassword, $user->password)){
+                return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
+            }
 
-        if ($request->filled('password') && Hash::check($request->oldpassword, $user->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
 
-
             Auth::guard('admin')->logout();
-
 
             return redirect()->route('admin.logout');
         }

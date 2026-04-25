@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\ProductRepositoryInterface;
-use App\Repositories\Interfaces\ReviewRepositoryInterface;
+use App\Repositories\Contracts\ProductContract;
+use App\Repositories\Contracts\ReviewContract;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +11,7 @@ class ProductController extends Controller
     protected $productRepository;
     protected $reviewRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository, ReviewRepositoryInterface $reviewRepository)
+    public function __construct(ProductContract $productRepository, ReviewContract $reviewRepository)
     {
         $this->productRepository = $productRepository;
         $this->reviewRepository = $reviewRepository;

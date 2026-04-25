@@ -51,9 +51,7 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index']);
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

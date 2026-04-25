@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\NewOrderEvent;
 use App\Models\Admin;
-use App\Repositories\Interfaces\CartRepositoryInterface;
-use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Contracts\CartContract;
+use App\Repositories\Contracts\OrderContract;
 use App\Models\OrderDetail;
 use App\Notifications\NewOrderNotification;
 use Exception;
@@ -21,7 +21,7 @@ class CheckoutSuccessController extends Controller
     protected $cartRepository;
     protected $orderRepository;
 
-    public function __construct(CartRepositoryInterface $cartRepository, OrderRepositoryInterface $orderRepository)
+    public function __construct(CartContract $cartRepository, OrderContract $orderRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->orderRepository = $orderRepository;

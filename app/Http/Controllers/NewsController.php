@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Repositories\Contracts\PostContract;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
     protected $postRepository;
 
-    public function __construct(PostRepositoryInterface $postRepository)
+    public function __construct(PostContract $postRepository)
     {
         $this->postRepository = $postRepository;
     }
