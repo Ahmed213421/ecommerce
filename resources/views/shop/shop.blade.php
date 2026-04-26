@@ -26,11 +26,26 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="product-filters">
+                    <div class="product-filters category-filters">
                         <ul>
                             <li class="active" data-filter="*">{{ trans('general.all') }}</li>
                             @foreach ($categories as $category)
-                                <li data-filter=".{{ Str::slug($category->name) }}">{{ $category->name }}</li>
+                                <li data-filter=".cat-{{ $category->id }}" data-category-id="{{ $category->id }}">{{ $category->name }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="subcategory-filters-row" style="display: none;">
+                <div class="col-md-12">
+                    <div class="product-filters subcategory-filters">
+                        <ul id="subcategory-filters-list">
+                            <li class="active" data-filter="*">{{ trans('general.all') }}</li>
+                            @foreach ($categories as $category)
+                                @foreach ($category->subcategories as $sub)
+                                    <li class="sub-item cat-{{ $category->id }}" data-filter=".sub-{{ $sub->id }}" style="display: none;">{{ $sub->name }}</li>
+                                @endforeach
                             @endforeach
                         </ul>
                     </div>
@@ -41,7 +56,7 @@
                 @foreach ($categories as $category)
                     @foreach ($category->subcategories as $sub)
                         @foreach ($sub->products as $item)
-                            <div class="col-lg-4 col-md-6 text-center {{ Str::slug($category->name) }}">
+                            <div class="col-lg-4 col-md-6 text-center cat-{{ $category->id }} sub-{{ $sub->id }} product-item">
                                 <div class="single-product-item">
                                     <div class="product-image">
                                         <a href="{{ route('customer.product.show', $item->slug) }}">
@@ -143,5 +158,52 @@
                 },
             });
         }
+
+        $(document).ready(function() {
+            // Category filter click
+            $(".category-filters li").off('click').on('click', function(e) {
+                $(".category-filters li").removeClass("active");
+                $(this).addClass("active");
+
+                var categoryId = $(this).attr('data-category-id');
+                var selector = $(this).attr('data-filter');
+
+                // Hide all subcategories and reset subcategory filters
+                $(".subcategory-filters li").removeClass("active");
+                $(".subcategory-filters li[data-filter='*']").addClass("active");
+                $(".sub-item").hide();
+
+                if (selector === '*' || !categoryId) {
+                    $("#subcategory-filters-row").hide();
+                } else {
+                    // Show relevant subcategories
+                    $(".sub-item.cat-" + categoryId).show();
+                    $("#subcategory-filters-row").show();
+                }
+
+                // Filter products
+                $(".product-lists").isotope({
+                    filter: selector
+                });
+            });
+
+            // Subcategory filter click
+            $(".subcategory-filters li").off('click').on('click', function(e) {
+                $(".subcategory-filters li").removeClass("active");
+                $(this).addClass("active");
+
+                var selector = $(this).attr('data-filter');
+
+                // If "All" subcategories, filter by the active category
+                if (selector === '*') {
+                    selector = $(".category-filters li.active").attr('data-filter');
+                }
+
+                // Filter products
+                $(".product-lists").isotope({
+                    filter: selector
+                });
+            });
+        });
     </script>
 @endsection
