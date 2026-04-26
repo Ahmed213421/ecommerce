@@ -122,7 +122,7 @@
                                     <input type="hidden" name="quantity">
 
                                     <input type="number" name="quantity" class="form-control form-control-sm mr-2"
-                                        placeholder="Qty" min="1" value="1" style="width: 70px;">
+                                        placeholder="{{ trans('general.qty') }}" min="1" value="1" style="width: 70px;">
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
@@ -163,7 +163,7 @@
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="form-title">
-                        <h2>Customer Reviews</h2>
+                        <h2>{{ trans('general.review') }}</h2>
                     </div>
                     <div id="form_status"></div>
                     <div class="contact-form">
@@ -171,18 +171,18 @@
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <p>
-                                <input type="text" placeholder="Name" name="name" id="name" value="">
-                                <input type="email" placeholder="Email" name="email" id="email" value="">
+                                <input type="text" placeholder="{{ trans('general.name') }}" name="name" id="name" value="">
+                                <input type="email" placeholder="{{ trans('general.email') }}" name="email" id="email" value="">
                             </p>
                             <p>
-                                <input type="tel" placeholder="Phone" name="phone" id="phone" value="">
-                                <input type="text" placeholder="Subject" name="subject" id="subject" value="">
+                                <input type="tel" placeholder="{{ trans('general.phone') }}" name="phone" id="phone" value="">
+                                <input type="text" placeholder="{{ trans('general.subject') }}" name="subject" id="subject" value="">
                             </p>
                             <p>
-                                <textarea name="message" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                                <textarea name="message" id="message" cols="30" rows="10" placeholder="{{ trans('general.message') }}"></textarea>
                             </p>
                             <p>
-                                <input type="submit" value="submit">
+                                <input type="submit" value="{{ trans('general.submit') }}">
                             </p>
                         </form>
 
@@ -200,7 +200,7 @@
 <!-- start review section -->
 <div class="testimonail-section mt-150 mb-150" id="ajax-reviews">
     <div class="container">
-        @include('shop.products.reviews') <!-- تحميل التقييمات والصفحات -->
+        @include('shop.products.reviews') 
     </div>
 </div>
 <!-- end review section -->

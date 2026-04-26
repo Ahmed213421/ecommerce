@@ -36,6 +36,37 @@
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
     @yield('css')
+    @if (app()->getLocale() == 'ar')
+        <style>
+            body {
+                text-align: right !important;
+            }
+
+            .text-center {
+                text-align: center !important;
+            }
+
+            .form-group label,
+            .form-check {
+                text-align: right !important;
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .form-check-input {
+                margin-right: -1.25rem !important;
+                margin-left: 0 !important;
+                float: right !important;
+                position: relative !important;
+            }
+
+            .form-check-label {
+                padding-right: 1.25rem !important;
+                padding-left: 0 !important;
+                text-align: right !important;
+            }
+        </style>
+    @endif
 
 
 
@@ -64,7 +95,7 @@
                             <h3>{{ trans('shop.search_for') }}</h3>
                             <form action="{{ route('customer.search',['search'=>'search']) }}" method="GET">
                                 @csrf
-                                <input type="text" placeholder="Keywords" name="search">
+                                <input type="text" placeholder="{{ trans('general.keywords') }}" name="search">
                                 <button type="submit">{{ trans('general.search') }} <i class="fas fa-search"></i></button>
                             </form>
                         </div>

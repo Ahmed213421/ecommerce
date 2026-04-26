@@ -95,4 +95,5 @@ return array (
   'get_refund_within_3_days' => 'استرد الأموال خلال 3 أيام!',
   'my_wishlist' => 'قائمة أمنياتي',
   'error_occurred' => 'حدث خطأ! يرجى المحاولة مرة أخرى لاحقاً.',
+  'remember_me' => 'تذكرني',
 );

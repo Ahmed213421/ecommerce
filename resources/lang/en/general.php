@@ -94,4 +94,5 @@ return array (
     'get_refund_within_3_days' => 'Get refund within 3 days!',
     'my_wishlist' => 'My Wish List',
     'error_occurred' => 'An error occurred! Please try again later.',
+    'remember_me' => 'Remember Me',
 );

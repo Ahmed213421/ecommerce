@@ -163,7 +163,7 @@
                         </div>
                     </div>
 
-                    <div class="coupon-section">
+                    {{-- <div class="coupon-section">
                         <h3>Apply Coupon</h3>
                         <div class="coupon-form-wrap">
                             <form action="index.html">
@@ -171,7 +171,7 @@
                                 <p><input type="submit" value="Apply"></p>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
