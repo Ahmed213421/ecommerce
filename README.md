@@ -336,7 +336,7 @@ This project is open-sourced software licensed under the [MIT license](https://o
 For support and questions:
 - Create an issue in the repository
 - Contact the development team
-- Check the documentation
+- Check the documentation  
 
 ## 🔄 Changelog
 
