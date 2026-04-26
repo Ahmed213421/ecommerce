@@ -2,14 +2,10 @@
 
 namespace App\Repositories\Admin\Contracts;
 
+use App\Repositories\Contracts\BaseContract;
 use App\Models\Admin;
 
-interface AdminContract
+interface AdminContract extends BaseContract
 {
-    public function getAll();
-    public function find($id);
-    public function create(array $data);
-    public function update($id, array $data);
-    public function delete($id);
     public function syncRoles($user, array $roles);
 }

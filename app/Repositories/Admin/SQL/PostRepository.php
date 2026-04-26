@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Mail\NewPostMail;
 use App\Models\Post;
 use App\Models\Subscriber;
@@ -10,14 +12,16 @@ use Flasher\Laravel\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class PostRepository implements PostContract
+class PostRepository extends BaseRepository implements PostContract
 {
-    protected $model;
-    public function __construct(Post $post){
-        $this->model = $post;
+
+    public function __construct(Post $post)
+    {
+        parent::__construct($post);
     }
 
-    public function create(array $data){
+    public function create(array $data = []): mixed
+    {
         if (request()->hasFile('imagepath')) {
             $data['imagepath'] = 'dashboard/'.$data['imagepath']->storeAs('news', time().'_'.$data['imagepath']->getClientOriginalName(),'images');
         }
@@ -35,7 +39,8 @@ class PostRepository implements PostContract
         return $post;
     }
 
-    public function update($model, array $data){
+    public function update($model, array $data = []): mixed
+    {
         if (request()->hasFile('imagepath')) {
             // Delete old image if exists
             if ($model->imagepath && file_exists(public_path($model->imagepath))) {

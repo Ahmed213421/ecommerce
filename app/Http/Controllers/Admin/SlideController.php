@@ -42,7 +42,7 @@ class SlideController extends Controller
      */
     public function update(UpdateSliderRequest $request, string $id)
     {
-        $this->sliderRepository->update($request->validated(), $id);
+        $this->sliderRepository->update($id, $request->validated());
 
         toastr()->success(__('toaster.update'));
         return back();

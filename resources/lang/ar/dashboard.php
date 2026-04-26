@@ -45,6 +45,7 @@ return array (
   'linked' => 'لينكيد ان',
   'instagram' => 'الانستجرام',
   'no_content' => 'لا توجد بيانات',
+  'no_photo' => 'لا توجد صورة',
   'add' => 'اضافه',
   'street' => 'المنطقه',
   'country' => 'البلد',

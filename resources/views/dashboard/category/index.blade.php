@@ -83,7 +83,7 @@
                                                             </td>
                                                             <td><img src="{{ asset($subcategory->imagepath) }}"
                                                                     width="100px" alt="" srcset=""></td>
-                                                            <td>{{ $subcategory->category->description }}</td>
+                                                            <td>{{ $subcategory->description }}</td>
                                                             <td>{{ $subcategory->created_at->diffForHumans() }}</td>
                                                             <td><button class="btn btn-sm dropdown-toggle more-horizontal"
                                                                     type="button" data-toggle="dropdown"

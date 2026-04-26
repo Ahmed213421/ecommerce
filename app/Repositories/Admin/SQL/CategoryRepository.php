@@ -1,21 +1,25 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Repositories\Admin\Contracts\CategoryContract;
 use Flasher\Laravel\Http\Request;
 use Illuminate\Support\Str;
 
-class CategoryRepository implements CategoryContract
+class CategoryRepository extends BaseRepository implements CategoryContract
 {
-    protected $model;
-    public function __construct(Category $category){
-        $this->model = $category;
+
+    public function __construct(Category $category)
+    {
+        parent::__construct($category);
     }
 
-    public function create(array $data){
+    public function create(array $data = []): mixed
+    {
         if (request()->hasFile('imagepath')) {
             $img =  'dashboard/'.$data['imagepath']->storeAs('category', time().'_'.$data['imagepath']->getClientOriginalName(),'images');
         }
@@ -26,6 +30,7 @@ class CategoryRepository implements CategoryContract
             $category = Subcategory::create([
                 'name' => $data['name'],
                 'category_id' => $data['category_id'],
+                'description' => $data['description'] ?? null,
                 'imagepath' => $img,
                 'slug' => Str::slug($data['name']['en']),
             ]);
@@ -40,7 +45,8 @@ class CategoryRepository implements CategoryContract
         return $category;
     }
 
-    public function update($model,array $data){
+    public function update($model, array $data = []): mixed
+    {
         $img = $model->imagepath;
 
         if (!empty($data['image'])) {

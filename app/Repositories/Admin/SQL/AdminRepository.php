@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Admin;
 use App\Repositories\Admin\Contracts\AdminContract;
 use Illuminate\Support\Facades\Hash;
 
-class AdminRepository implements AdminContract
+class AdminRepository extends BaseRepository implements AdminContract
 {
-    protected $model;
 
     public function __construct(Admin $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 
     public function getAll()
@@ -20,19 +21,19 @@ class AdminRepository implements AdminContract
         return $this->model->get();
     }
 
-    public function create(array $data)
+    public function create(array $data = []): mixed
     {
         $data['password'] = Hash::make($data['password']);
         $data['status'] = 1;
         return $this->model->create($data);
     }
 
-    public function find($id)
+    public function find(int $id, array $relations = [], array $filters = []): mixed
     {
         return $this->model->findOrFail($id);
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data = []): mixed
     {
         $user = $this->find($id);
 

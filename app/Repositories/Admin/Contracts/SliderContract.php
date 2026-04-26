@@ -2,13 +2,9 @@
 
 namespace App\Repositories\Admin\Contracts;
 
+use App\Repositories\Contracts\BaseContract;
 use App\Models\Slider;
 
-interface SliderContract
+interface SliderContract extends BaseContract
 {
-    public function getAll();
-    public function create(array $data);
-    public function update(array $data, $id);
-    public function delete($id);
-    public function find($id);
 }

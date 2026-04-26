@@ -17,7 +17,7 @@ class UpdateSettingRequest extends FormRequest
             'pageIcon' => ['image', 'nullable'],
             'logo' => ['image', 'nullable'],
             'email' => ['email', 'email:filter', 'unique:settings,email,' . $this->route('setting')],
-            'phone' => ['regex:/^\d{11}$/'],
+            'phone' => ['nullable', 'regex:/^\d{11}$/'],
             'description_en' => ['required', 'string'],
             'description_ar' => ['required', 'string'],
             'hours_working_en' => ['required', 'string'],

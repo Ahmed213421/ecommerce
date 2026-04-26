@@ -5,19 +5,19 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 // Admin Repository Contracts and Implementations
 use App\Repositories\Admin\Contracts\AdminContract;
-use App\Repositories\Admin\AdminRepository;
+use App\Repositories\Admin\SQL\AdminRepository;
 use App\Repositories\Admin\Contracts\PermissionContract;
-use App\Repositories\Admin\PermissionRepository;
+use App\Repositories\Admin\SQL\PermissionRepository;
 use App\Repositories\Admin\Contracts\RoleContract;
-use App\Repositories\Admin\RoleRepository;
+use App\Repositories\Admin\SQL\RoleRepository;
 use App\Repositories\Admin\Contracts\TagContract;
-use App\Repositories\Admin\TagRepository;
+use App\Repositories\Admin\SQL\TagRepository;
 use App\Repositories\Admin\Contracts\SliderContract;
-use App\Repositories\Admin\SliderRepository;
+use App\Repositories\Admin\SQL\SliderRepository;
 use App\Repositories\Admin\Contracts\ReviewContract as AdminReviewContract;
-use App\Repositories\Admin\ReviewRepository as AdminReviewRepository;
+use App\Repositories\Admin\SQL\ReviewRepository as AdminReviewRepository;
 use App\Repositories\Admin\Contracts\ProductContract as AdminProductContract;
-use App\Repositories\Admin\ProductRepository as AdminProductRepository;
+use App\Repositories\Admin\SQL\ProductRepository as AdminProductRepository;
 
 // Non-Admin Repository Contracts and Implementations
 use App\Repositories\Contracts\ProductContract;

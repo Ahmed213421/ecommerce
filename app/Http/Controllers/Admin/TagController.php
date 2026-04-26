@@ -42,7 +42,7 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, string $id)
     {
-        $this->tagRepository->update($request->validated(), $id);
+        $this->tagRepository->update($id, $request->validated());
 
         toastr()->success(__('toaster.update'));
         return back();

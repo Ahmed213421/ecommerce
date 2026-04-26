@@ -92,7 +92,7 @@ class SubCategoryController extends Controller
      */
     public function update(UpdateSubCategoryRequest $request, string $id)
     {
-        $this->subCategoryRepository->update($request->validated(), $id);
+        $this->subCategoryRepository->update($id, $request->validated());
         toastr()->success(__('toaster.update'));
         return back();
     }

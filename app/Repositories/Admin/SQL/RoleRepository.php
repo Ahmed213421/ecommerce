@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Admin\Contracts\RoleContract;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
-class RoleRepository implements RoleContract
+class RoleRepository extends BaseRepository implements RoleContract
 {
-    protected $model;
 
     public function __construct(Role $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 
     public function getAll()
@@ -21,17 +22,17 @@ class RoleRepository implements RoleContract
         return $this->model->get();
     }
 
-    public function create(array $data)
+    public function create(array $data = []): mixed
     {
         return $this->model->create($data);
     }
 
-    public function find($id)
+    public function find(int $id, array $relations = [], array $filters = []): mixed
     {
         return $this->model->findOrFail($id);
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data = []): mixed
     {
         $role = $this->find($id);
         $role->update($data);

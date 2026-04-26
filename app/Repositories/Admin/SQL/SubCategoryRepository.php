@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Subcategory;
 use App\Repositories\Admin\Contracts\SubCategoryContract;
 use Illuminate\Support\Facades\File;
 
-class SubCategoryRepository implements SubCategoryContract
+class SubCategoryRepository extends BaseRepository implements SubCategoryContract
 {
-    protected $subcategory;
 
     public function __construct(Subcategory $subcategory)
     {
-        $this->subcategory = $subcategory;
+        parent::__construct($subcategory);
     }
 
 
 
-    public function update(array $data, $id)
+    public function update($id, array $data = []): mixed
     {
-        $subcategory = $this->subcategory->find($id);
+        $subcategory = $this->model->find($id);
         if ($subcategory) {
             if (isset($data['imagepath']) && $subcategory->imagepath !== $data['imagepath']) {
                 $oldImagePath = public_path('images/' . $subcategory->imagepath);
@@ -35,7 +36,7 @@ class SubCategoryRepository implements SubCategoryContract
 
     public function delete($id)
     {
-        $subcategory = $this->subcategory->find($id);
+        $subcategory = $this->model->find($id);
         if ($subcategory) {
             $imagePath = public_path('images/' . $subcategory->imagepath);
             if (File::exists($imagePath)) {

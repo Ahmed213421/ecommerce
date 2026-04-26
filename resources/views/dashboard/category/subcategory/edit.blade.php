@@ -27,6 +27,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="description">{{ trans('dashboard.desc') }}
+                            {{ trans('dashboard.ineng') }}</label>
+                        <textarea class="form-control" id="description" name="description_en" rows="4">{{ $subcategory->getTranslation('description', 'en') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">{{ trans('dashboard.desc') }}
+                            {{ trans('dashboard.inarabic') }}</label>
+                        <textarea class="form-control" id="description" name="description_ar" rows="4">{{ $subcategory->getTranslation('description', 'ar') }}</textarea>
+                    </div>
+
+                    <div class="form-group">
 
                         <select class="custom-select" id="custom-select" name="category_id">
                             @foreach (App\Models\Category::all() as $category)

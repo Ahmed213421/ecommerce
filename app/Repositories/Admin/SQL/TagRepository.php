@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Tag;
 use App\Repositories\Admin\Contracts\TagContract;
 
-class TagRepository implements TagContract
+class TagRepository extends BaseRepository implements TagContract
 {
-    protected $model;
 
     public function __construct(Tag $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 
     public function getAll()
@@ -19,12 +20,12 @@ class TagRepository implements TagContract
         return $this->model->latest()->get();
     }
 
-    public function create(array $data)
+    public function create(array $data = []): mixed
     {
         return $this->model->create($data);
     }
 
-    public function update(array $data, $id)
+    public function update($id, array $data = []): mixed
     {
         $tag = $this->find($id);
         if ($tag) {
@@ -43,7 +44,7 @@ class TagRepository implements TagContract
         return false;
     }
 
-    public function find($id)
+    public function find(int $id, array $relations = [], array $filters = []): mixed
     {
         return $this->model->find($id);
     }

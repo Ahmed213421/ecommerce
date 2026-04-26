@@ -43,8 +43,14 @@
                                             <tr>
                                                 <td>{{ trans('dashboard.iconpage') }}</td>
                                                 <td>:</td>
-                                                <td><img src="{{ asset($setting->pageIcon) }}" alt=""
-                                                        srcset="" width="20px" height="20px"></td>
+                                                <td>
+                                                    @if($setting->pageIcon)
+                                                        <img src="{{ asset($setting->pageIcon) }}" alt=""
+                                                            srcset="" width="20px" height="20px">
+                                                    @else
+                                                        {{ trans('dashboard.no_photo') }}
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax' }}</td>
@@ -54,8 +60,14 @@
                                             <tr>
                                                 <td>{{ trans('dashboard.logo') }}</td>
                                                 <td>:</td>
-                                                <td><img src="{{ asset($setting->logo) }}" alt=""
-                                                        srcset="" width="200px" height="100px"></td>
+                                                <td>
+                                                    @if($setting->logo)
+                                                        <img src="{{ asset($setting->logo) }}" alt=""
+                                                            srcset="" width="200px" height="100px">
+                                                    @else
+                                                        {{ trans('dashboard.no_photo') }}
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>{{ trans('general.address') }}</td>

@@ -11,7 +11,7 @@ class Subcategory extends Model
     use HasFactory,HasTranslations;
 
 
-    public $translatable = ['name'];
+    public $translatable = ['name', 'description'];
     protected $guarded = [];
 
     public function getRouteKeyName()

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Review;
 use App\Events\NewCustomerReviewEvent;
 use App\Models\Admin;
@@ -10,16 +12,16 @@ use App\Notifications\NewCustomerReviewNotification;
 use App\Repositories\Admin\Contracts\TestmonialContract;
 use Illuminate\Support\Facades\Notification;
 
-class TestmonialRepository implements TestmonialContract
+class TestmonialRepository extends BaseRepository implements TestmonialContract
 {
-    protected $model;
 
     public function __construct(Testmonial $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 
-    public function create(array $data){
+    public function create(array $data = []): mixed
+    {
 
         $review = $this->model->create([
             'name' => $data['name'],

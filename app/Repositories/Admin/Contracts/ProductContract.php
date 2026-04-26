@@ -2,14 +2,9 @@
 
 namespace App\Repositories\Admin\Contracts;
 
+use App\Repositories\Contracts\BaseContract;
 use App\Models\Product;
 
-interface ProductContract
+interface ProductContract extends BaseContract
 {
-    public function all();
-    public function find($id);
-    public function create(array $data);
-    public function update($id, array $data);
-    public function delete($id);
-    public function deleteAll();
 }

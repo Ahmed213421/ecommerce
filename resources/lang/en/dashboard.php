@@ -47,6 +47,7 @@ return array (
   'linked' => 'Linked-In',
   'instagram' => 'Instagram',
   'no_content' => 'no content available',
+  'no_photo' => 'no photo available',
   'add' => 'add',
   'logo' => 'Logo',
   'discount' => 'Discount',

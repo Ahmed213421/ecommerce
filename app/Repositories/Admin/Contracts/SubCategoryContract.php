@@ -2,8 +2,7 @@
 
 namespace App\Repositories\Admin\Contracts;
 
-interface SubCategoryContract
+use App\Repositories\Contracts\BaseContract;
+interface SubCategoryContract extends BaseContract
 {
-    public function update(array $data, $id);
-    public function delete($id);
 }

@@ -1,33 +1,34 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Slider;
 use App\Repositories\Admin\Contracts\SliderContract;
 use Illuminate\Support\Facades\File;
 
-class SliderRepository implements SliderContract
+class SliderRepository extends BaseRepository implements SliderContract
 {
-    protected $slider;
 
     public function __construct(Slider $slider)
     {
-        $this->slider = $slider;
+        parent::__construct($slider);
     }
 
     public function getAll()
     {
-        return $this->slider->latest()->get();
+        return $this->model->latest()->get();
     }
 
-    public function create(array $data)
+    public function create(array $data = []): mixed
     {
-        return $this->slider->create($data);
+        return $this->model->create($data);
     }
 
-    public function update(array $data, $id)
+    public function update($id, array $data = []): mixed
     {
-        $slider = $this->slider->find($id);
+        $slider = $this->model->find($id);
         if ($slider) {
             if (isset($data['imagepath']) && $slider->imagepath !== $data['imagepath']) {
                 $oldImagePath = public_path('images/' . $slider->imagepath);
@@ -43,7 +44,7 @@ class SliderRepository implements SliderContract
 
     public function delete($id)
     {
-        $slider = $this->slider->find($id);
+        $slider = $this->model->find($id);
         if ($slider) {
             $imagePath = public_path('images/' . $slider->imagepath);
             if (File::exists($imagePath)) {
@@ -54,8 +55,8 @@ class SliderRepository implements SliderContract
         return false;
     }
 
-    public function find($id)
+    public function find(int $id, array $relations = [], array $filters = []): mixed
     {
-        return $this->slider->find($id);
+        return $this->model->find($id);
     }
 }

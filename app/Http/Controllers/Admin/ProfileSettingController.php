@@ -42,8 +42,13 @@ class ProfileSettingController extends Controller
 
 
         $user = Admin::find(Auth::guard('admin')->user()->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
+        if ($request->filled('name')) {
+                $user->name = $request->name;
+            }
+
+        if ($request->filled('email')) {
+            $user->email = $request->email;
+        }
 
 
         if ($request->hasFile('photo')) {

@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Providers;
-use App\Repositories\Admin\AdminRepository;
+use App\Repositories\Admin\SQL\AdminRepository;
 use App\Repositories\Admin\Contracts\AdminContract;
-use App\Repositories\Admin\CategoryRepository;
+use App\Repositories\Admin\SQL\CategoryRepository;
 use App\Repositories\Admin\Contracts\TestmonialContract;
-use App\Repositories\Admin\PostRepository;
+use App\Repositories\Admin\SQL\PostRepository;
 use App\Repositories\Admin\Contracts\CategoryContract as AdminCategoryContract;
 use App\Repositories\Admin\Contracts\PostContract as AdminPostContract;
 use App\Repositories\Admin\Contracts\SubCategoryContract;
-use App\Repositories\Admin\SubCategoryRepository;
-use App\Repositories\Admin\TestmonialRepository;
+use App\Repositories\Admin\SQL\SubCategoryRepository;
+use App\Repositories\Admin\SQL\TestmonialRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 

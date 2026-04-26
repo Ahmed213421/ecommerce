@@ -2,12 +2,9 @@
 
 namespace App\Repositories\Admin\Contracts;
 
+use App\Repositories\Contracts\BaseContract;
 use App\Models\Post;
 
-interface PostContract
+interface PostContract extends BaseContract
 {
-    public function create(array $data);
-    public function update($model, array $data);
-    public function destroy($model);
-    public function deleteAll();
 }

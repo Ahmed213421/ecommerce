@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Admin\SQL;
 
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Repositories\Admin\Contracts\ProductContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class ProductRepository implements ProductContract
+class ProductRepository extends BaseRepository implements ProductContract
 {
-    protected $model;
 
     public function __construct(Product $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 
     public function all()
@@ -21,12 +22,12 @@ class ProductRepository implements ProductContract
         return $this->model->all();
     }
 
-    public function find($id)
+    public function find(int $id, array $relations = [], array $filters = []): mixed
     {
         return $this->model->find($id);
     }
 
-    public function create(array $data)
+    public function create(array $data = []): mixed
     {
         if (request()->hasFile('imagepath')) {
             $data['imagepath'] = 'dashboard/' . request()->file('imagepath')->storeAs('products', time() . '_' . request()->file('imagepath')->getClientOriginalName(), 'images');
@@ -44,7 +45,7 @@ class ProductRepository implements ProductContract
         return $product;
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data = []): mixed
     {
         $record = $this->find($id);
         if ($record) {

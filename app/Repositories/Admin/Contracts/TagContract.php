@@ -2,13 +2,9 @@
 
 namespace App\Repositories\Admin\Contracts;
 
+use App\Repositories\Contracts\BaseContract;
 use App\Models\Tag;
 
-interface TagContract
+interface TagContract extends BaseContract
 {
-    public function getAll();
-    public function find($id);
-    public function create(array $data);
-    public function update(array $data, $id);
-    public function delete($id);
 }

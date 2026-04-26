@@ -2,11 +2,9 @@
 
 namespace App\Repositories\Admin\Contracts;
 
+use App\Repositories\Contracts\BaseContract;
 use App\Models\Category;
 
-interface CategoryContract
+interface CategoryContract extends BaseContract
 {
-    public function create(array $data);
-    public function update($model, array $data);
-    public function destroy($model);
 }
