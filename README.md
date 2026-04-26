@@ -74,7 +74,11 @@ php artisan migrate
 
 ### 8. Seed the Database
 ```bash
+# Seed general data
 php artisan db:seed
+
+# Seed Roles & Permissions (Required for Admin access)
+php artisan db:seed --class=UserRolePermissionSeeder
 ```
 
 ### 9. Create Storage Link
@@ -157,6 +161,29 @@ php artisan queue:work
 php artisan queue:work --daemon
 ```
 
+## 💳 Payment Gateway (Stripe)
+
+To enable payments, update your `.env` file with your Stripe credentials:
+
+```env
+STRIPE_KEY=pk_test_...
+STRIPE_SECRET=sk_test_...
+```
+
+### 🔑 Test vs Live Keys
+Stripe provides two sets of API keys:
+- **Test Keys**: Use these during development (`pk_test_...`, `sk_test_...`)
+- **Live Keys**: Use these only in production (`pk_live_...`, `sk_live_...`)
+
+### 💳 Example Test Card
+Use the following card in **Test Mode** to simulate successful payments:
+- **Card Number**: `4242 4242 4242 4242`
+- **Expiry**: Any future date (e.g., `12/30`)
+- **CVC**: Any 3 digits (e.g., `123`)
+- **Zip Code**: Any 5 digits
+
+Stripe will treat this card as a successful payment in test mode.
+
 ## 🌐 Multi-language Support
 
 The application supports Arabic and English languages. Language files are located in:
@@ -175,11 +202,6 @@ The application uses Spatie Laravel Permission package:
 - **Super Admin**: Full access to all features
 - **Admin**: Manage products, orders, customers
 - **Customer**: Browse, purchase, manage profile
-
-### Seeding Roles & Permissions
-```bash
-php artisan db:seed --class=UserRolePermissionSeeder
-```
 
 ## 📱 Admin Dashboard
 
@@ -285,15 +307,7 @@ REDIS_HOST=your-redis-host
 REDIS_PASSWORD=your-redis-password
 ```
 
-## 🧪 Testing
 
-```bash
-# Run tests
-php artisan test
-
-# Run specific test
-php artisan test --filter=TestName
-```
 
 ## 📝 API Documentation
 
