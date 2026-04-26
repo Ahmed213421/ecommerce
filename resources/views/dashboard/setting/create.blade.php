@@ -211,7 +211,7 @@
                                             class="col-sm-2 col-form-label">{{ trans('general.email') }}</label>
                                         <div class="col-sm-10">
                                             <input type="email" class="form-control" name="email"
-                                                value="{{ old('email', 'spiderofegypt98@gmail.com') }}">
+                                                value="{{ old('email', 'ecommerce@gmail.com') }}">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
