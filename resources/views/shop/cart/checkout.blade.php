@@ -45,7 +45,7 @@
                                     <h5 class="mb-0">
                                         <button class="btn btn-link" type="button" data-toggle="collapse"
                                             data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Billing Address
+                                            {{ trans('shop.billing_address') }}
                                         </button>
                                     </h5>
                                 </div>
@@ -57,19 +57,19 @@
                                             <form id="checkoutForm" action="{{ route('customer.check-out.store') }}"
                                                 method="POST">
                                                 @csrf
-                                                <p><input type="text" placeholder="name" name="name"></p>
-                                                <p><input type="email" placeholder="email" name="email"></p>
-                                                <p><input type="text" placeholder="address" name="address"></p>
-                                                <p><input type="tel" placeholder="phone" name="phone"></p>
+                                                <p><input type="text" placeholder="{{ trans('general.name') }}" name="name"></p>
+                                                <p><input type="email" placeholder="{{ trans('general.email') }}" name="email"></p>
+                                                <p><input type="text" placeholder="{{ trans('general.address') }}" name="address"></p>
+                                                <p><input type="tel" placeholder="{{ trans('general.phone') }}" name="phone"></p>
                                                 <p>
-                                                    <textarea name="note" id="note" cols="30" rows="10" placeholder="Say Something"></textarea>
+                                                    <textarea name="note" id="note" cols="30" rows="10" placeholder="{{ trans('shop.say_something') }}"></textarea>
                                                 </p>
                                                 <p>
                                                     <select name="payment">
-                                                        <option value="" disabled selected>Select Payment Method
+                                                        <option value="" disabled selected>{{ trans('shop.select_payment') }}
                                                         </option>
-                                                        <option value="visa">{{app()->getLocale() == 'ar' ? 'فيزا' : 'Visa'}}</option>
-                                                        <option value="cash">{{app()->getLocale() == 'ar' ? 'نقدي' : 'Cash'}}</option>
+                                                        <option value="visa">{{ trans('shop.visa') }}</option>
+                                                        <option value="cash">{{ trans('shop.cash') }}</option>
                                                     </select>
                                                 </p>
                                             </form>
@@ -91,7 +91,7 @@
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Shipping Address
+                                            {{ trans('shop.shipping_address') }}
                                         </button>
                                     </h5>
                                 </div>
@@ -110,7 +110,7 @@
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                                             data-target="#collapseThree" aria-expanded="false"
                                             aria-controls="collapseThree">
-                                            Card Details
+                                            {{ trans('shop.card_details') }}
                                         </button>
                                     </h5>
                                 </div>
@@ -192,12 +192,12 @@
                                                                     <thead class="total-table-head">
                                                                         <tr class="table-total-row">
                                                                             <th>{{ trans('general.total') }}</th>
-                                                                            <th>Price</th>
+                                                                            <th>{{ trans('dashboard.price') }}</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr class="total-data">
-                                                                            <td><strong>{{ app()->getLocale() == 'ar' ? 'المجموع الكلي قبل الخصم' : 'Subtotal:' }} </strong></td>
+                                                                            <td><strong>{{ trans('shop.subtotal') }}: </strong></td>
                                                                             <td>${{ number_format(
                                                                                 $cartItems->sum(function ($item) {
                                                                                     return $item->product->price_after_discount * $item->quantity;
@@ -206,7 +206,7 @@
                                                                             ) }}</td>
                                                                         </tr>
                                                                         <tr class="total-data">
-                                                                            <td><strong>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }} </strong></td>
+                                                                            <td><strong>{{ trans('dashboard.tax') }}: </strong></td>
                                                                             <td>{{App\Models\Setting::getTaxRate()}}</td>
                                                                         </tr>
                                                                         <tr class="total-data">
@@ -244,14 +244,14 @@
                         <table class="order-details">
                             <thead>
                                 <tr>
-                                    <th>Your order Details</th>
-                                    <th>Price</th>
+                                    <th>{{ trans('shop.order_details') }}</th>
+                                    <th>{{ trans('dashboard.price') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="order-details-body">
                                 <tr>
-                                    <td>Product</td>
-                                    <td>Total</td>
+                                    <td>{{ trans('products.product') }}</td>
+                                    <td>{{ trans('general.total') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Strawberry</td>
@@ -268,15 +268,15 @@
                             </tbody>
                             <tbody class="checkout-details">
                                 <tr>
-                                    <td>Subtotal</td>
+                                    <td>{{ trans('shop.subtotal') }}</td>
                                     <td>$190</td>
                                 </tr>
                                 <tr>
-                                    <td>Shipping</td>
+                                    <td>{{ trans('shop.shipping') }}</td>
                                     <td>$50</td>
                                 </tr>
                                 <tr>
-                                    <td>Total</td>
+                                    <td>{{ trans('general.total') }}</td>
                                     <td>$240</td>
                                 </tr>
                             </tbody>

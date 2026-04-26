@@ -150,16 +150,16 @@
                             <thead class="total-table-head">
                                 <tr class="table-total-row">
                                     <th>{{ trans('general.total') }}</th>
-                                    <th>Price</th>
+                                    <th>{{ trans('dashboard.price') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="total-data">
-                                    <td><strong>{{ app()->getLocale() == 'ar' ? 'المجموع الكلي قبل الخصم' : 'Subtotal:' }}</strong></td>
+                                    <td><strong>{{ trans('shop.subtotal') }}:</strong></td>
                                     <td>{{ number_format($subtotal, 2) }}</td>
                                 </tr>
                                 <tr class="total-data">
-                                    <td><strong>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }} </strong></td>
+                                    <td><strong>{{ trans('dashboard.tax') }}: </strong></td>
                                     <td>{{App\Models\Setting::getTaxRate()}}</td>
                                 </tr>
                                 <tr class="total-data">

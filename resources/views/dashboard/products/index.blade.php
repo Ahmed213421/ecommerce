@@ -27,7 +27,7 @@
             <div class="col-md-12 col-sm-6">
                 <div class="card shadow">
                     <div class="card-body">
-                        <button id="deletebtn" class="btn btn-danger">Delete All</button>
+                        <button id="deletebtn" class="btn btn-danger">{{ trans('dashboard.delete_all') }}</button>
                         <!-- table -->
                         <div id="dataTable-1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <div class="row">

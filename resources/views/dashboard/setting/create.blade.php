@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputText" class="col-sm-2 col-form-label">{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }}</label>
+                                        <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.tax') }}</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control"  name="tax_rate">
                                         </div>

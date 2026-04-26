@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <h4 class="mb-4">التعليقات</h4>
+        <h4 class="mb-4">{{ trans('general.comments') }}</h4>
 
         @forelse ($reviews as $review)
             <div class="d-flex mb-4 border-bottom pb-3">
@@ -18,7 +18,7 @@
                 </div>
             </div>
         @empty
-            <p class="text-center text-muted">لا توجد تعليقات بعد.</p>
+            <p class="text-center text-muted">{{ trans('shop.no_reviews') }}</p>
         @endforelse
 
         <div class="mt-4 d-flex justify-content-center">

@@ -151,7 +151,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="defaultModalLabel">Shortcuts</h5>
+                    <h5 class="modal-title" id="defaultModalLabel">{{ trans('dashboard.shortcuts') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -162,13 +162,13 @@
                             <div class="squircle bg-success justify-content-center">
                                 <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
                             </div>
-                            <p>Control area</p>
+                            <p>{{ trans('dashboard.control_area') }}</p>
                         </div>
                         <div class="col-6 text-center">
                             <div class="squircle bg-primary justify-content-center">
                                 <i class="fe fe-activity fe-32 align-self-center text-white"></i>
                             </div>
-                            <p>Activity</p>
+                            <p>{{ trans('dashboard.activity') }}</p>
                         </div>
                     </div>
                     <div class="row align-items-center">
@@ -176,13 +176,13 @@
                             <div class="squircle bg-primary justify-content-center">
                                 <i class="fe fe-droplet fe-32 align-self-center text-white"></i>
                             </div>
-                            <p>Droplet</p>
+                            <p>{{ trans('dashboard.droplet') }}</p>
                         </div>
                         <div class="col-6 text-center">
                             <div class="squircle bg-primary justify-content-center">
                                 <i class="fe fe-upload-cloud fe-32 align-self-center text-white"></i>
                             </div>
-                            <p>Upload</p>
+                            <p>{{ trans('dashboard.upload') }}</p>
                         </div>
                     </div>
                     <div class="row align-items-center">
@@ -190,13 +190,13 @@
                             <div class="squircle bg-primary justify-content-center">
                                 <i class="fe fe-users fe-32 align-self-center text-white"></i>
                             </div>
-                            <p>Users</p>
+                            <p>{{ trans('spatie.users') }}</p>
                         </div>
                         <div class="col-6 text-center">
                             <div class="squircle bg-primary justify-content-center">
                                 <i class="fe fe-settings fe-32 align-self-center text-white"></i>
                             </div>
-                            <p>Settings</p>
+                            <p>{{ trans('dashboard.settings') }}</p>
                         </div>
                     </div>
                 </div>

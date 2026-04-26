@@ -139,12 +139,12 @@
                             <tbody>
                                 <tr class="total-data">
                                     <td><strong>
-                                        {{ app()->getLocale() == 'ar' ? 'المجموع الكلي قبل الخصم' : 'Subtotal:' }}  </strong></td>
+                                        {{ trans('shop.subtotal') }}:  </strong></td>
                                     <td>{{ number_format($subtotal, 2) }}</td>
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>
-                                        {{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }}  </strong></td>
+                                        {{ trans('dashboard.tax') }}:  </strong></td>
                                     <td>{{App\Models\Setting::getTaxRate()}}</td>
                                 </tr>
                                 <tr class="total-data">

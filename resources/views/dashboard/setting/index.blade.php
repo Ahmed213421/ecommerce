@@ -53,7 +53,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>{{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax' }}</td>
+                                                <td>{{ trans('dashboard.tax') }}</td>
                                                 <td>:</td>
                                                 <td>{{$setting->tax_rate}}</td>
                                             </tr>

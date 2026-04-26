@@ -22,16 +22,16 @@
 
 @section('content')
 <div class="bg-white p-4">
-    <h2 class="mb-2 page-title">Data table</h2>
+    <h2 class="mb-2 page-title">{{ trans('dashboard.data_table') }}</h2>
 
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
 
                 <div class="container mt-5">
-                    <a href="{{ route('admin.roles.index') }}" class="btn btn-primary mx-1">Roles</a>
-                    <a href="{{ route('admin.permissions.index') }}" class="btn btn-info mx-1">Permissions</a>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-warning mx-1">Users</a>
+                    <a href="{{ route('admin.roles.index') }}" class="btn btn-primary mx-1">{{ trans('spatie.roles') }}</a>
+                    <a href="{{ route('admin.permissions.index') }}" class="btn btn-info mx-1">{{ trans('spatie.perrmisssions') }}</a>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-warning mx-1">{{ trans('spatie.users') }}</a>
                 </div>
 
                 <div class="container mt-2">
@@ -45,9 +45,9 @@
                             <div class="card mt-3">
                                 <div class="card-header">
                                     <h4>
-                                        Roles
+                                        {{ trans('spatie.roles') }}
                                         @if (auth('admin')->check() && auth('admin')->user()->can('create-role'))
-                                            <a href="{{ url('roles/create') }}" class="btn btn-primary float-end">Add Role</a>
+                                            <a href="{{ url('roles/create') }}" class="btn btn-primary float-end">{{ trans('spatie.add_role') }}</a>
                                         @endif
                                     </h4>
                                 </div>
@@ -56,9 +56,9 @@
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th>Name</th>
-                                                <th width="40%">Action</th>
+                                                <th>{{ trans('dashboard.id') }}</th>
+                                                <th>{{ trans('dashboard.name') }}</th>
+                                                <th width="40%">{{ trans('dashboard.action') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -68,18 +68,18 @@
                                                 <td>{{ $role->name }}</td>
                                                 <td>
                                                     <a href="{{ url('dashboard/roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">
-                                                        Add / Edit Role Permission
+                                                        {{ trans('spatie.add_edit_role_permission') }}
                                                     </a>
 
                                                     @if (auth('admin')->check() && auth('admin')->user()->can('view-role'))
                                                         <a href="{{ route('admin.roles.edit',$role->id) }}" class="btn btn-success">
-                                                            Edit
+                                                            {{ trans('dashboard.edit') }}
                                                         </a>
                                                     @endif
 
                                                     @if (auth('admin')->check() && auth('admin')->user()->can('delete-role'))
                                                         <a href="{{ url('roles/'.$role->id.'/delete') }}" class="btn btn-danger mx-2">
-                                                            Delete
+                                                            {{ trans('dashboard.delete') }}
                                                         </a>
                                                     @endif
                                                 </td>

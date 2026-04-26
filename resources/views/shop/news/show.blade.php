@@ -59,11 +59,11 @@
 							<form action="{{route('customer.comments.store')}}" method="POST">
                                 @csrf
 								<p>
-									<input type="text" placeholder="Your Name" name="name">
-									<input type="email" placeholder="Your Email" name="email">
+									<input type="text" placeholder="{{ trans('shop.your_name') }}" name="name">
+									<input type="email" placeholder="{{ trans('shop.your_email') }}" name="email">
 									<input type="hidden" value="{{$post->id}}" name="postid">
 								</p>
-								<p><textarea name="message" id="comment" cols="30" rows="10" placeholder="Your Message"></textarea></p>
+								<p><textarea name="message" id="comment" cols="30" rows="10" placeholder="{{ trans('shop.your_message') }}"></textarea></p>
 								<p><input type="submit" value="{{trans('general.submit')}}"></p>
 							</form>
 						</div>

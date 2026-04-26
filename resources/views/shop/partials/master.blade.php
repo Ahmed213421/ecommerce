@@ -170,7 +170,7 @@
                         <p>{{ trans('shop.subscripe_to') }}</p>
                         <form action="{{route('customer.subscribe.store')}}" method="POST">
                             @csrf
-                            <input type="email" placeholder="Email" name="email">
+                            <input type="email" placeholder="{{ trans('general.email') }}" name="email">
                             <button type="submit"><i class="fas fa-paper-plane"></i></button>
                         </form>
                     </div>

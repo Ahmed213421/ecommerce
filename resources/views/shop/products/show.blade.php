@@ -218,8 +218,7 @@
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
                         <h3><span class="orange-text">{{ trans('shop.Related') }}</span> {{ trans('products.products') }}</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet
-                            beatae optio.</p>
+                        <p>{{ trans('shop.related_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -231,8 +230,8 @@
                                     alt=""></a>
                         </div>
                         <h3>Strawberry</h3>
-                        <p class="product-price"><span>Per Kg</span> 85$ </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}</span> 85$ </p>
+                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 text-center">
@@ -242,8 +241,8 @@
                                     alt=""></a>
                         </div>
                         <h3>Berry</h3>
-                        <p class="product-price"><span>Per Kg</span> 70$ </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}</span> 70$ </p>
+                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
@@ -253,8 +252,8 @@
                                     alt=""></a>
                         </div>
                         <h3>Lemon</h3>
-                        <p class="product-price"><span>Per Kg</span> 35$ </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}</span> 35$ </p>
+                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}</a>
                     </div>
                 </div>
             </div>
@@ -343,7 +342,7 @@
                 },
                 error: function (xhr) {
                     console.error('AJAX Error:', xhr);
-                    alert('حدث خطأ أثناء التحميل');
+                    alert('{{ trans('general.error_occurred') }}');
                 }
             });
         });
