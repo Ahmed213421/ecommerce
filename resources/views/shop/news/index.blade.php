@@ -10,6 +10,22 @@
             margin: 0 auto;
             border-radius: 8px;
         }
+
+        .news-image-placeholder {
+            width: 300px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 8px;
+            background: #f7f7f7;
+            border: 1px dashed #d8d8d8;
+            color: #777;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
     </style>
 @endsection
 
@@ -34,10 +50,17 @@
         <div class="container">
             <div class="row justify-content-center">
                 @foreach ($posts as $post)
+                    @php
+                        $hasPostImage = $post->imagepath && is_file(public_path($post->imagepath));
+                    @endphp
                     <div class="col-lg-4 col-md-6">
                         <div class="single-latest-news">
                             <a href="{{route('customer.news.show',$post->slug)}}" class="news-image">
-                                <img src="{{ asset($post->imagepath) }}" alt="News Image">
+                                @if ($hasPostImage)
+                                    <img src="{{ asset($post->imagepath) }}" alt="News Image">
+                                @else
+                                    <div class="news-image-placeholder">{{ trans('shop.no_photo') }}</div>
+                                @endif
                             </a>
                             <div class="news-text-box">
                                 <h3><a href="single-news.html">{{ $post->title }}.</a></h3>

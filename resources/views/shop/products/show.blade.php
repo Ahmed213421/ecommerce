@@ -73,17 +73,31 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5">
+                    @php
+                        $hasProductImage = $product->imagepath && is_file(public_path($product->imagepath));
+                    @endphp
                     <div class="single-product-img product-thumbnails">
-                        <img src="{{ asset($product->imagepath) }}" alt="">
+                        @if ($hasProductImage)
+                            <img src="{{ asset($product->imagepath) }}" alt="">
+                        @else
+                            <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                        @endif
                     </div>
                     <!-- Thumbnail Images -->
                     <div class="product-thumbnails mt-3">
                         <div class="row">
                             @foreach ($product->images->take(4) as $image)
+                                @php
+                                    $hasThumbnailImage = $image->imagepath && is_file(public_path($image->imagepath));
+                                @endphp
                                 <!-- Thumbnail Image 1 -->
                                 <div class="col-3">
-                                    <img src="{{ asset($image->imagepath) }}" alt=""
-                                        class="img-fluid product-thumbnail">
+                                    @if ($hasThumbnailImage)
+                                        <img src="{{ asset($image->imagepath) }}" alt=""
+                                            class="img-fluid product-thumbnail">
+                                    @else
+                                        <div class="no-photo-placeholder product-thumbnail-placeholder">{{ trans('shop.no_photo') }}</div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -122,7 +136,7 @@
                                     <input type="hidden" name="quantity">
 
                                     <input type="number" name="quantity" class="form-control form-control-sm mr-2"
-                                        placeholder="Qty" min="1" value="1" style="width: 70px;">
+                                        placeholder="{{ trans('general.qty_placeholder') }}" min="1" value="1" style="width: 70px;">
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
@@ -171,15 +185,15 @@
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <p>
-                                <input type="text" placeholder="Name" name="name" id="name" value="">
-                                <input type="email" placeholder="Email" name="email" id="email" value="">
+                                <input type="text" placeholder="{{ trans('general.name') }}" name="name" id="name" value="">
+                                <input type="email" placeholder="{{ trans('general.email') }}" name="email" id="email" value="">
                             </p>
                             <p>
-                                <input type="tel" placeholder="Phone" name="phone" id="phone" value="">
-                                <input type="text" placeholder="Subject" name="subject" id="subject" value="">
+                                <input type="tel" placeholder="{{ trans('general.phone') }}" name="phone" id="phone" value="">
+                                <input type="text" placeholder="{{ trans('general.subject') }}" name="subject" id="subject" value="">
                             </p>
                             <p>
-                                <textarea name="message" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                                <textarea name="message" id="message" cols="30" rows="10" placeholder="{{ trans('general.message') }}"></textarea>
                             </p>
                             <p>
                                 <input type="submit" value="submit">

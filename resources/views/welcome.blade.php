@@ -35,6 +35,20 @@
             font-size: 1rem;
             color: #666;
         }
+
+        .news-image-placeholder {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7f7f7;
+            border: 1px dashed #d8d8d8;
+            color: #777;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
     </style>
 @endsection
 
@@ -182,11 +196,19 @@
 
             <div class="row">
                 @foreach ($products_most_viewed as $product)
+                    @php
+                        $hasProductImage = $product->imagepath && is_file(public_path($product->imagepath));
+                    @endphp
                     <div class="col-md-4 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
-                                <a href="{{ route('customer.product.show', $product->slug) }}"><img
-                                        src="{{ asset($product->imagepath) }}" alt=""></a>
+                                <a href="{{ route('customer.product.show', $product->slug) }}">
+                                    @if ($hasProductImage)
+                                        <img src="{{ asset($product->imagepath) }}" alt="">
+                                    @else
+                                        <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                    @endif
+                                </a>
                             </div>
                             <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a>
                             </h3>
@@ -230,11 +252,19 @@
 
             <div class="row">
                 @foreach ($featured as $product)
+                    @php
+                        $hasProductImage = $product->imagepath && is_file(public_path($product->imagepath));
+                    @endphp
                     <div class="col-md-4 text-center">
                         <div class="single-product-item">
                             <div class="product-image">
-                                <a href="{{ route('customer.product.show', $product->slug) }}"><img
-                                        src="{{ asset($product->imagepath) }}" alt=""></a>
+                                <a href="{{ route('customer.product.show', $product->slug) }}">
+                                    @if ($hasProductImage)
+                                        <img src="{{ asset($product->imagepath) }}" alt="">
+                                    @else
+                                        <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                    @endif
+                                </a>
                             </div>
                             <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a>
                             </h3>
@@ -392,10 +422,17 @@
 
             <div class="row">
                 @foreach ($posts as $post)
+                    @php
+                        $hasPostImage = $post->imagepath && is_file(public_path($post->imagepath));
+                    @endphp
                     <div class="col-lg-4 col-md-6">
                         <div class="single-latest-news">
                             <a href="{{ route('customer.news.show', $post->slug) }}" class="news-image">
-                                <img src="{{ asset($post->imagepath) }}" alt="News Image">
+                                @if ($hasPostImage)
+                                    <img src="{{ asset($post->imagepath) }}" alt="News Image">
+                                @else
+                                    <div class="news-image-placeholder">{{ trans('shop.no_photo') }}</div>
+                                @endif
                             </a>
                             <div class="news-text-box">
                                 <h3><a href="single-news.html">{{ $post->title }}.</a></h3>

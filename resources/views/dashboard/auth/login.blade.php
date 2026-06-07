@@ -67,7 +67,7 @@
                     <label for="inputEmail" class="sr-only">Email address</label>
                     <input type="email" id="inputEmail"
                         class="form-control form-control-lg @error('email') is-invalid @enderror" name="email"
-                        placeholder="Email address" value="{{ old('email') }}" required autofocus>
+                        placeholder="{{ trans('general.email_address') }}" value="{{ old('email') }}" required autofocus>
 
                     @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -81,7 +81,7 @@
                     <label for="inputPassword" class="sr-only">Password</label>
                     <input type="password" id="inputPassword"
                         class="form-control form-control-lg @error('password') is-invalid @enderror" name="password"
-                        placeholder="Password" required>
+                        placeholder="{{ trans('general.password') }}" required>
 
                     @error('password')
                         <span class="invalid-feedback" role="alert">

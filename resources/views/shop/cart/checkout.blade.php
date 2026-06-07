@@ -57,12 +57,12 @@
                                             <form id="checkoutForm" action="{{ route('customer.check-out.store') }}"
                                                 method="POST">
                                                 @csrf
-                                                <p><input type="text" placeholder="name" name="name"></p>
-                                                <p><input type="email" placeholder="email" name="email"></p>
-                                                <p><input type="text" placeholder="address" name="address"></p>
-                                                <p><input type="tel" placeholder="phone" name="phone"></p>
+                                                <p><input type="text" placeholder="{{ trans('general.name') }}" name="name"></p>
+                                                <p><input type="email" placeholder="{{ trans('general.email') }}" name="email"></p>
+                                                <p><input type="text" placeholder="{{ trans('general.address') }}" name="address"></p>
+                                                <p><input type="tel" placeholder="{{ trans('general.phone') }}" name="phone"></p>
                                                 <p>
-                                                    <textarea name="note" id="note" cols="30" rows="10" placeholder="Say Something"></textarea>
+                                                    <textarea name="note" id="note" cols="30" rows="10" placeholder="{{ trans('general.note') }}"></textarea>
                                                 </p>
                                                 <p>
                                                     <select name="payment">

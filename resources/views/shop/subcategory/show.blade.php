@@ -18,11 +18,19 @@
             <div class="row">
 
                 @foreach ($subcategory->products as $product)
+                    @php
+                        $hasProductImage = $product->imagepath && is_file(public_path($product->imagepath));
+                    @endphp
                     <div class="col-lg-3 col-md-6">
                         <div class="single-product-item text-center">
                             <div class="product-image">
-                                <a href="{{ route('admin.products.show', $product->slug) }}"><img
-                                        src="{{ asset($product->imagepath) }}" alt=""></a>
+                                <a href="{{ route('customer.product.show', $product->slug) }}">
+                                    @if ($hasProductImage)
+                                        <img src="{{ asset($product->imagepath) }}" alt="">
+                                    @else
+                                        <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                    @endif
+                                </a>
                             </div>
                             <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a></h3>
                             <p class="product-price"><span>{{ trans('shop.per_kg') }} </span>{{$product->price}}</del> {{ $product->price_after_discount }}$ </p>

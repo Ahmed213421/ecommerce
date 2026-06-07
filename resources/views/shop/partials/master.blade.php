@@ -35,6 +35,66 @@
     <!-- responsive -->
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
+    <style>
+        .footer-about-text {
+            color: #d5dee2;
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+
+        .footer-about-list {
+            display: grid;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-about-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #f5f5f5;
+            font-size: 14px;
+        }
+
+        .footer-about-list i {
+            color: #F28123;
+            font-size: 12px;
+        }
+
+        .no-photo-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7f7f7;
+            border: 1px dashed #d8d8d8;
+            border-radius: 6px;
+            color: #777;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        .product-image .no-photo-placeholder {
+            width: 90%;
+            height: 180px;
+            margin: 0 auto 20px;
+        }
+
+        .single-product-img .no-photo-placeholder {
+            width: 100%;
+            min-height: 360px;
+            box-shadow: 0 0 20px #ddd;
+        }
+
+        .product-thumbnail-placeholder {
+            width: 100%;
+            min-height: 80px;
+            font-size: 12px;
+        }
+    </style>
+
     @yield('css')
 
 
@@ -64,7 +124,7 @@
                             <h3>{{ trans('shop.search_for') }}</h3>
                             <form action="{{ route('customer.search',['search'=>'search']) }}" method="GET">
                                 @csrf
-                                <input type="text" placeholder="Keywords" name="search">
+                                <input type="text" placeholder="{{ trans('general.keywords') }}" name="search">
                                 <button type="submit">{{ trans('general.search') }} <i class="fas fa-search"></i></button>
                             </form>
                         </div>
@@ -102,10 +162,12 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-box about-widget">
                         <h2 class="widget-title">{{ trans('shop.about_us') }}</h2>
-                        @foreach (App\Models\Setting::all() as $item)
-
-                        <p>{{$item->description}}</p>
-                            @endforeach
+                        <p class="footer-about-text">{{ trans('shop.about_us_footer') }}</p>
+                        <ul class="footer-about-list">
+                            <li><i class="fas fa-check-circle"></i> {{ trans('shop.about_us_point_fresh') }}</li>
+                            <li><i class="fas fa-check-circle"></i> {{ trans('shop.about_us_point_delivery') }}</li>
+                            <li><i class="fas fa-check-circle"></i> {{ trans('shop.about_us_point_quality') }}</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -126,9 +188,9 @@
                         <h2 class="widget-title">{{ trans('shop.pages') }}</h2>
                         <ul>
                             <li><a href="{{route('customer.home')}}">{{ trans('general.home') }}</a></li>
-                            <li><a href="about.html">{{ trans('shop.about_us') }}</a></li>
+                            <li><a href="{{route('customer.about')}}">{{ trans('shop.about_us') }}</a></li>
                             <li><a href="{{route('customer.shop')}}">{{ trans('shop.shop') }}</a></li>
-                            <li><a href="{{route('admin.news.index')}}">{{ trans('dashboard.news') }}</a></li>
+                            <li><a href="{{route('customer.news.index')}}">{{ trans('dashboard.news') }}</a></li>
                             <li><a href="{{route('customer.us.index')}}">{{ trans('slider.contact_us') }}</a></li>
                         </ul>
                     </div>
@@ -139,7 +201,7 @@
                         <p>{{ trans('shop.subscripe_to') }}</p>
                         <form action="{{route('customer.subscribe.store')}}" method="POST">
                             @csrf
-                            <input type="email" placeholder="Email" name="email">
+                            <input type="email" placeholder="{{ trans('general.email') }}" name="email">
                             <button type="submit"><i class="fas fa-paper-plane"></i></button>
                         </form>
                     </div>

@@ -49,7 +49,7 @@
                 <div class="no-results">
                     <p>{{ trans('general.noresult') }}.</p>
                     <form action="{{ route('customer.search') }}" method="GET">
-                        <input type="text" name="search" placeholder="Search again..." class="search-input">
+                        <input type="text" name="search" placeholder="{{ trans('general.search_again') }}" class="search-input">
                         <button type="submit" class="search-button btn btn-primary">{{ trans('general.search') }}</button>
                     </form>
                 </div>
@@ -57,11 +57,19 @@
             <div class="row">
                 @if ($products->count() > 0)
                     @foreach ($products as $product)
+                        @php
+                            $hasProductImage = $product->imagepath && is_file(public_path($product->imagepath));
+                        @endphp
                         <div class="col-md-4 text-center">
                             <div class="single-product-item">
                                 <div class="product-image">
-                                    <a href="{{ route('customer.product.show', $product->slug) }}"><img
-                                            src="{{ asset($product->imagepath) }}" alt=""></a>
+                                    <a href="{{ route('customer.product.show', $product->slug) }}">
+                                        @if ($hasProductImage)
+                                            <img src="{{ asset($product->imagepath) }}" alt="">
+                                        @else
+                                            <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                        @endif
+                                    </a>
                                 </div>
                                 <h3><a href="{{ route('customer.product.show', $product->slug) }}">{{ $product->name }}</a>
                                 </h3>
@@ -95,11 +103,19 @@
 
                 @if ($categories->count() > 0)
                     @forelse ($categories as $category)
+                        @php
+                            $hasCategoryImage = $category->imagepath && is_file(public_path($category->imagepath));
+                        @endphp
                         <div class="col-md-4 text-center">
                             <div class="single-product-item">
                                 <div class="product-image">
-                                    <a href="{{ route('customer.category.show', $category->slug) }}"><img
-                                            src="{{ asset($category->imagepath) }}" alt=""></a>
+                                    <a href="{{ route('customer.category.show', $category->slug) }}">
+                                        @if ($hasCategoryImage)
+                                            <img src="{{ asset($category->imagepath) }}" alt="">
+                                        @else
+                                            <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                        @endif
+                                    </a>
                                 </div>
                                 <h3><a
                                         href="{{ route('customer.category.show', $category->slug) }}">{{ $category->name }}</a>

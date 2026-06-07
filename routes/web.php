@@ -52,7 +52,7 @@ use Illuminate\Support\Facades\Session;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/en/shop');
 });
 
 // Route::get('/dashboard', function () {
@@ -96,6 +96,7 @@ Route::group(
     Route::resource('settings' , AccountSettingController::class)->only('index','update','destroy')->middleware('auth');
 
     Route::get('/',[WelcomeController::class, 'index'])->name('home');
+    Route::view('about', 'shop.about')->name('about');
 
 
 

@@ -36,11 +36,19 @@
                 <div class="row product-lists">
                     @foreach ($category->subcategories as $subcategory)
                             @foreach ($subcategory->products as $item)
+                                @php
+                                    $hasProductImage = $item->imagepath && is_file(public_path($item->imagepath));
+                                @endphp
                                 <div class="col-lg-4 col-md-6 text-center {{ Str::slug($subcategory->name) }}">
                                     <div class="single-product-item">
                                         <div class="product-image">
-                                            <a href="{{route('admin.products.show',$item->slug)}}"><img src="{{asset($item->imagepath)}}"
-                                                    alt=""></a>
+                                            <a href="{{route('customer.product.show',$item->slug)}}">
+                                                @if ($hasProductImage)
+                                                    <img src="{{asset($item->imagepath)}}" alt="">
+                                                @else
+                                                    <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                                @endif
+                                            </a>
                                         </div>
                                         <h3><a href="{{route('customer.product.show',$item->slug)}}">{{ $item->name }}</a></h3>
                                         <p class="product-price"><span></span>

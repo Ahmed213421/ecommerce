@@ -41,11 +41,18 @@
                 @foreach ($categories as $category)
                     @foreach ($category->subcategories as $sub)
                         @foreach ($sub->products as $item)
+                            @php
+                                $hasProductImage = $item->imagepath && is_file(public_path($item->imagepath));
+                            @endphp
                             <div class="col-lg-4 col-md-6 text-center {{ Str::slug($category->name) }}">
                                 <div class="single-product-item">
                                     <div class="product-image">
                                         <a href="{{ route('customer.product.show', $item->slug) }}">
-                                            <img src="{{ asset($item->imagepath) }}" alt="">
+                                            @if ($hasProductImage)
+                                                <img src="{{ asset($item->imagepath) }}" alt="">
+                                            @else
+                                                <div class="no-photo-placeholder">{{ trans('shop.no_photo') }}</div>
+                                            @endif
                                         </a>
                                     </div>
                                     <h3><a href="{{ route('customer.product.show', $item->slug) }}">{{ $item->name }}</a></h3>

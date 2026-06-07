@@ -92,7 +92,7 @@ class CheckoutSuccessController extends Controller
         toastr()->success('تم الدفع');
 
 
-        return view('welcome');
+        return redirect()->route('customer.home');
     } catch (Exception $e) {
         DB::rollBack(); 
 
