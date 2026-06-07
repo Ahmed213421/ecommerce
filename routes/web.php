@@ -51,9 +51,13 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
+<<<<<<< HEAD
 Route::get('/', function () {
     return redirect('/en/shop');
 });
+=======
+Route::get('/', [WelcomeController::class, 'index']);
+>>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -122,7 +126,7 @@ Route::group(
         ]);
         Route::resource('testmonials',TestmonialController::class)->only('index','store');
         Route::resource('reviews',ReviewController::class)->only('index','store');
-        Route::get('search/{search}',SearchController::class)->name('search');
+        Route::get('search',SearchController::class)->name('search');
         Route::post('addproduct/',[CartController::class , 'addToCart'])->name('cart.product.add');
         Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 

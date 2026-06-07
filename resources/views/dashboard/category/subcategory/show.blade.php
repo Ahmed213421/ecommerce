@@ -14,13 +14,33 @@
 
 @section('breadcumbactive')
 <li class="breadcrumb-item active" aria-current="page"><a href="{{route('admin.category.index')}}">{{ trans('category.categories') }}</a></li>
+@if($subcategory->category)
 <li class="breadcrumb-item active" aria-current="page"><a href="{{route('admin.category.show',$subcategory->category->id)}}">{{$subcategory->category->name}}</a></li>
+@endif
 <li class="breadcrumb-item active" aria-current="page"><a href="{{route('admin.subcategory.show',$subcategory->id)}}">{{$subcategory->name}}</a></li>
 @endsection
 
 @section('content')
 <div class="bg-white p-4">
-    <h2 class="mb-2 page-title">{{$subcategory->name}}</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                @if($subcategory->imagepath)
+                <div class="col-md-4">
+                    <img src="{{ asset($subcategory->imagepath) }}" class="img-fluid rounded" alt="{{ $subcategory->name }}">
+                </div>
+                @endif
+                <div class="col-md-8">
+                    <h2 class="mb-3 page-title">{{ $subcategory->name }}</h2>
+                    <p class="mb-2"><strong>{{ trans('dashboard.category') }}:</strong> {{ $subcategory->category->name ?? '-' }}</p>
+                    <p class="mb-2"><strong>{{ trans('dashboard.slug') }}:</strong> {{ $subcategory->slug ?? '-' }}</p>
+                    <p class="mb-2"><strong>{{ trans('dashboard.id') }}:</strong> {{ $subcategory->id }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mb-3">{{ trans('dashboard.products') }}</h3>
     <div class="row">
     @foreach ($subcategory->products as $product)
 
@@ -29,14 +49,13 @@
             <img src="{{asset($product->imagepath)}}" class="card-img-top" style="width:100%;height:200px" alt="Card image cap">
             <div class="card-body">
                 <h6 class="card-text my-2">
-                    <a href="your-link-here" class="text-dark">{{$product->name}}</a>
+                    <a href="{{route('admin.products.show',$product->id)}}" class="text-dark">{{$product->name}}</a>
                 </h6>
                 {{-- Replace or remove post description here --}}
                 <p class="card-text">{{$product->description}}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        {{-- Replace these with actual links or actions --}}
-                        <a href="your-link-here" class="btn btn-sm btn-outline-secondary">{{ trans('dashboard.view') }}</a>
+                        <a href="{{route('admin.products.show',$product->id)}}" class="btn btn-sm btn-outline-secondary">{{ trans('dashboard.view') }}</a>
                         <a href="{{route('admin.products.edit',$product->id)}}" class="btn btn-sm btn-outline-secondary">{{ trans('dashboard.edit') }}</a>
                     </div>
                     {{-- You can either hardcode a timestamp or remove this line --}}

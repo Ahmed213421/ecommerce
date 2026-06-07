@@ -18,6 +18,8 @@ class UpdateSubCategoryRequest extends FormRequest
             'name_en' => ['required', 'string'],
             'name_ar' => ['required', 'string'],
             'category_id' => ['exists:categories,id'],
+            'description_en' => ['nullable', 'string'],
+            'description_ar' => ['nullable', 'string'],
             'simage' => ['nullable', 'image'],
         ];
     }
@@ -37,6 +39,10 @@ class UpdateSubCategoryRequest extends FormRequest
             'name' => [
                 'en' => $data['name_en'],
                 'ar' => $data['name_ar']
+            ],
+            'description' => [
+                'en' => $data['description_en'] ?? null,
+                'ar' => $data['description_ar'] ?? null,
             ],
             'category_id' => $data['category_id'],
             'imagepath' => $data['imagepath'],

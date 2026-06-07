@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\SearchRepositoryInterface;
+use App\Repositories\Contracts\SearchContract;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
     protected $searchRepository;
 
-    public function __construct(SearchRepositoryInterface $searchRepository)
+    public function __construct(SearchContract $searchRepository)
     {
         $this->searchRepository = $searchRepository;
     }
@@ -19,7 +19,7 @@ class SearchController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $results = $this->searchRepository->searchAll($request->search);
+        $results = $this->searchRepository->searchAll($request->query('search', ''));
         
         $products = $results['products'];
         $categories = $results['categories'];

@@ -45,8 +45,8 @@ class SettingController extends Controller
 
 
 
-        if ($request->hasFile('iconpage')) {
-            $icon = 'dashboard/'.$request->iconpage->storeAs('settings', time().'_'.$request->iconpage->getClientOriginalName(),'images');
+        if ($request->hasFile('pageIcon')) {
+            $icon = 'dashboard/'.$request->pageIcon->storeAs('settings', time().'_'.$request->pageIcon->getClientOriginalName(),'images');
         }
         else{
             $icon = null;
@@ -117,11 +117,11 @@ class SettingController extends Controller
         $icon = $setting->pageIcon;
         $logo = $setting->logo;
 
-        if ($request->hasFile('iconpage')) {
+        if ($request->hasFile('pageIcon')) {
             if ($icon &&  file_exists(public_path($icon))) {
                 unlink(public_path($icon));
             }
-            $icon = 'dashboard/'.$request->iconpage->storeAs('settings', time().'_'.$request->iconpage->getClientOriginalName(),'images');
+            $icon = 'dashboard/'.$request->pageIcon->storeAs('settings', time().'_'.$request->pageIcon->getClientOriginalName(),'images');
         }
         if ($request->hasFile('logo')) {
             if ($logo &&  file_exists(public_path($logo))) {
@@ -138,7 +138,7 @@ class SettingController extends Controller
             'map' => $request->map,
             'email' => $request->email,
             'logo' => $logo,
-            'whoweare' => ['en' => $request->whoerare_en,'ar' => $request->whoweare_ar],
+            'whoweare' => ['en' => $request->whoweare_en,'ar' => $request->whoweare_ar],
             'hours_working' => ['en'=>$request->hours_working_en,'ar' => $request->hours_working_ar],
             'tax_rate' => $request->tax_rate,
         ]);

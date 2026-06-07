@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewContactEvent;
 use App\Models\Admin;
-use App\Repositories\Interfaces\ContactRepositoryInterface;
+use App\Repositories\Contracts\ContactContract;
 use App\Notifications\NewContactNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -14,7 +14,7 @@ class ContactUsController extends Controller
 {
     protected $contactRepository;
 
-    public function __construct(ContactRepositoryInterface $contactRepository)
+    public function __construct(ContactContract $contactRepository)
     {
         $this->contactRepository = $contactRepository;
     }

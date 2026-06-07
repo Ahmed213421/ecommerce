@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Repositories\Admin\SQL;
+
+use App\Repositories\SQL\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
+use App\Repositories\Admin\Contracts\RoleContract;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
+
+class RoleRepository extends BaseRepository implements RoleContract
+{
+
+    public function __construct(Role $model)
+    {
+        parent::__construct($model);
+    }
+
+    public function getAll()
+    {
+        return $this->model->get();
+    }
+
+    public function create(array $data = []): mixed
+    {
+        return $this->model->create($data);
+    }
+
+    public function find(int $id, array $relations = [], array $filters = []): mixed
+    {
+        return $this->model->findOrFail($id);
+    }
+
+    public function update($id, array $data = []): mixed
+    {
+        $role = $this->find($id);
+        $role->update($data);
+        return $role;
+    }
+
+    public function delete($id)
+    {
+        $role = $this->find($id);
+        return $role->delete();
+    }
+
+    public function getRolePermissions($roleId)
+    {
+        $role = $this->find($roleId);
+        return DB::table('role_has_permissions')
+            ->where('role_has_permissions.role_id', $role->id)
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
+            ->all();
+    }
+
+    public function syncPermissions($roleId, array $permissions)
+    {
+        $role = $this->find($roleId);
+        return $role->syncPermissions($permissions);
+    }
+}

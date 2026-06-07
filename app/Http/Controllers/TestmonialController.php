@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\ReviewRequest;
 use App\Http\Requests\Admin\TestmonialRequest;
-use App\Repositories\Admin\Interfaces\ReviewRepositoryInterface;
-use App\Repositories\Admin\Interfaces\TestmonialRepositoryInterface;
+use App\Repositories\Admin\Contracts\TestmonialContract;
 use Illuminate\Http\Request;
 
 class TestmonialController extends Controller
 {
     protected $reviewRepository;
 
-    public function __construct(TestmonialRepositoryInterface $reviewRepository)
+    public function __construct(TestmonialContract $reviewRepository)
     {
         $this->reviewRepository = $reviewRepository;
     }

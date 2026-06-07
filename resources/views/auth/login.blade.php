@@ -14,7 +14,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-header text-center">{{ __('Login') }}</div>
+                                <div class="card-header text-center">{{ trans('general.login') }}</div>
 
                                 <div class="card-body">
                                     <form method="POST" action="{{ route('customer.login') }}">
@@ -40,7 +40,7 @@
                                             <div class="form-check">
                                                 <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="remember">
-                                                    {{ app()->getLocale() == 'ar' ? 'ذكرني لاحقا' : 'remeber me' }}
+                                                    {{ trans('general.remember_me') }}
                                                 </label>
                                             </div>
                                         </div>

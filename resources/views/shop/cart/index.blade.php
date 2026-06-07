@@ -139,12 +139,12 @@
                             <tbody>
                                 <tr class="total-data">
                                     <td><strong>
-                                        {{ app()->getLocale() == 'ar' ? 'المجموع الكلي قبل الخصم' : 'Subtotal:' }}  </strong></td>
+                                        {{ trans('shop.subtotal') }}:  </strong></td>
                                     <td>{{ number_format($subtotal, 2) }}</td>
                                 </tr>
                                 <tr class="total-data">
                                     <td><strong>
-                                        {{ app()->getLocale() == 'ar' ? 'الضريبه' : 'tax:' }}  </strong></td>
+                                        {{ trans('dashboard.tax') }}:  </strong></td>
                                     <td>{{App\Models\Setting::getTaxRate()}}</td>
                                 </tr>
                                 <tr class="total-data">
@@ -163,7 +163,7 @@
                         </div>
                     </div>
 
-                    <div class="coupon-section">
+                    {{-- <div class="coupon-section">
                         <h3>Apply Coupon</h3>
                         <div class="coupon-form-wrap">
                             <form action="index.html">
@@ -171,7 +171,7 @@
                                 <p><input type="submit" value="Apply"></p>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

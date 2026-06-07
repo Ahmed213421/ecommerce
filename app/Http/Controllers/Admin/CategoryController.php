@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Subcategory;
-use App\Repositories\Admin\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Admin\Contracts\CategoryContract;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +20,7 @@ class CategoryController extends Controller
 
     protected $categoryRepository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    public function __construct(CategoryContract $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }

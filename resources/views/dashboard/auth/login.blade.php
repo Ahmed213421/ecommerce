@@ -60,14 +60,18 @@
                     </svg>
                 </a>
 
-                <h1 class="h6 mb-3">Sign in</h1>
+                <h1 class="h6 mb-3">{{ trans('dashboard.sign_in') }}</h1>
 
                 <!-- Email Input -->
                 <div class="form-group">
-                    <label for="inputEmail" class="sr-only">Email address</label>
+                    <label for="inputEmail" class="sr-only">{{ trans('general.email') }}</label>
                     <input type="email" id="inputEmail"
                         class="form-control form-control-lg @error('email') is-invalid @enderror" name="email"
+<<<<<<< HEAD
                         placeholder="{{ trans('general.email_address') }}" value="{{ old('email') }}" required autofocus>
+=======
+                        placeholder="{{ trans('general.email') }}" value="{{ old('email') }}" required autofocus>
+>>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
 
                     @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -78,7 +82,7 @@
 
                 <!-- Password Input -->
                 <div class="form-group">
-                    <label for="inputPassword" class="sr-only">Password</label>
+                    <label for="inputPassword" class="sr-only">{{ trans('general.password') }}</label>
                     <input type="password" id="inputPassword"
                         class="form-control form-control-lg @error('password') is-invalid @enderror" name="password"
                         placeholder="{{ trans('general.password') }}" required>
@@ -95,12 +99,12 @@
                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
                         {{ old('remember') ? 'checked' : '' }}>
                     <label class="form-check-label" for="remember">
-                        {{ __('Remember Me') }}
+                        {{ trans('general.remember_me') }}
                     </label>
                 </div>
 
                 <!-- Submit Button -->
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Let me in</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">{{ trans('dashboard.let_me_in') }}</button>
 
                 <div class="mt-3 text-center">
                     <a href="{{ route('admin.password.request') }}">{{ __('general.forgetpass') }}</a>

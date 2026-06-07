@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Contracts\CategoryContract;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     protected $categoryRepository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    public function __construct(CategoryContract $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }

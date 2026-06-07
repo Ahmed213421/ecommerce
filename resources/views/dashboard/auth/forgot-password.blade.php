@@ -51,7 +51,7 @@
 
                 <!-- Email Address -->
                 <div class="form-group">
-                    <label for="email">{{ __('Email') }}</label>
+                    <label for="email">{{ trans('general.email') }}</label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}"
                         class="form-control @error('email') is-invalid @enderror" required autofocus>
                     @error('email')
@@ -65,7 +65,7 @@
                 <div class="form-group text-right mt-4">
 
                     <button type="submit" class="btn btn-primary">
-                        {{ __('Email Password Reset Link') }}
+                        {{ trans('dashboard.email_pass_reset') }}
                     </button>
                 </div>
             </form>

@@ -104,7 +104,7 @@
             var categoryId = $(this).val();
 
             // Reset student dropdown
-            $('#subSelect').empty().append('<option value="">Select a subcategory</option>').prop('disabled', true);
+            $('#subSelect').empty().append('<option value="">{{trans('dashboard.sel.subcategory')}}</option>').prop('disabled', true);
 
             if (categoryId) {
                 $.ajax({

@@ -7,13 +7,13 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Admin\Contracts\RoleContract;
 
 class RoleController extends Controller
 {
     protected $roleRepository;
 
-    public function __construct(RoleRepositoryInterface $roleRepository)
+    public function __construct(RoleContract $roleRepository)
     {
         // $this->middleware('permission:view role', ['only' => ['index']]);
         // $this->middleware('permission:create role', ['only' => ['create','store','addPermissionToRole','givePermissionToRole']]);

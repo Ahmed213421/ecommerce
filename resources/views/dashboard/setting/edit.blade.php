@@ -37,14 +37,18 @@
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.iconpage') }}</label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control" accept="image/*" name="pageIcon">
-                                            <img src="{{asset($setting->pageIcon)}}" alt="" srcset="" width="20px" height="20px">
+                                            @if($setting->pageIcon)
+                                                <img src="{{asset($setting->pageIcon)}}" alt="" srcset="" width="20px" height="20px">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputText" class="col-sm-2 col-form-label">{{ trans('dashboard.logo') }}</label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control" accept="image/*" name="logo">
-                                            <img src="{{asset($setting->logo)}}" alt="" srcset="" width="200px" height="100px" class="mt-2">
+                                            @if($setting->logo)
+                                                <img src="{{asset($setting->logo)}}" alt="" srcset="" width="200px" height="100px" class="mt-2">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row mb-3">

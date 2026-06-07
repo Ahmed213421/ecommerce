@@ -13,12 +13,12 @@
 
 @section('breadcumbactive')
 <li class="breadcrumb-item active" aria-current="page"><a
-href="{{ route('admin.testmonials.index') }}">{{ trans('general.review') }}</a></li>
+href="{{ route('admin.testmonials.index') }}">{{ trans('general.testmonials') }}</a></li>
 @endsection
 
 @section('content')
 <div class="bg-white p-4">
-<h2 class="mb-2 page-title">{{ trans('general.review') }}</h2>
+<h2 class="mb-2 page-title">{{ trans('general.testmonials') }}</h2>
 
 <div class="row my-4">
 <!-- Small table -->

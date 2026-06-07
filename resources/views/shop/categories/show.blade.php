@@ -24,7 +24,7 @@
                     <div class="col-md-12">
                         <div class="product-filters">
                             <ul>
-                                <li class="active" data-filter="*">All</li>
+                                <li class="active" data-filter="*">{{ trans('shop.all') }}</li>
                                 @foreach ($category->subcategories as $subcategory)
                                     <li data-filter=".{{ Str::slug($subcategory->name) }}">{{ $subcategory->name }}</li>
                                 @endforeach

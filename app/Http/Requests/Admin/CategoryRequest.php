@@ -26,6 +26,8 @@ class CategoryRequest extends FormRequest
         return [
         'name_en' => 'required|string|max:255',
         'name_ar' => 'required|string|max:255',
+        'description_en' => 'nullable|string',
+        'description_ar' => 'nullable|string',
         'imagepath' => 'image',
         'category_id' => 'nullable|exists:categories,id',
         ];
@@ -38,6 +40,10 @@ class CategoryRequest extends FormRequest
             'name' => [
                 'en' => $data['name_en'],
                 'ar' => $data['name_ar'],
+            ],
+            'description' => [
+                'en' => $data['description_en'] ?? null,
+                'ar' => $data['description_ar'] ?? null,
             ],
             'imagepath' => $data['imagepath'] ?? null,
             'slug' => Str::slug($data['name_en']),

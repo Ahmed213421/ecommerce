@@ -42,8 +42,13 @@ class ProfileSettingController extends Controller
 
 
         $user = Admin::find(Auth::guard('admin')->user()->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
+        if ($request->filled('name')) {
+                $user->name = $request->name;
+            }
+
+        if ($request->filled('email')) {
+            $user->email = $request->email;
+        }
 
 
         if ($request->hasFile('photo')) {
@@ -63,17 +68,15 @@ class ProfileSettingController extends Controller
             }
         }
 
-        if(!Hash::check($request->oldpassword, $user->password)){
-            return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
-        }
+        if ($request->filled('password')) {
+            if(!Hash::check($request->oldpassword, $user->password)){
+                return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
+            }
 
-        if ($request->filled('password') && Hash::check($request->oldpassword, $user->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
 
-
             Auth::guard('admin')->logout();
-
 
             return redirect()->route('admin.logout');
         }

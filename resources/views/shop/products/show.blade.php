@@ -136,7 +136,11 @@
                                     <input type="hidden" name="quantity">
 
                                     <input type="number" name="quantity" class="form-control form-control-sm mr-2"
+<<<<<<< HEAD
                                         placeholder="{{ trans('general.qty_placeholder') }}" min="1" value="1" style="width: 70px;">
+=======
+                                        placeholder="{{ trans('general.qty') }}" min="1" value="1" style="width: 70px;">
+>>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}
@@ -177,7 +181,7 @@
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="form-title">
-                        <h2>Customer Reviews</h2>
+                        <h2>{{ trans('general.review') }}</h2>
                     </div>
                     <div id="form_status"></div>
                     <div class="contact-form">
@@ -196,7 +200,7 @@
                                 <textarea name="message" id="message" cols="30" rows="10" placeholder="{{ trans('general.message') }}"></textarea>
                             </p>
                             <p>
-                                <input type="submit" value="submit">
+                                <input type="submit" value="{{ trans('general.submit') }}">
                             </p>
                         </form>
 
@@ -214,7 +218,7 @@
 <!-- start review section -->
 <div class="testimonail-section mt-150 mb-150" id="ajax-reviews">
     <div class="container">
-        @include('shop.products.reviews') <!-- تحميل التقييمات والصفحات -->
+        @include('shop.products.reviews') 
     </div>
 </div>
 <!-- end review section -->
@@ -232,8 +236,7 @@
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
                         <h3><span class="orange-text">{{ trans('shop.Related') }}</span> {{ trans('products.products') }}</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet
-                            beatae optio.</p>
+                        <p>{{ trans('shop.related_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -245,8 +248,8 @@
                                     alt=""></a>
                         </div>
                         <h3>Strawberry</h3>
-                        <p class="product-price"><span>Per Kg</span> 85$ </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}</span> 85$ </p>
+                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 text-center">
@@ -256,8 +259,8 @@
                                     alt=""></a>
                         </div>
                         <h3>Berry</h3>
-                        <p class="product-price"><span>Per Kg</span> 70$ </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}</span> 70$ </p>
+                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
@@ -267,8 +270,8 @@
                                     alt=""></a>
                         </div>
                         <h3>Lemon</h3>
-                        <p class="product-price"><span>Per Kg</span> 35$ </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p class="product-price"><span>{{ trans('shop.per_kg') }}</span> 35$ </p>
+                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}</a>
                     </div>
                 </div>
             </div>
@@ -357,7 +360,7 @@
                 },
                 error: function (xhr) {
                     console.error('AJAX Error:', xhr);
-                    alert('حدث خطأ أثناء التحميل');
+                    alert('{{ trans('general.error_occurred') }}');
                 }
             });
         });

@@ -12,7 +12,7 @@
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb-text">
                     <p>{{ trans('shop.fresh') }}</p>
-                    <h1>{{app()->getLocale() == 'ar' ? 'عمليه ناجحه' : 'success'}}</h1>
+                    <h1>{{ trans('general.success') }}</h1>
                 </div>
             </div>
         </div>

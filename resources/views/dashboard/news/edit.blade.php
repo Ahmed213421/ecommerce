@@ -53,7 +53,7 @@
 
 
             <div class="custom-file mb-3">
-                <input type="file" class="custom-file-input" id="customFi" name="image" accept="image/*">
+                <input type="file" class="custom-file-input" id="customFi" name="imagepath" accept="image/*">
                 <label class="custom-file-label" for="customFile">{{ trans('dashboard.photo') }}</label>
             </div>
             <img src="{{asset($post->imagepath)}}" width="100px" class="my-2"  alt="" srcset="">
@@ -61,17 +61,18 @@
             <div class="form-group mb-3">
                 <label for="custom-select">{{ trans('dashboard.sel.category') }}</label>
                 <select class="custom-select" id="categoryselect" name="category">
-                    <option selected="" disabled>{{ trans('dashboard.sel.category') }}</option>
+                    <option disabled>{{ trans('dashboard.sel.category') }}</option>
                     @foreach ($categories as $category)
-                    <option value="{{$category->id}}">{{$category->name}}</option>
-
+                    <option value="{{$category->id}}" {{$post->subcategory && $post->subcategory->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group mb-3">
                 <label for="custom-select">{{ trans('dashboard.sel.subcategory') }}</label>
                 <select class="custom-select" id="subSelect" name="subcategory_id">
-
+                    @if($post->subcategory)
+                    <option value="{{$post->subcategory_id}}" selected>{{$post->subcategory->name}}</option>
+                    @endif
                 </select>
             </div>
             <div class="form-group mb-3">
@@ -96,24 +97,36 @@
 
 <script>
     $(document).ready(function() {
-        $('#categoryselect').change(function() {
-            var categoryId = $(this).val();
-
-            // Reset student dropdown
-            $('#subSelect').empty().append('<option value="">Select a subcategory</option>').prop('disabled', true);
-
+        // Function to load subcategories
+        function loadSubcategories(categoryId, selectedSubId = null) {
             if (categoryId) {
                 $.ajax({
                     url: '/select/' + categoryId + '/subcategory',
                     method: 'GET',
                     success: function(data) {
+                        $('#subSelect').empty();
                         $.each(data, function(index, sub) {
-                            $('#subSelect').append('<option value="' + sub.id + '">' + sub.name + '</option>');
+                            var selected = (selectedSubId && sub.id == selectedSubId) ? 'selected' : '';
+                            $('#subSelect').append('<option value="' + sub.id + '" ' + selected + '>' + sub.name + '</option>');
                         });
-                        $('#subSelect').prop('disabled', false); // Enable student dropdown
+                        $('#subSelect').prop('disabled', false);
                     }
                 });
             }
+        }
+
+        // Load subcategories on page load if category is selected
+        var initialCategoryId = $('#categoryselect').val();
+        var initialSubId = {{$post->subcategory_id ?? 'null'}};
+        if (initialCategoryId) {
+            loadSubcategories(initialCategoryId, initialSubId);
+        }
+
+        // Handle category change
+        $('#categoryselect').change(function() {
+            var categoryId = $(this).val();
+            $('#subSelect').empty().prop('disabled', true);
+            loadSubcategories(categoryId);
         });
     });
 </script>

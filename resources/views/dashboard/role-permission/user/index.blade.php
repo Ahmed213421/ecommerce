@@ -25,9 +25,9 @@
     <h2 class="mb-2 page-title">{{trans('spatie.users')}}</h2>
 
     <div class="container mt-5">
-        <a href="{{ route('admin.roles.index') }}" class="btn btn-primary mx-1">Roles</a>
-        <a href="{{ route('admin.permissions.index') }}" class="btn btn-info mx-1">Permissions</a>
-        <a href="{{ route('admin.users.index') }}" class="btn btn-warning mx-1">Users</a>
+        <a href="{{ route('admin.roles.index') }}" class="btn btn-primary mx-1">{{ trans('spatie.roles') }}</a>
+        <a href="{{ route('admin.permissions.index') }}" class="btn btn-info mx-1">{{ trans('spatie.perrmisssions') }}</a>
+        <a href="{{ route('admin.users.index') }}" class="btn btn-warning mx-1">{{ trans('spatie.users') }}</a>
     </div>
 
     <div class="container mt-2">
@@ -40,10 +40,10 @@
 
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h4>Users
+                        <h4>{{ trans('spatie.users') }}
 
                             @if (auth('admin')->user()->can('create-user'))
-                            <a href="{{ route('admin.users.create') }}" class="btn btn-primary float-end">Add User</a>
+                            <a href="{{ route('admin.users.create') }}" class="btn btn-primary float-end">{{ trans('spatie.add_user') }}</a>
                             @endif
                         </h4>
                     </div>
@@ -52,12 +52,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Roles</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>{{ trans('dashboard.id') }}</th>
+                                    <th>{{ trans('dashboard.name') }}</th>
+                                    <th>{{ trans('general.email') }}</th>
+                                    <th>{{ trans('spatie.roles') }}</th>
+                                    <th>{{ trans('general.status') }}</th>
+                                    <th>{{ trans('dashboard.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,11 +77,11 @@
                                     <td>{{$user->status}}</td>
                                     <td>
                                         @if (auth('admin')->user()->can('create-role'))
-                                        <a href="{{ route('admin.users.edit',$user->id) }}" class="btn btn-success">Edit</a>
+                                        <a href="{{ route('admin.users.edit',$user->id) }}" class="btn btn-success">{{ trans('dashboard.edit') }}</a>
                                                                                 @endif
 
                                         @if (auth('admin')->user()->can('delete-user'))
-                                        <a href="{{ url('users/'.$user->id.'/delete') }}" class="btn btn-danger mx-2">Delete</a>
+                                        <a href="{{ url('users/'.$user->id.'/delete') }}" class="btn btn-danger mx-2">{{ trans('dashboard.delete') }}</a>
                                         @endif
                                     </td>
                                 </tr>

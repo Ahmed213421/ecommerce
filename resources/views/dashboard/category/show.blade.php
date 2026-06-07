@@ -30,12 +30,15 @@
             @foreach ($category->subcategories as $subcategory)
 
             <div class="card">
-                <div class="card-header" id="headingTwo{{$loop->iteration}}">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingTwo{{$loop->iteration}}">
                     <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo{{$loop->iteration}}" aria-expanded="false" aria-controls="collapseTwo{{$loop->iteration}}">
+                        <button class="btn btn-link text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo{{$loop->iteration}}" aria-expanded="false" aria-controls="collapseTwo{{$loop->iteration}}">
                             {{$subcategory->name}}
                         </button>
                     </h2>
+                    <a href="{{ url(LaravelLocalization::setLocale() . '/dashboard/subcategory/' . $subcategory->id) }}" class="btn btn-sm btn-primary">
+                        {{ trans('dashboard.view') }}
+                    </a>
                 </div>
                 <div id="collapseTwo{{$loop->iteration}}" class="collapse" aria-labelledby="headingTwo{{$loop->iteration}}" data-parent="#accordionExample">
                     <div class="card-body">

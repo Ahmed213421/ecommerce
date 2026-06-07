@@ -96,6 +96,37 @@
     </style>
 
     @yield('css')
+    @if (app()->getLocale() == 'ar')
+        <style>
+            body {
+                text-align: right !important;
+            }
+
+            .text-center {
+                text-align: center !important;
+            }
+
+            .form-group label,
+            .form-check {
+                text-align: right !important;
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .form-check-input {
+                margin-right: -1.25rem !important;
+                margin-left: 0 !important;
+                float: right !important;
+                position: relative !important;
+            }
+
+            .form-check-label {
+                padding-right: 1.25rem !important;
+                padding-left: 0 !important;
+                text-align: right !important;
+            }
+        </style>
+    @endif
 
 
 

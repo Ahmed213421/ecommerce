@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\SubscriberRepositoryInterface;
+use App\Repositories\Contracts\SubscriberContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -10,7 +10,7 @@ class SubscriptionController extends Controller
 {
     protected $subscriberRepository;
 
-    public function __construct(SubscriberRepositoryInterface $subscriberRepository)
+    public function __construct(SubscriberContract $subscriberRepository)
     {
         $this->subscriberRepository = $subscriberRepository;
     }

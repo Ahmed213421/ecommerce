@@ -83,7 +83,7 @@
                                                             </td>
                                                             <td><img src="{{ asset($subcategory->imagepath) }}"
                                                                     width="100px" alt="" srcset=""></td>
-                                                            <td>{{ $subcategory->category->description }}</td>
+                                                            <td>{{ $subcategory->description }}</td>
                                                             <td>{{ $subcategory->created_at->diffForHumans() }}</td>
                                                             <td><button class="btn btn-sm dropdown-toggle more-horizontal"
                                                                     type="button" data-toggle="dropdown"
@@ -191,7 +191,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">{{ trans('dashboard.modal_title') }}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
