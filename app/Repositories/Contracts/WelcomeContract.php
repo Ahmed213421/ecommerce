@@ -4,7 +4,6 @@ namespace App\Repositories\Contracts;
 
 interface WelcomeContract
 {
-    public function getHomePageData();
     public function getMostViewedProducts(int $limit = 3);
     public function getAllCategories();
     public function getTestmonials(int $limit = 3);

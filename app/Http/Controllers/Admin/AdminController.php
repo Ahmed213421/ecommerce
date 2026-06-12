@@ -6,24 +6,23 @@ use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Contracts\AdminContract;
+use App\Services\Admin\AdminService;
 use App\Http\Requests\Admin\AdminStoreRequest;
 use App\Http\Requests\Admin\AdminUpdateRequest;
 
 class AdminController extends Controller
 {
-    protected $adminRepository;
+    protected $adminService;
 
-    public function __construct(AdminContract $adminRepository)
+    public function __construct(AdminService $adminService)
     {
-        $this->adminRepository = $adminRepository;
+        $this->adminService = $adminService;
     }
 
     public function index()
     {
-        $users = $this->adminRepository->getAll();
+        $users = $this->adminService->getAllAdmins();
         return view('dashboard.role-permission.user.index', ['users' => $users]);
     }
 
@@ -35,10 +34,9 @@ class AdminController extends Controller
 
     public function store(AdminStoreRequest $request)
     {
-        $user = $this->adminRepository->create($request->all());
-        $this->adminRepository->syncRoles($user, $request->roles);
+        $this->adminService->createAdmin($request->all(), $request->roles ?? []);
 
-        return redirect()->route('admin.users.index')->with('status', 'User created successfully with roles');
+        return redirect()->route('admin.users.index')->with('status', trans('spatie.user_created'));
     }
 
     public function edit(Admin $user)
@@ -54,31 +52,14 @@ class AdminController extends Controller
 
     public function update(AdminUpdateRequest $request, Admin $user)
     {
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'status' => $request->status,
-        ];
+        $this->adminService->updateAdmin($user, $request->all(), $request->roles ?? []);
 
-        if (!empty($request->password)) {
-            $data['password'] = $request->password;
-        }
-
-        $this->adminRepository->update($user->id, $data);
-        $this->adminRepository->syncRoles($user, $request->roles);
-
-        if($request->status == 'unactive'){
-            if (auth('admin')->check() && auth('admin')->user()->email === $request->email) {
-                auth('admin')->logout();
-            }
-        }
-
-        return redirect()->route('admin.users.index')->with('status', 'User Updated Successfully with roles');
+        return redirect()->route('admin.users.index')->with('status', trans('spatie.user_updated'));
     }
 
     public function destroy($userId)
     {
-        $this->adminRepository->delete($userId);
-        return redirect()->route('admin.users.index')->with('status', 'User Delete Successfully');
+        $this->adminService->deleteAdmin($userId);
+        return redirect()->route('admin.users.index')->with('status', trans('spatie.user_deleted'));
     }
 }

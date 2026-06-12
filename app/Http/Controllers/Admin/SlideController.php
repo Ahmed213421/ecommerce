@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SliderRequest;
 use App\Http\Requests\Admin\UpdateSliderRequest;
-use App\Repositories\Admin\Contracts\SliderContract;
+use App\Services\Admin\AdminSlideService;
 use Illuminate\Http\Request;
 
 class SlideController extends Controller
 {
-    protected $sliderRepository;
+    protected $adminSlideService;
 
-    public function __construct(SliderContract $sliderRepository)
+    public function __construct(AdminSlideService $adminSlideService)
     {
-        $this->sliderRepository = $sliderRepository;
+        $this->adminSlideService = $adminSlideService;
     }
 
     /**
@@ -22,7 +22,7 @@ class SlideController extends Controller
      */
     public function index()
     {
-        $data['sliders'] = $this->sliderRepository->getAll();
+        $data['sliders'] = $this->adminSlideService->getAllSlides();
         return view('dashboard.slider.index', $data);
     }
 
@@ -31,7 +31,7 @@ class SlideController extends Controller
      */
     public function store(SliderRequest $request)
     {
-        $this->sliderRepository->create($request->validated());
+        $this->adminSlideService->createSlide($request->validated());
 
         toastr()->success(__('toaster.add'));
         return back();
@@ -42,7 +42,7 @@ class SlideController extends Controller
      */
     public function update(UpdateSliderRequest $request, string $id)
     {
-        $this->sliderRepository->update($id, $request->validated());
+        $this->adminSlideService->updateSlide($id, $request->validated());
 
         toastr()->success(__('toaster.update'));
         return back();
@@ -53,7 +53,7 @@ class SlideController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->sliderRepository->delete($id);
+        $this->adminSlideService->deleteSlide($id);
 
         toastr()->success(__('toaster.del'));
         return back();

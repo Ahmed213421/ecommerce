@@ -6,32 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
-use App\Models\Subcategory;
-use App\Repositories\Admin\Contracts\CategoryContract;
-use DB;
+use App\Services\Admin\AdminCategoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-
-use function Ramsey\Uuid\v1;
 
 class CategoryController extends Controller
 {
 
-    protected $categoryRepository;
+    protected $adminCategoryService;
 
-    public function __construct(CategoryContract $categoryRepository)
+    public function __construct(AdminCategoryService $adminCategoryService)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->adminCategoryService = $adminCategoryService;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::latest()->get();
-        $subcategories = Subcategory::latest()->get();
-        return view('dashboard.category.index',compact('categories','subcategories'));
+        $data = $this->adminCategoryService->getAllCategoriesAndSubcategories();
+        return view('dashboard.category.index', $data);
     }
 
     /**
@@ -47,15 +40,11 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        try{
-            DB::beginTransaction();
-
-            $this->categoryRepository->create($request->validated());
+        $success = $this->adminCategoryService->createCategory($request->validated());
+        
+        if ($success) {
             toastr()->success(__('toaster.cat_create'));
-            DB::commit();
-        }
-        catch(\Exception $e){
-            DB::rollBack();
+        } else {
             toastr()->error(__('error'));
         }
 
@@ -67,7 +56,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::find($id);
+        $category = $this->adminCategoryService->getCategoryById($id);
         return view('dashboard.category.show',compact('category'));
     }
 
@@ -84,18 +73,13 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request,Category $category)
     {
-        try{
-            DB::beginTransaction();
-            $this->categoryRepository->update($category,$request->validated());
-            DB::commit();
+        $success = $this->adminCategoryService->updateCategory($category, $request->validated());
+        
+        if ($success) {
             toastr()->success(__('toaster.cat_create'));
-        }
-        catch(\Exception $e){
-            DB::rollBack();
+        } else {
             toastr()->error(__('error'));
         }
-
-
 
         return back();
     }
@@ -105,19 +89,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        try{
-            DB::beginTransaction();
-            $this->categoryRepository->destroy($category);
+        $success = $this->adminCategoryService->deleteCategory($category);
+        
+        if ($success) {
             toastr()->success(__('toaster.del'));
-            DB::commit();
-        }
-        catch(\Exception $e){
-            DB::rollBack();
+        } else {
             toastr()->error(__('error'));
         }
 
         return back();
-
-
     }
 }

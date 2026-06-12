@@ -3,48 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
-use App\Models\Testmonial;
+use App\Services\Admin\AdminTestmonialService;
+use App\Http\Requests\Admin\TestmonialUpdateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class TestmonialController extends Controller
 {
+    protected $adminTestmonialService;
+
+    public function __construct(AdminTestmonialService $adminTestmonialService)
+    {
+        $this->adminTestmonialService = $adminTestmonialService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['reviews'] = Testmonial::latest()->get();
-        return view('dashboard.testmonials.index',$data);
+        $data['reviews'] = $this->adminTestmonialService->getAllTestmonials();
+        return view('dashboard.testmonials.index', $data);
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TestmonialUpdateRequest $request, string $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required',
-            'phone' => 'required',
-            'email' => 'email',
-            'subject' => 'required|max:100',
-            'message' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-        Testmonial::find($id)->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'message' => $request->message,
-        ]);
+        $this->adminTestmonialService->updateTestmonial($id, $request->validated());
 
         toastr()->success(__('toaster.update'));
         return back();
@@ -55,10 +41,9 @@ class TestmonialController extends Controller
      */
     public function destroy(string $id)
     {
-        Testmonial::find($id)->delete();
+        $this->adminTestmonialService->deleteTestmonial($id);
 
         toastr()->success(__('toaster.del'));
-
         return back();
     }
 

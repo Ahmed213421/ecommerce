@@ -51,13 +51,7 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-<<<<<<< HEAD
-Route::get('/', function () {
-    return redirect('/en/shop');
-});
-=======
 Route::get('/', [WelcomeController::class, 'index']);
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

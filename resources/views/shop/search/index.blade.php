@@ -53,13 +53,6 @@
             @if ($no_results)
                 <div class="no-results">
                     <p>{{ trans('general.noresult') }}.</p>
-<<<<<<< HEAD
-                    <form action="{{ route('customer.search') }}" method="GET">
-                        <input type="text" name="search" placeholder="{{ trans('general.search_again') }}" class="search-input">
-                        <button type="submit" class="search-button btn btn-primary">{{ trans('general.search') }}</button>
-                    </form>
-=======
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
                 </div>
             @endif
             <div class="row">

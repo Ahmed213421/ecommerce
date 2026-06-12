@@ -11,46 +11,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
+use App\Services\ReviewService;
+
 class ReviewController extends Controller
 {
-    protected $reviewRepository;
+    protected $reviewService;
 
-    public function __construct(ReviewContract $reviewRepository)
+    public function __construct(ReviewService $reviewService)
     {
-        $this->reviewRepository = $reviewRepository;
+        $this->reviewService = $reviewService;
     }
 
     public function store(ReviewRequest $request){
-        
-        if(Auth::check()){
-            $hasPurchased = auth()->user()->purchasedProducts()->where('products.id', $request->product_id)->exists();
-
-
-            if (! $hasPurchased) {
-                toastr()->error('You can only review products you have purchased.');
-                return back();
-            }
-            $review = $this->reviewRepository->create([
-                'name' => request('name'),
-                'phone' => request('phone'),
-                'email' => request('email'),
-                'subject' => request('subject'),
-                'message' => request('message'),
-                'status' => 0,
-                'product_id' => request('product_id'),
-            ]);
-
-
-
-            $admins = Admin::all();
-            Notification::send($admins, new NewCustomerReviewNotification($review));
-            NewCustomerReviewEvent::dispatch($review);
-
-            toastr()->success('Your message has been sent, please wait for verification');
-        } else {
-            toastr()->error('You must be logged in to submit a review.');
-            return back();
-        }
+        $this->reviewService->submitReview($request->validated());
         return back();
     }
 

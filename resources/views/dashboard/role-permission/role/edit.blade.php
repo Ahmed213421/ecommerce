@@ -17,12 +17,12 @@
 @endsection
 
 @section('breadcumbactive')
-<li class="breadcrumb-item active" aria-current="page"></li>
+<li class="breadcrumb-item active" aria-current="page">{{ trans('dashboard.edit') }}</li>
 @endsection
 
 @section('content')
 <div class="bg-white p-4">
-    <h2 class="mb-2 page-title">Data table</h2>
+    <h2 class="mb-2 page-title">{{ trans('dashboard.data_table') }}</h2>
 
     <div class="container mt-5">
         <div class="row">
@@ -42,21 +42,21 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h4>Edit Role
-                                        <a href="{{ url('roles') }}" class="btn btn-danger float-end">Back</a>
+                                    <h4>{{ trans('dashboard.edit') }}
+                                        <a href="{{ route('admin.roles.index') }}" class="btn btn-danger float-end">{{ trans('general.backto.dashboard') }}</a>
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{ url('roles/'.$role->id) }}" method="POST">
+                                    <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
 
                                         <div class="mb-3">
-                                            <label for="">Role Name</label>
+                                            <label for="">{{ trans('dashboard.name') }}</label>
                                             <input type="text" name="name" value="{{ $role->name }}" class="form-control" />
                                         </div>
                                         <div class="mb-3">
-                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <button type="submit" class="btn btn-primary">{{ trans('general.submit') }}</button>
                                         </div>
                                     </form>
                                 </div>

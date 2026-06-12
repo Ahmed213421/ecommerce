@@ -5,24 +5,22 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Contracts\PermissionContract;
+use App\Services\Admin\PermissionService;
+use App\Http\Requests\Admin\PermissionStoreRequest;
+use App\Http\Requests\Admin\PermissionUpdateRequest;
 
 class PermissionController extends Controller
 {
-    protected $permissionRepository;
+    protected $permissionService;
 
-    public function __construct(PermissionContract $permissionRepository)
+    public function __construct(PermissionService $permissionService)
     {
-        // $this->middleware('permission:view-permission,admin', ['only' => ['index']]);
-        // $this->middleware('permission:create-permission,admin', ['only' => ['create','store']]);
-        // $this->middleware('permission:update-permission,admin', ['only' => ['update','edit']]);
-        // $this->middleware('permission:delete-permission,admin', ['only' => ['destroy']]);
-        $this->permissionRepository = $permissionRepository;
+        $this->permissionService = $permissionService;
     }
 
     public function index()
     {
-        $permissions = $this->permissionRepository->getAll();
+        $permissions = $this->permissionService->getAllPermissions();
         return view('dashboard.role-permission.permission.index', ['permissions' => $permissions]);
     }
 
@@ -31,21 +29,11 @@ class PermissionController extends Controller
         return view('dashboard.role-permission.permission.create');
     }
 
-    public function store(Request $request)
+    public function store(PermissionStoreRequest $request)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:permissions,name'
-            ]
-        ]);
+        $this->permissionService->createPermission($request->validated());
 
-        $this->permissionRepository->create([
-            'name' => $request->name
-        ]);
-
-        return redirect()->route('admin.permissions.index')->with('status','Permission Created Successfully');
+        return redirect()->route('admin.permissions.index')->with('status', trans('spatie.permission_created'));
     }
 
     public function edit(Permission $permission)
@@ -53,26 +41,16 @@ class PermissionController extends Controller
         return view('dashboard.role-permission.permission.edit', ['permission' => $permission]);
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(PermissionUpdateRequest $request, Permission $permission)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:permissions,name,'.$permission->id
-            ]
-        ]);
+        $this->permissionService->updatePermission($permission->id, $request->validated());
 
-        $this->permissionRepository->update($permission->id, [
-            'name' => $request->name
-        ]);
-
-        return redirect()->route('admin.permissions.index')->with('status','Permission Updated Successfully');
+        return redirect()->route('admin.permissions.index')->with('status', trans('spatie.permission_updated'));
     }
 
     public function destroy($permissionId)
     {
-        $this->permissionRepository->delete($permissionId);
-        return redirect()->route('admin.permissions.index')->with('status','Permission Deleted Successfully');
+        $this->permissionService->deletePermission($permissionId);
+        return redirect()->route('admin.permissions.index')->with('status', trans('spatie.permission_deleted'));
     }
 }

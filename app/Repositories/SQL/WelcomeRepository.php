@@ -12,19 +12,6 @@ use App\Repositories\Contracts\WelcomeContract;
 
 class WelcomeRepository implements WelcomeContract
 {
-    public function getHomePageData()
-    {
-        return [
-            'products_most_viewed' => $this->getMostViewedProducts(),
-            'categories' => $this->getAllCategories(),
-            'testmonials' => $this->getTestmonials(),
-            'featured' => $this->getFeaturedProducts(),
-            'slider' => $this->getAllSliders(),
-            'setting' => $this->getSettings(),
-            'posts' => $this->getLatestPosts(),
-        ];
-    }
-
     public function getMostViewedProducts(int $limit = 3)
     {
         return Product::orderBy('views', 'desc')->inRandomOrder()->limit($limit)->get();

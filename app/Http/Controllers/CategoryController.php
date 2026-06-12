@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\CategoryContract;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    protected $categoryRepository;
+    protected $categoryService;
 
-    public function __construct(CategoryContract $categoryRepository)
+    public function __construct(CategoryService $categoryService)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -19,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data['categories'] = $this->categoryRepository->getAllWithSubcategoriesAndProducts();
+        $data = $this->categoryService->getShopData();
 
         return view('shop.shop',$data);
     }
@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function show(string $slug)
     {
-        $category = $this->categoryRepository->findBySlug($slug);
+        $category = $this->categoryService->getCategoryBySlug($slug);
         return view('shop.categories.show',compact('category'));
     }
 }

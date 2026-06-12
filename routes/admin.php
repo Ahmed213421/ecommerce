@@ -33,7 +33,7 @@ Route::group(
         Route::resource('tags', Admin\TagController::class)->only('index','store','update','destroy');
         Route::post('/notifications/mark-all-read', Admin\NotificationReadController::class)->name('notifications.markAllRead');
         Route::get('/notifications/clear-all', Admin\ClearNotificationController::class)->name('notifications.clear');
-        Route::get('search/{search}',Admin\SearhController::class)->name('search');
+        Route::get('search/{search}',Admin\SearchController::class)->name('search');
         Route::resource('contact',Admin\ContactController::class)->only('index','destroy');
         Route::resource('customers',Admin\CustomersController::class);
 
@@ -60,8 +60,8 @@ Route::group([
     Route::resource('permissions', Admin\PermissionController::class);
 
     Route::get('roles/{roleId}/delete', [Admin\RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permissions', [Admin\RoleController::class, 'addPermissionToRole']);
-    Route::put('roles/{roleId}/give-permissions', [Admin\RoleController::class, 'givePermissionToRole']);
+    Route::get('roles/{roleId}/give-permissions', [Admin\RoleController::class, 'addPermissionToRole'])->name('roles.give-permissions');
+    Route::put('roles/{roleId}/give-permissions', [Admin\RoleController::class, 'givePermissionToRole'])->name('roles.give-permissions.update');
     Route::resource('roles', Admin\RoleController::class);
 
     Route::get('users/{userId}/delete', [Admin\AdminController::class, 'destroy']);

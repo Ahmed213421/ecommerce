@@ -67,11 +67,7 @@
                     <label for="inputEmail" class="sr-only">{{ trans('general.email') }}</label>
                     <input type="email" id="inputEmail"
                         class="form-control form-control-lg @error('email') is-invalid @enderror" name="email"
-<<<<<<< HEAD
-                        placeholder="{{ trans('general.email_address') }}" value="{{ old('email') }}" required autofocus>
-=======
                         placeholder="{{ trans('general.email') }}" value="{{ old('email') }}" required autofocus>
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
 
                     @error('email')
                         <span class="invalid-feedback" role="alert">

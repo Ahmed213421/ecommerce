@@ -17,12 +17,12 @@
 @endsection
 
 @section('breadcumbactive')
-<li class="breadcrumb-item active" aria-current="page"></li>
+<li class="breadcrumb-item active" aria-current="page">{{ trans('spatie.add_role') }}</li>
 @endsection
 
 @section('content')
 <div class="bg-white p-4">
-    <h2 class="mb-2 page-title">Data table</h2>
+    <h2 class="mb-2 page-title">{{ trans('dashboard.data_table') }}</h2>
 
     <div class="container mt-5">
         <div class="row">
@@ -38,20 +38,20 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h4>Create Role
-                            <a href="{{ url('roles') }}" class="btn btn-danger float-end">Back</a>
+                        <h4>{{ trans('spatie.add_role') }}
+                            <a href="{{ route('admin.roles.index') }}" class="btn btn-danger float-end">{{ trans('general.backto.dashboard') }}</a>
                         </h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ url('roles') }}" method="POST">
+                        <form action="{{ route('admin.roles.store') }}" method="POST">
                             @csrf
 
                             <div class="mb-3">
-                                <label for="">Role Name</label>
+                                <label for="">{{ trans('dashboard.name') }}</label>
                                 <input type="text" name="name" class="form-control" />
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">{{ trans('general.submit') }}</button>
                             </div>
                         </form>
                     </div>

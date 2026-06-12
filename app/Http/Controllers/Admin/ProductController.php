@@ -4,21 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateProductRequest;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Subcategory;
-use App\Repositories\Admin\Contracts\ProductContract;
 use App\Http\Requests\Admin\ProductRequest;
-use DB;
+use App\Services\Admin\AdminProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $productRepository;
+    protected $adminProductService;
 
-    public function __construct(ProductContract $productRepository)
+    public function __construct(AdminProductService $adminProductService)
     {
-        $this->productRepository = $productRepository;
+        $this->adminProductService = $adminProductService;
     }
 
     /**
@@ -26,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productRepository->all();
+        $products = $this->adminProductService->getAllProducts();
         return view('dashboard.products.index', compact('products'));
     }
 
@@ -35,8 +31,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data['subcategories'] = Subcategory::all();
-        $data['categories'] = Category::all();
+        $data = $this->adminProductService->getProductFormData();
         return view('dashboard.products.create', $data);
     }
 
@@ -45,7 +40,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $product = $this->productRepository->create($request->validated());
+        $this->adminProductService->createProduct($request->validated());
         toastr()->success(__('toaster.product_create'));
         return redirect()->route('admin.products.index');
     }
@@ -55,7 +50,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::with(['subcategory', 'subcategory.category'])->findOrFail($id);
+        $product = $this->adminProductService->getProductWithRelations($id);
         return view('dashboard.products.show', compact('product'));
     }
 
@@ -64,10 +59,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = $this->productRepository->find($id);
-        $data['product'] = $product;
-        $data['subcategories'] = Subcategory::all();
-        $data['categories'] = Category::all();
+        $data = $this->adminProductService->getProductFormDataWithProduct($id);
         return view('dashboard.products.edit', $data);
     }
 
@@ -76,7 +68,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
-        $this->productRepository->update($id, $request->validated());
+        $this->adminProductService->updateProduct($id, $request->validated());
         toastr()->success(__('toaster.prod_update'));
         return redirect()->route('admin.products.index');
     }
@@ -85,26 +77,21 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id, Request $request)
-{
-    try {
-        DB::transaction(function () use ($id, $request) {
+    {
+        try {
+            $this->adminProductService->deleteProducts($id, $request->page);
+            
             if ($request->page == 1) {
-                $this->productRepository->delete($id);
                 toastr()->success(__('toaster.del'));
-            }
-
-            if ($request->page == 2) {
-                $this->productRepository->deleteAll();
+            } elseif ($request->page == 2) {
                 toastr()->success(__('dashboard.del'));
             }
-        });
 
-        return redirect()->route('admin.products.index');
+            return redirect()->route('admin.products.index');
 
-    } catch (\Exception $e) {
-        toastr()->error($e->getMessage());
-        return back();
+        } catch (\Exception $e) {
+            toastr()->error($e->getMessage());
+            return back();
+        }
     }
-}
-
 }

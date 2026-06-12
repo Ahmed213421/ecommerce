@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\ReviewRequest;
 use App\Http\Requests\Admin\TestmonialRequest;
-use App\Repositories\Admin\Contracts\TestmonialContract;
+use App\Services\TestmonialService;
 use Illuminate\Http\Request;
 
 class TestmonialController extends Controller
 {
-    protected $reviewRepository;
+    protected $testmonialService;
 
-    public function __construct(TestmonialContract $reviewRepository)
+    public function __construct(TestmonialService $testmonialService)
     {
-        $this->reviewRepository = $reviewRepository;
+        $this->testmonialService = $testmonialService;
     }
 
     /**
@@ -29,7 +29,7 @@ class TestmonialController extends Controller
      */
     public function store(TestmonialRequest $request)
     {
-        $this->reviewRepository->create($request->validated());
+        $this->testmonialService->submitTestmonial($request->validated());
 
         return back()->with('success', 'your message has been sent please wait for verification');
     }

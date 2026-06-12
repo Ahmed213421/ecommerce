@@ -112,11 +112,7 @@
                                 <div class="form-group">
                                     <label for="name">{{ trans('dashboard.name') }}</label>
                                     <input type="text" class="form-control" id="name"
-<<<<<<< HEAD
-                                    value="{{ old('name', auth()->user()->name) }}" placeholder="{{ trans('general.full_name_placeholder') }}"
-=======
                                     value="{{ old('name', auth()->user()->name) }}" placeholder="{{ trans('general.enter_your_full_name') }}"
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
                                     name="name">
                                 </div>
                                 <div class="form-group">
@@ -134,11 +130,7 @@
                                 <div class="form-group">
                                     <label for="email">{{ trans('general.email') }}</label>
                                     <input type="email" class="form-control" id="email"
-<<<<<<< HEAD
-                                        value="{{ old('email', auth()->user()->email) }}" placeholder="{{ trans('general.email_placeholder') }}"
-=======
                                         value="{{ old('email', auth()->user()->email) }}" placeholder="{{ trans('general.enter_your_email') }}"
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
                                         name="email">
                                 </div>
                                 <div class="form-group">
@@ -150,21 +142,13 @@
                                 <div class="form-group">
                                     <label for="password">{{ trans('general.new') }} {{ trans('general.password') }}</label>
                                     <input type="password" class="form-control" id="password"
-<<<<<<< HEAD
-                                        placeholder="{{ trans('general.new_password_placeholder') }}" name="password">
-=======
                                         placeholder="{{ trans('general.enter_new_password') }}" name="password">
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
                                 </div>
                                 <!-- Password Confirmation -->
                                 <div class="form-group">
                                     <label for="confirm-password">{{ trans('general.confirm_password') }}</label>
                                     <input type="password" class="form-control" name="password_confirmation"
-<<<<<<< HEAD
-                                        id="confirm-password" placeholder="{{ trans('general.confirm_new_password_placeholder') }}">
-=======
                                         id="confirm-password" placeholder="{{ trans('general.confirm_new_password') }}">
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
                                 </div>
                                 <!-- Submit Button -->
                                 <button type="submit"

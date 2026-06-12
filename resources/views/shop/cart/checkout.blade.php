@@ -62,11 +62,7 @@
                                                 <p><input type="text" placeholder="{{ trans('general.address') }}" name="address"></p>
                                                 <p><input type="tel" placeholder="{{ trans('general.phone') }}" name="phone"></p>
                                                 <p>
-<<<<<<< HEAD
-                                                    <textarea name="note" id="note" cols="30" rows="10" placeholder="{{ trans('general.note') }}"></textarea>
-=======
                                                     <textarea name="note" id="note" cols="30" rows="10" placeholder="{{ trans('shop.say_something') }}"></textarea>
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
                                                 </p>
                                                 <p>
                                                     <select name="payment">

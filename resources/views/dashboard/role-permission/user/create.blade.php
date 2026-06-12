@@ -17,12 +17,12 @@
 @endsection
 
 @section('breadcumbactive')
-<li class="breadcrumb-item active" aria-current="page"></li>
+<li class="breadcrumb-item active" aria-current="page">{{ trans('spatie.add_user') }}</li>
 @endsection
 
 @section('content')
 <div class="bg-white p-4">
-    <h2 class="mb-2 page-title">Data table</h2>
+    <h2 class="mb-2 page-title">{{ trans('dashboard.data_table') }}</h2>
 
     <div class="row col-md-12">
         <div class="container mt-5">
@@ -39,37 +39,37 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Create User
-                                <a href="{{ url('users') }}" class="btn btn-danger float-end">Back</a>
+                            <h4>{{ trans('spatie.add_user') }}
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-danger float-end">{{ trans('general.backto.dashboard') }}</a>
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ url('users') }}" method="POST">
+                            <form action="{{ route('admin.users.store') }}" method="POST">
                                 @csrf
 
                                 <div class="mb-3">
-                                    <label for="">Name</label>
+                                    <label for="">{{ trans('general.name') }}</label>
                                     <input type="text" name="name" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="">Email</label>
+                                    <label for="">{{ trans('general.email') }}</label>
                                     <input type="text" name="email" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="">Password</label>
+                                    <label for="">{{ trans('general.password') }}</label>
                                     <input type="text" name="password" class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="">Roles</label>
+                                    <label for="">{{ trans('spatie.roles') }}</label>
                                     <select name="roles[]" class="form-control" multiple>
-                                        <option value="">Select Role</option>
+                                        <option value="">{{ trans('dashboard.sel.category') }}</option>
                                         @foreach ($roles as $role)
                                         <option value="{{ $role }}">{{ $role }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">{{ trans('general.submit') }}</button>
                                 </div>
                             </form>
                         </div>

@@ -45,21 +45,7 @@ class CartRepository extends BaseRepository implements CartContract
             ->first();
     }
 
-    public function getCartTotal(int $userId)
-    {
-        $cartItems = $this->getUserCartItems($userId);
-        return $cartItems->sum(function ($item) {
-            return ceil(($item->product->price_after_discount * $item->quantity) + 0.20);
-        });
-    }
 
-    public function getCartSubtotal(int $userId)
-    {
-        $cartItems = $this->getUserCartItems($userId);
-        return $cartItems->sum(function ($item) {
-            return $item->product->price_after_discount * $item->quantity;
-        });
-    }
 
     public function getCartCount(int $userId)
     {

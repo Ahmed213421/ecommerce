@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\PostContract;
+use App\Services\NewsService;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    protected $postRepository;
+    protected $newsService;
 
-    public function __construct(PostContract $postRepository)
+    public function __construct(NewsService $newsService)
     {
-        $this->postRepository = $postRepository;
+        $this->newsService = $newsService;
     }
 
     /**
@@ -19,7 +19,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $data['posts'] = $this->postRepository->getLatestPaginated(12);
+        $data = $this->newsService->getLatestNews();
         return view('shop.news.index',$data);
     }
 
@@ -28,8 +28,7 @@ class NewsController extends Controller
      */
     public function show(string $slug)
     {
-        $data['post'] = $this->postRepository->findBySlug($slug);
-        $data['posts'] = $this->postRepository->getLatest(5);
+        $data = $this->newsService->getNewsDetails($slug);
         return view('shop.news.show',$data);
     }
 

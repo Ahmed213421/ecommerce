@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\WelcomeContract;
+use App\Services\WelcomeService;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
-    protected $welcomeRepository;
+    protected $welcomeService;
 
-    public function __construct(WelcomeContract $welcomeRepository)
+    public function __construct(WelcomeService $welcomeService)
     {
-        $this->welcomeRepository = $welcomeRepository;
+        $this->welcomeService = $welcomeService;
     }
 
     /**
@@ -19,7 +19,7 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $data = $this->welcomeRepository->getHomePageData();
+        $data = $this->welcomeService->getHomePageData();
         return view('welcome',$data);
     }
 

@@ -3,19 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Admin\CustomerService;
 use App\Http\Requests\Admin\CustomerStatusRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CustomersController extends Controller
 {
+    protected $customerService;
+
+    public function __construct(CustomerService $customerService)
+    {
+        $this->customerService = $customerService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $customers = User::latest()->get();
+        $customers = $this->customerService->getAllCustomers();
         return view('dashboard.customers.index',compact('customers'));
     }
 
@@ -56,19 +62,7 @@ class CustomersController extends Controller
      */
     public function update(CustomerStatusRequest $request, string $id)
     {
-
-
-
-        if($request->status == 'active'){
-            User::find($id)->update(['status'=>$request->status]);
-        }
-        if($request->status == 'blocked'){
-            if (auth('web')->check() && auth('web')->user()->email === $request->email) {
-                auth('web')->logout();
-            }
-            User::find($id)->update(['status'=>$request->status]);
-        }
-
+        $this->customerService->updateCustomerStatus($id, $request->status, $request->email);
 
         toastr()->success(__('toaster.update'));
 

@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\ProductContract;
-use App\Repositories\Contracts\ReviewContract;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $productRepository;
-    protected $reviewRepository;
+    protected $productService;
 
-    public function __construct(ProductContract $productRepository, ReviewContract $reviewRepository)
+    public function __construct(ProductService $productService)
     {
-        $this->productRepository = $productRepository;
-        $this->reviewRepository = $reviewRepository;
+        $this->productService = $productService;
     }
 
     /**
@@ -22,40 +19,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('shop.products.index',['products' => $this->productRepository->all()]);
+        return view('shop.products.index',['products' => $this->productService->getAllProducts()]);
     }
 
+    public function show(string $slug, Request $request)
+    {
+        $data = $this->productService->getProductWithReviews($slug);
 
-    /**
-     * Display the specified resource.
-     */
-//     public function show(string $slug)
-// {
-//     $product = Product::with('subcategory')->where('slug', $slug)->firstOrFail();
-//     $product->increment('views');
+        if ($request->ajax()) {
+            return view('shop.products.reviews', ['reviews' => $data['reviews']])->render();
+        }
 
-//     $reviews = Review::where('status', 1)
-//         ->where('product_id', $product->id)
-//         ->paginate(1);
-
-//     if (request()->ajax()) {
-//         return view('partials.reviews', compact('reviews'))->render();
-//     }
-
-//     return view('shop.products.show', compact('product', 'reviews'));
-// }
-
-public function show(string $slug,Request $request)
-{
-    $product = $this->productRepository->getWithSubcategory($slug);
-    $reviews = $this->reviewRepository->getByProductIdPaginated($product->id, 2);
-
-    if ($request->ajax()) {
-        return view('shop.products.reviews', compact('reviews'))->render();
+        return view('shop.products.show', $data);
     }
-
-    return view('shop.products.show', compact('product', 'reviews'));
-}
-
-
 }

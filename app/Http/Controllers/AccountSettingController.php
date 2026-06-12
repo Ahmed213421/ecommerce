@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\UserContract;
+use App\Services\AccountSettingService;
+use App\Http\Requests\UpdateAccountSettingRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use Illuminate\Support\Facades\Validator;
 
 class AccountSettingController extends Controller
 {
-    protected $userRepository;
+    protected $accountSettingService;
 
-    public function __construct(UserContract $userRepository)
+    public function __construct(AccountSettingService $accountSettingService)
     {
-        $this->userRepository = $userRepository;
+        $this->accountSettingService = $accountSettingService;
     }
     /**
      * Display a listing of the resource.
@@ -26,60 +23,19 @@ class AccountSettingController extends Controller
     }
 
     
-    public function update(Request $request, string $id)
+    public function update(UpdateAccountSettingRequest $request, string $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'string|max:255',
-            'email' => 'email|max:255|unique:admins,email,' . auth()->id(),
-            'password' => 'string|min:8|confirmed|nullable',
-            'photo' => 'image',
-        ]);
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
+        $result = $this->accountSettingService->updateAccountSettings(auth()->id(), $request->validated(), $request);
+
+        if (!$result['success']) {
+            return back()->withErrors($result['error']);
         }
 
-        $user = User::find(auth()->user()->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-
-        if ($request->hasFile('photo')) {
-            if($user->image){
-                if (file_exists(public_path($user->image->imagepath))) {
-                    unlink(public_path($user->image->imagepath));
-                }
-                $path = 'dashboard/'.$request->photo->storeAs('user_profile', time().'_'.$request->photo->getClientOriginalName(),'images');
-
-                $user->image->update(['imagepath' => $path]);
-
-            }
-            else{
-                $path = 'dashboard/'.$request->photo->storeAs('user_profile', time().'_'.$request->photo->getClientOriginalName(),'images');
-
-                $user->image()->create(['imagepath' => $path]);
-            }
-        }
-
-        if ($request->filled('password')) {
-            if(!Hash::check($request->oldpassword, $user->password)){
-                return back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
-            }
-
-            $user->password = Hash::make($request->password);
-            $user->save();
-
-            Auth::logout();
-
+        if ($result['logout']) {
             return redirect()->route('customer.logout');
         }
 
-        $user->save();
-
         return back();
-
     }
 
     /**

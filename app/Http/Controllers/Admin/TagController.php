@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TagRequest;
 use App\Http\Requests\Admin\UpdateTagRequest;
-use App\Repositories\Admin\Contracts\TagContract;
+use App\Services\Admin\AdminTagService;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    protected $tagRepository;
+    protected $adminTagService;
 
-    public function __construct(TagContract $tagRepository)
+    public function __construct(AdminTagService $adminTagService)
     {
-        $this->tagRepository = $tagRepository;
+        $this->adminTagService = $adminTagService;
     }
 
     /**
@@ -22,7 +22,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $data['tags'] = $this->tagRepository->getAll();
+        $data['tags'] = $this->adminTagService->getAllTags();
         return view('dashboard.tags.index', $data);
     }
 
@@ -31,7 +31,7 @@ class TagController extends Controller
      */
     public function store(TagRequest $request)
     {
-        $this->tagRepository->create($request->validated());
+        $this->adminTagService->createTag($request->validated());
 
         toastr()->success(__('toaster.add'));
         return back();
@@ -42,7 +42,7 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, string $id)
     {
-        $this->tagRepository->update($id, $request->validated());
+        $this->adminTagService->updateTag($id, $request->validated());
 
         toastr()->success(__('toaster.update'));
         return back();
@@ -53,7 +53,7 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->tagRepository->delete($id);
+        $this->adminTagService->deleteTag($id);
 
         toastr()->success(__('toaster.del'));
         return back();

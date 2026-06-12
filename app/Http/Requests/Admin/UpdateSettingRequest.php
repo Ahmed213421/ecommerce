@@ -35,39 +35,4 @@ class UpdateSettingRequest extends FormRequest
             'description' => ['nullable', 'string'],
         ];
     }
-
-    public function validated($key = null, $default = null): array
-    {
-        $data = parent::validated($key, $default);
-
-        return [
-            'description' => [
-                'en' => $data['description_en'],
-                'ar' => $data['description_ar'],
-            ],
-            'hours_working' => [
-                'en' => $data['hours_working_en'],
-                'ar' => $data['hours_working_ar'],
-            ],
-            'whoweare' => [
-                'en' => $data['whoweare_en'],
-                'ar' => $data['whoweare_ar'],
-            ],
-            'pageIcon' => $data['pageIcon'] ?? null,
-            'logo' => $data['logo'] ?? null,
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'tax_rate' => $data['tax_rate'],
-            'map' => $data['map'] ?? null,
-            'address' => [
-                'en' => $data['address_en'] ?? null,
-                'ar' => $data['address_ar'] ?? null,
-            ],
-            'fb' => $data['fb'] ?? null,
-            'li' => $data['li'] ?? null,
-            'tw' => $data['tw'] ?? null,
-            'ins' => $data['ins'] ?? null,
-            'description' => $data['description'] ?? null,
-        ];
-    }
 }

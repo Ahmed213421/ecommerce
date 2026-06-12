@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SubCategoryRequest;
 use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Subcategory;
-use App\Repositories\Admin\Contracts\SubCategoryContract;
+use App\Services\Admin\AdminSubCategoryService;
 use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
-    protected $subCategoryRepository;
+    protected $adminSubCategoryService;
 
-    public function __construct(SubCategoryContract $subCategoryRepository)
+    public function __construct(AdminSubCategoryService $adminSubCategoryService)
     {
-        $this->subCategoryRepository = $subCategoryRepository;
+        $this->adminSubCategoryService = $adminSubCategoryService;
     }
 
     /**
@@ -39,36 +39,7 @@ class SubCategoryController extends Controller
      */
     public function store(SubCategoryRequest $request)
     {
-        // // return $request;
-        // $validator = Validator::make($request->all(),[
-        //     'name_en' => 'required',
-        //     'name_ar' => 'required',
-        //     'category_id' => 'required|exists:categories,id',
-        // ]);
-        // if ($validator->fails()) {
-        //     // Redirect back to the form with the error messages
-        //     return back()
-        //     ->withErrors($validator)
-        //     ->withInput();
-        // }
-
-        // if ($request->hasFile('simage')) {
-        //     $img =  'dashboard/'.$request->simage->storeAs('subcategory', time().'_'.$request->simage->getClientOriginalName(),'images');
-        // }
-        // else{
-        //     $img = null;
-        // }
-        // // return $request;
-
-        // Subcategory::create([
-        //     'name' => ['en' => $request->name_en , 'ar' => $request->name_ar],
-        //     'category_id' => $request->category_id,
-        //     'imagepath' => $img,
-        // ]);
-
-        // toastr()->success(__('toaster.add'));
-
-        // return back();
+        // store method is commented out
     }
 
     /**
@@ -76,7 +47,8 @@ class SubCategoryController extends Controller
      */
     public function show(string $id)
     {
-        return view('dashboard.category.subcategory.show',['subcategory' => Subcategory::with('category')->findOrFail($id)]);
+        $subcategory = $this->adminSubCategoryService->getSubCategoryWithCategory($id);
+        return view('dashboard.category.subcategory.show',['subcategory' => $subcategory]);
     }
 
     /**
@@ -92,7 +64,7 @@ class SubCategoryController extends Controller
      */
     public function update(UpdateSubCategoryRequest $request, string $id)
     {
-        $this->subCategoryRepository->update($id, $request->validated());
+        $this->adminSubCategoryService->updateSubCategory($id, $request->validated());
         toastr()->success(__('toaster.update'));
         return back();
     }
@@ -102,7 +74,7 @@ class SubCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->subCategoryRepository->delete($id);
+        $this->adminSubCategoryService->deleteSubCategory($id);
         toastr()->success(__('toaster.del'));
         return back();
     }

@@ -136,11 +136,7 @@
                                     <input type="hidden" name="quantity">
 
                                     <input type="number" name="quantity" class="form-control form-control-sm mr-2"
-<<<<<<< HEAD
-                                        placeholder="{{ trans('general.qty_placeholder') }}" min="1" value="1" style="width: 70px;">
-=======
                                         placeholder="{{ trans('general.qty') }}" min="1" value="1" style="width: 70px;">
->>>>>>> bc2891c2aa029ea9d76a3930a16e08745be6281a
 
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-shopping-cart"></i> {{ trans('products.add_to_cart') }}

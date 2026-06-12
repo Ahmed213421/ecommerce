@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NewContactEvent;
-use App\Models\Admin;
-use App\Repositories\Contracts\ContactContract;
-use App\Notifications\NewContactNotification;
+use App\Services\ContactUsService;
+use App\Http\Requests\ContactUsRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Validator;
 
 class ContactUsController extends Controller
 {
-    protected $contactRepository;
+    protected $contactUsService;
 
-    public function __construct(ContactContract $contactRepository)
+    public function __construct(ContactUsService $contactUsService)
     {
-        $this->contactRepository = $contactRepository;
+        $this->contactUsService = $contactUsService;
     }
     /**
      * Display a listing of the resource.
@@ -30,36 +26,10 @@ class ContactUsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactUsRequest $request)
     {
+        $this->contactUsService->submitContact($request->validated());
 
-        $validator = Validator::make($request->all(),[
-            'name' => 'required',
-            'message' => 'required',
-            'email' => 'required',
-            'subject' => 'required',
-
-        ]);
-
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-
-        $this->contactRepository->create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'subject' => $request->subject,
-            'message' => $request->message,
-        ]);
-
-        $admins = Admin::all();
-        Notification::send($admins,new NewContactNotification($request->name));
-
-        NewContactEvent::dispatch($request->name);
         toastr()->success(__('shop.contact'));
 
         return redirect()->route('customer.home');

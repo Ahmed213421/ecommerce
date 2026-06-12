@@ -17,12 +17,12 @@
 @endsection
 
 @section('breadcumbactive')
-<li class="breadcrumb-item active" aria-current="page"></li>
+<li class="breadcrumb-item active" aria-current="page">{{ trans('spatie.add_edit_role_permission') }}</li>
 @endsection
 
 @section('content')
 <div class="bg-white p-4">
-    <h2 class="mb-2 page-title">Data table</h2>
+    <h2 class="mb-2 page-title">{{ trans('dashboard.data_table') }}</h2>
 
     <div class="container mt-5">
         <div class="row">
@@ -34,13 +34,13 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h4>Role : {{ $role->name }}
-                            <a href="{{ url('dashboard/roles') }}" class="btn btn-danger float-end">Back</a>
+                        <h4>{{ trans('spatie.roles') }} : {{ $role->name }}
+                            <a href="{{ route('admin.roles.index') }}" class="btn btn-danger float-end">{{ trans('general.backto.dashboard') }}</a>
                         </h4>
                     </div>
                     <div class="card-body">
 
-                        <form action="{{ url('dashboard/roles/'.$role->id.'/give-permissions') }}" method="POST">
+                        <form action="{{ route('admin.roles.give-permissions.update', $role->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -49,7 +49,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
 
-                                <label for="">Permissions</label>
+                                <label for="">{{ trans('spatie.perrmisssions') }}</label>
 
                                 <div class="row">
                                     @foreach ($permissions as $permission)
@@ -69,7 +69,7 @@
 
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">{{ trans('general.submit') }}</button>
                             </div>
                         </form>
                     </div>

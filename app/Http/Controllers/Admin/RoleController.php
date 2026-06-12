@@ -4,27 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\Contracts\RoleContract;
+use App\Services\Admin\RoleService;
+use App\Http\Requests\Admin\RoleStoreRequest;
+use App\Http\Requests\Admin\RoleUpdateRequest;
+use App\Http\Requests\Admin\GivePermissionRequest;
 
 class RoleController extends Controller
 {
-    protected $roleRepository;
+    protected $roleService;
 
-    public function __construct(RoleContract $roleRepository)
+    public function __construct(RoleService $roleService)
     {
-        // $this->middleware('permission:view role', ['only' => ['index']]);
-        // $this->middleware('permission:create role', ['only' => ['create','store','addPermissionToRole','givePermissionToRole']]);
-        // $this->middleware('permission:update role', ['only' => ['update','edit']]);
-        // $this->middleware('permission:delete role', ['only' => ['destroy']]);
-        $this->roleRepository = $roleRepository;
+        $this->roleService = $roleService;
     }
 
     public function index()
     {
-        $roles = $this->roleRepository->getAll();
+        $roles = $this->roleService->getAllRoles();
         return view('dashboard.role-permission.role.index', ['roles' => $roles]);
     }
 
@@ -33,21 +30,11 @@ class RoleController extends Controller
         return view('dashboard.role-permission.role.create');
     }
 
-    public function store(Request $request)
+    public function store(RoleStoreRequest $request)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name'
-            ]
-        ]);
+        $this->roleService->createRole($request->validated());
 
-        $this->roleRepository->create([
-            'name' => $request->name
-        ]);
-
-        return redirect()->route('admin.roles.index')->with('status','Role Created Successfully');
+        return redirect()->route('admin.roles.index')->with('status', trans('spatie.role_created'));
     }
 
     public function edit(Role $role)
@@ -57,50 +44,30 @@ class RoleController extends Controller
         ]);
     }
 
-    public function update(Request $request, Role $role)
+    public function update(RoleUpdateRequest $request, Role $role)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name,'.$role->id
-            ]
-        ]);
+        $this->roleService->updateRole($role->id, $request->validated());
 
-        $this->roleRepository->update($role->id, [
-            'name' => $request->name
-        ]);
-
-        return redirect()->route('admin.roles.index')->with('status','Role Updated Successfully');
+        return redirect()->route('admin.roles.index')->with('status', trans('spatie.role_updated'));
     }
 
     public function destroy($roleId)
     {
-        $this->roleRepository->delete($roleId);
-        return redirect()->route('admin.roles.index')->with('status','Role Deleted Successfully');
+        $this->roleService->deleteRole($roleId);
+        return redirect()->route('admin.roles.index')->with('status', trans('spatie.role_deleted'));
     }
 
     public function addPermissionToRole($roleId)
     {
-        $permissions = Permission::get();
-        $role = $this->roleRepository->find($roleId);
-        $rolePermissions = $this->roleRepository->getRolePermissions($roleId);
+        $data = $this->roleService->getRolePermissionsData($roleId);
 
-        return view('dashboard.role-permission.role.add-permissions', [
-            'role' => $role,
-            'permissions' => $permissions,
-            'rolePermissions' => $rolePermissions
-        ]);
+        return view('dashboard.role-permission.role.add-permissions', $data);
     }
 
-    public function givePermissionToRole(Request $request, $roleId)
+    public function givePermissionToRole(GivePermissionRequest $request, $roleId)
     {
-        $request->validate([
-            'permission' => 'required'
-        ]);
+        $this->roleService->assignPermissionsToRole($roleId, $request->permission);
 
-        $this->roleRepository->syncPermissions($roleId, $request->permission);
-
-        return redirect()->back()->with('status','Permissions added to role');
+        return redirect()->back()->with('status', trans('spatie.permissions_added_to_role'));
     }
 }

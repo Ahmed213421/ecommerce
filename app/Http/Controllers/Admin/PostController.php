@@ -4,37 +4,26 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
-use App\Mail\NewPostMail;
-use App\Models\Category;
 use App\Models\Post;
-use App\Models\Subcategory;
-use App\Models\Subscriber;
-use App\Models\Tag;
-use App\Repositories\Admin\Contracts\PostContract;
-use DB;
+use App\Services\Admin\AdminPostService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
+    protected $adminPostService;
 
-    protected $postRepository;
-
-    public function __construct(PostContract $postRepository)
+    public function __construct(AdminPostService $adminPostService)
     {
-        $this->postRepository = $postRepository;
+        $this->adminPostService = $adminPostService;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $data['posts'] = Post::latest()->get();
-
-        return view('dashboard.news.index',$data);
+        $data['posts'] = $this->adminPostService->getAllPosts();
+        return view('dashboard.news.index', $data);
     }
 
     /**
@@ -42,9 +31,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        $data['categories'] = Category::all();
-        $data['tags'] = Tag::all();
-        return view('dashboard.news.create',$data);
+        $data = $this->adminPostService->getPostFormData();
+        return view('dashboard.news.create', $data);
     }
 
     /**
@@ -52,19 +40,13 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $success = $this->adminPostService->createPost($request->validated());
 
-        try{
-            DB::beginTransaction();
-            $this->postRepository->create($request->validated());
+        if ($success) {
             toastr()->success(__('toaster.add'));
-            DB::commit();
+        } else {
+            toastr()->error(__('error'));
         }
-        catch(\Exception $e){
-            DB::rollBack();
-
-            toastr()->error(__('error'.$e->getMessage()));
-        }
-
 
         return to_route('admin.news.index');
     }
@@ -74,9 +56,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::with(['tags', 'comments'])->findOrFail($id);
-
-        return view('dashboard.news.show',compact('post'));
+        $post = $this->adminPostService->getPostWithRelations($id);
+        return view('dashboard.news.show', compact('post'));
     }
 
     /**
@@ -84,8 +65,8 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        return view('dashboard.news.edit',['post' => Post::findOrFail($id),'categories'=> category::all(),
-        'tags' => Tag::all()]);
+        $data = $this->adminPostService->getPostFormDataWithPost($id);
+        return view('dashboard.news.edit', $data);
     }
 
     /**
@@ -93,15 +74,12 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, string $id)
     {
-        try {
-            DB::beginTransaction();
-            $post = Post::findOrFail($id);
-            $this->postRepository->update($post, $request->validated());
+        $success = $this->adminPostService->updatePost($id, $request->validated());
+
+        if ($success) {
             toastr()->success(__('toaster.update'));
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            toastr()->error(__('error') . $e->getMessage());
+        } else {
+            toastr()->error(__('error'));
         }
 
         return to_route('admin.news.index');
@@ -110,20 +88,16 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $news,Request $request)
+    public function destroy(Post $news, Request $request)
     {
-
-        $this->postRepository->destroy($news);
-
+        $this->adminPostService->deletePost($news);
         return back();
     }
+
     public function deleteAll()
     {
-
-        $this->postRepository->deleteAll();
-
+        $this->adminPostService->deleteAllPosts();
         toastr()->success(__('toaster.del'));
-
         return back();
     }
 }

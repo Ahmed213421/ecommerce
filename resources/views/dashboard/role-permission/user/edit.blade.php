@@ -14,7 +14,7 @@
 @endsection
 
 @section('breadcumbactive')
-    <li class="breadcrumb-item active" aria-current="page"></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ trans('dashboard.edit') }}</li>
 @endsection
 
 @section('content')
@@ -35,8 +35,8 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Edit User
-                                <a href="{{ url('users') }}" class="btn btn-danger float-end">Back</a>
+                            <h4>{{ trans('dashboard.edit') }}
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-danger float-end">{{ trans('general.backto.dashboard') }}</a>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -45,28 +45,28 @@
                                 @method('PUT')
 
                                 <div class="mb-3">
-                                    <label for="">Name</label>
+                                    <label for="">{{ trans('general.name') }}</label>
                                     <input type="text" name="name" value="{{ $user->name }}" class="form-control" />
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="">Email</label>
+                                    <label for="">{{ trans('general.email') }}</label>
                                     <input type="text" name="email" readonly value="{{ $user->email }}"
                                         class="form-control" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="">Password</label>
+                                    <label for="">{{ trans('general.password') }}</label>
                                     <input type="text" name="password" class="form-control" />
                                     @error('password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="">Roles</label>
+                                    <label for="">{{ trans('spatie.roles') }}</label>
                                     <select name="roles[]" class="form-control" multiple>
-                                        <option value="">Select Role</option>
+                                        <option value="">{{ trans('dashboard.sel.category') }}</option>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role }}"
                                                 {{ in_array($role, $userRoles) ? 'selected' : '' }}>
@@ -81,15 +81,15 @@
                                 <div class="mb-3">
                                     <select name="status" id="">
                                         <option value="active"
-                                            {{ old('status', $user->status) == 'active' ? 'selected' : '' }}>active
+                                            {{ old('status', $user->status) == 'active' ? 'selected' : '' }}>{{ trans('general.active') }}
                                         </option>
                                         <option value="unactive"
-                                            {{ old('status', $user->status) == 'unactive' ? 'selected' : '' }}>unactive
+                                            {{ old('status', $user->status) == 'unactive' ? 'selected' : '' }}>{{ trans('general.unactive') }}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">{{ trans('general.submit') }}</button>
                                 </div>
                             </form>
                         </div>

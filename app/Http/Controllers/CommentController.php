@@ -2,46 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\CommentContract;
+use App\Services\CommentService;
+use App\Http\Requests\CommentRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
-    protected $commentRepository;
+    protected $commentService;
 
-    public function __construct(CommentContract $commentRepository)
+    public function __construct(CommentService $commentService)
     {
-        $this->commentRepository = $commentRepository;
+        $this->commentService = $commentService;
     }
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required',
-            'message' => 'required',
-            'email' => 'required',
-            'postid' => 'required|exists:posts,id',
-        ]);
-
-        if ($validator->fails()) {
-            // Redirect back to the form with the error messages
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-
-        $this->commentRepository->create([
-            'post_id' => $request->postid,
-            'name' => $request->name,
-            'email' => $request->email,
-            'message' => $request->message,
-            'status' => 0,
-        ]);
+        $this->commentService->submitComment($request->validated());
 
         return back()->with('success','your message has sent please wait for verification');
     }
-
 }

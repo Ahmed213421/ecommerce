@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\SearchContract;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    protected $searchRepository;
+    protected $searchService;
 
-    public function __construct(SearchContract $searchRepository)
+    public function __construct(SearchService $searchService)
     {
-        $this->searchRepository = $searchRepository;
+        $this->searchService = $searchService;
     }
 
     /**
@@ -19,18 +19,12 @@ class SearchController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $results = $this->searchRepository->searchAll($request->query('search', ''));
+        $data = $this->searchService->search($request->query('search', ''));
         
-        $products = $results['products'];
-        $categories = $results['categories'];
-        $subcategories = $results['subcategories'];
-
-        if ($products->isNotEmpty() || $categories->isNotEmpty() || $subcategories->isNotEmpty()) {
-            return view('shop.search.index', compact('products', 'categories', 'subcategories'))->with('no_results', false);
-        }
-
-        if ($products->isEmpty() && $categories->isEmpty() && $subcategories->isEmpty()) {
-            return view('shop.search.index', compact('products', 'categories', 'subcategories'))->with('no_results', true);
-        }
+        return view('shop.search.index', [
+            'products' => $data['products'],
+            'categories' => $data['categories'],
+            'subcategories' => $data['subcategories']
+        ])->with('no_results', $data['no_results']);
     }
 }

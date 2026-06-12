@@ -6,18 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RoleUpdateRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
                 'required',
                 'string',
-                'unique:roles,name,' . $this->role->id
+                'unique:roles,name,' . $this->route('role')->id
             ]
         ];
     }

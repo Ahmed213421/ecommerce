@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\OrderContract;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    protected $orderRepository;
+    protected $orderService;
 
-    public function __construct(OrderContract $orderRepository)
+    public function __construct(OrderService $orderService)
     {
-        $this->orderRepository = $orderRepository;
+        $this->orderService = $orderService;
     }
 
     /**
@@ -19,7 +19,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $data['orders'] = $this->orderRepository->getUserOrdersPaginated(auth()->user()->id, 'delivered', 5);
+        $data['orders'] = $this->orderService->getUserDeliveredOrders(auth()->user()->id);
 
         return view('shop.orders.show',$data);
     }
