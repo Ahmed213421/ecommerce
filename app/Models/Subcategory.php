@@ -3,16 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class Subcategory extends Model
+class Subcategory extends BaseModel
 {
     use HasFactory,HasTranslations;
 
 
     public $translatable = ['name', 'description'];
-    protected $guarded = [];
 
     public function getRouteKeyName()
 {

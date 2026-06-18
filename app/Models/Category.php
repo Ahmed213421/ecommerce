@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class Category extends Model
+class Category extends BaseModel
 {
     use HasFactory,HasTranslations;
 
@@ -16,8 +15,6 @@ class Category extends Model
 {
     return 'id';
 }
-
-    protected $guarded = [];
 
     public function subcategories(){
         return $this->hasMany(Subcategory::class);
