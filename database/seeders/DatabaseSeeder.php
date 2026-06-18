@@ -15,16 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Order::factory()->count(2000)->create();
-        // User::factory()->count(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         $this->call([
             TagSeeder::class,
+            DummyDataSeeder::class,
         ]);
+
+        Order::factory()->count(100)->create();
     }
 }

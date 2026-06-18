@@ -2,7 +2,7 @@
 
 return array (
     'users' => 'المستخدمين',
-    'Roles' => 'الأدوار',
+    'roles' => 'الأدوار',
     'perrmisssions' => 'الصلاحيات',
     'PerrmisssionUsers' => 'صلاحيات المستخدمين ',
     'add_role' => 'أضف رتبة',

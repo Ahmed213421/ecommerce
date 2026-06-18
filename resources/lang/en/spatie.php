@@ -3,7 +3,7 @@
 return array (
 
     'users' => 'Users',
-    'Roles' => 'Roles',
+    'roles' => 'Roles',
     'perrmisssions' => 'Permissions',
     'PerrmisssionUsers' => 'Perrmisssion Users',
     'add_role' => 'Add Role',

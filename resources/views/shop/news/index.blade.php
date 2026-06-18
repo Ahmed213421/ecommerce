@@ -63,7 +63,7 @@
                                 @endif
                             </a>
                             <div class="news-text-box">
-                                <h3><a href="single-news.html">{{ $post->title }}.</a></h3>
+                                <h3><a href="{{route('customer.news.show',$post->slug)}}">{{ $post->title }}.</a></h3>
                                 <p class="blog-meta">
                                     <span class="author"><i class="fas fa-user"></i> {{ $post->admin->name }}</span>
                                     <span class="date"><i class="fas fa-calendar"></i>

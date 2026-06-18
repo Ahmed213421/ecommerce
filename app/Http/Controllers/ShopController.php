@@ -14,6 +14,7 @@ class ShopController extends Controller
     {
 
         $data['categories'] = Category::with('subcategories.products')->get();
+        // dd($data['categories']);
 
         return view('shop.shop',$data);
     }

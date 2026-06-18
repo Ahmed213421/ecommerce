@@ -17,8 +17,8 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        // Generate random date in 2025
-        $createdAt = $this->faker->dateTimeBetween('2025-01-01', '2025-12-31');
+        // Generate random date in the last year
+        $createdAt = $this->faker->dateTimeBetween('-1 year', 'now');
 
         return [
             'name' => $this->faker->name,

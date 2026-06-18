@@ -59,7 +59,7 @@
                             @php
                                 $hasProductImage = $item->imagepath && is_file(public_path($item->imagepath));
                             @endphp
-                            <div class="col-lg-4 col-md-6 text-center {{ Str::slug($category->name) }}">
+                            <div class="col-lg-4 col-md-6 text-center product-item cat-{{ $category->id }} sub-{{ $sub->id }}">
                                 <div class="single-product-item">
                                     <div class="product-image">
                                         <a href="{{ route('customer.product.show', $item->slug) }}">

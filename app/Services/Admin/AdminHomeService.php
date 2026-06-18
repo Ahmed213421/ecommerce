@@ -15,7 +15,7 @@ class AdminHomeService
             'model' => 'App\Models\Order',
             'conditions' => [
                 [
-                    'status' => 'delivered',
+                    'name' => 'delivered',
                     'condition' => 'status = "delivered"',
                     'color' => 'black',
                     'fill' => true,
@@ -25,7 +25,7 @@ class AdminHomeService
             'group_by_period' => 'month',
             'aggregate_function' => 'count',
             'filter_field' => 'created_at',
-            'filter_days' => 30,
+            'filter_days' => 365,
             'filter_period' => 'month',
         ];
 
